@@ -96,6 +96,7 @@ def index(request):
             }
             response = requests.post(url, json=payload, headers=headers)
             result = response.json()
+            message = ""
 
             summary = []
             if 'Count' in result and result['Count'] > 0:
