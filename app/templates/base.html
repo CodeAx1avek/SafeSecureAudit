@@ -253,9 +253,7 @@ b {
         box-sizing: border-box;
         font-family: "Poppins", sans-serif;
       }
-      body {
-        overflow: hidden;
-      }
+
       .sidebar {
         position: fixed;
         top: 0;
@@ -621,7 +619,7 @@ b {
           </ul>
         </li>
         <li>
-          <a href="#">
+          <a href="learning">
             <i class="bx bx-line-chart"></i>
             <span class="link_name">Learning</span>
           </a>
@@ -639,7 +637,7 @@ b {
           </ul>
         </li>
         <li>
-          <a href="#">
+          <a href="/termsandcondition">
             <i class="bx bx-cog"></i>
             <span class="link_name">Terms&Conditions</span>
           </a>
@@ -663,7 +661,7 @@ b {
     </div>
     <section class="home-section">
       <div class="home-content">
-        <!-- <i class="bx bx-menu"></i> -->
+
         <span class="text">SafeSecureAudit</span>
       </div>
       <div class="content">{% block body %} {% endblock %}</div>
@@ -675,6 +673,12 @@ b {
         var scanResult = document.getElementById("scanResult");
         scanResult.style.display = "block";
       });
+    </script>
+     <script>
+      function toggleSidebar() {
+        var sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('close');
+      }
     </script>
   </body>
 </html>

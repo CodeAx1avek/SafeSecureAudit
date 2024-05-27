@@ -1,0 +1,130 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Path for Hacker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #fff;
+}
+
+.learning-path {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f6f6f6;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.task {
+    border-bottom: 1px solid #333;
+    margin-bottom: 10px;
+}
+
+.task-title {
+    padding: 15px;
+    cursor: pointer;
+    background-color: rgb(21, 28, 43);
+    color: white;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-title:hover {
+    background-color: #444;
+}
+
+.task-content {
+    padding: 15px;
+    display: none;
+    background-color: #2c2c2c;
+    border-radius: 4px;
+    color: white;
+}
+
+.task-content p {
+    margin: 0;
+}
+
+.task-title i {
+    transition: transform 0.3s;
+}
+
+.task-title.open i {
+    transform: rotate(180deg);
+}
+
+    </style>
+</head>
+<body>
+    <div class="learning-path">
+        <h1>Hacker Learning Path</h1>
+        <div class="task" id="task1">
+            <div class="task-title" onclick="toggleTask('task1')">
+                Task 1: Introduction to Hacking
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="task-content">
+                <p>Learn the basics of hacking, including fundamental concepts and techniques
+                    
+                    
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat iure illum dolores unde odit itaque molestiae aliquid, adipisci totam sint dolore eaque obcaecati rem velit? Accusantium recusandae, atque fugit dolores tenetur deserunt quo aut quis quibusdam qui voluptates dignissimos minus incidunt repellat possimus, eligendi perspiciatis tempore iste. Accusantium ipsam iusto corporis, temporibus voluptatem eveniet aperiam? Dicta voluptatum ab iusto, nemo deserunt velit ipsa nobis minima reiciendis modi veniam numquam, animi natus dolores voluptatem incidunt? Officia modi rem maxime sed autem ut ratione sunt provident reiciendis labore velit, nihil quo accusamus laboriosam quis fuga commodi in voluptas ab maiores. Ullam cumque possimus nobis excepturi perferendis, sapiente id voluptatum vero nam enim? Saepe suscipit impedit hic eveniet quam cupiditate nesciunt quasi repudiandae repellat rerum molestiae quia incidunt sapiente temporibus praesentium rem, voluptatum facere est cumque laboriosam consequuntur possimus. Error eum obcaecati nam eius repellendus, reprehenderit molestiae officiis, corrupti impedit aliquid officia dolorum, quisquam nulla aspernatur molestias. Delectus accusamus at earum adipisci. Amet esse est adipisci nostrum neque at. Odit, eligendi excepturi minus dolore dicta omnis natus sit ad modi animi praesentium itaque repellendus libero cumque enim nihil autem. Nesciunt provident voluptate, reiciendis totam exercitationem facilis sunt, officia quod debitis veritatis corrupti laborum dolore possimus fuga amet esse nam cupiditate ex culpa veniam? Sed velit dolores deserunt quas, blanditiis quibusdam porro officia molestias officiis est accusamus, veritatis a expedita! Nobis sit, soluta velit minus illo delectus porro optio ut doloremque culpa temporibus voluptatum error, quaerat, quam sed sunt distinctio voluptas? Libero, asperiores. Numquam quisquam deserunt neque, velit architecto porro eum. Omnis, rerum quibusdam dolore assumenda ipsam repellat illo sequi, tempore eaque iure pariatur deserunt tempora atque cumque natus sapiente voluptate distinctio eligendi perferendis fugit nobis, error deleniti iusto. Corrupti magnam iure cumque, dignissimos maiores et ipsam amet voluptatem minus omnis repellat fugiat eos qui voluptate, nam totam at sint neque nulla nihil rem laborum. Neque delectus, itaque ad reiciendis nemo quod? Error dolorum maxime vitae nesciunt quidem, recusandae debitis mollitia sit nobis deserunt sed delectus aperiam, cumque fugit optio natus placeat distinctio dolorem velit! Eligendi, obcaecati tenetur consequatur sapiente expedita fugit! Sint vel beatae sapiente accusamus quo tempora natus placeat, quia quod, ab aliquid perspiciatis fugiat fuga quis nihil porro ratione voluptatum autem modi rerum, quae commodi? In optio eius enim, corporis nulla, blanditiis tempora iure ab doloribus autem distinctio pariatur aspernatur id et odit quos nisi dolor esse odio recusandae cum..</p>
+            </div>
+        </div>
+        <div class="task" id="task2">
+            <div class="task-title" onclick="toggleTask('task2')">
+                Task 2: Network Security
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="task-content">
+                <p>Dive into network security and learn how to protect against network attacks.</p>
+            </div>
+        </div>
+        <div class="task" id="task3">
+            <div class="task-title" onclick="toggleTask('task3')">
+                Task 3: Web Application Security
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="task-content">
+                <p>Understand web application vulnerabilities and how to secure them.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleTask(taskId) {
+    const tasks = document.querySelectorAll('.task-content');
+    const icons = document.querySelectorAll('.task-title i');
+
+    tasks.forEach(task => {
+        if (task.parentElement.id === taskId) {
+            if (task.style.display === 'none' || task.style.display === '') {
+                task.style.display = 'block';
+                task.previousElementSibling.classList.add('open');
+            } else {
+                task.style.display = 'none';
+                task.previousElementSibling.classList.remove('open');
+            }
+        } else {
+            task.style.display = 'none';
+            task.previousElementSibling.classList.remove('open');
+        }
+    });
+}
+
+    </script>
+</body>
+
