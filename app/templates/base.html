@@ -6,244 +6,191 @@
     <title>SafeSecureAudit</title>
     <!-- <link rel="stylesheet" href="{% static 'style.css' %}" /> -->
     <!-- Boxiocns CDN Link -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link
       href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
       rel="stylesheet"
     />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-  }
-
-  .container {
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* Added styles for container scroll */
-    height: 600px; /* Adjust height as needed */
-    overflow-y: auto;
-  }
-
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #007bff;
-  }
-
-  h2 {
-    color: #555;
-    font-size: 20px;
-    margin-top: 30px;
-    margin-bottom: 10px;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    margin-bottom: 10px;
-  }
-
-  b {
-    color: #007bff;
-  }
-
-  p {
-    margin-bottom: 20px;
-  }
-
-  /* Tool-specific Styles */
-  .tool-section {
-    margin-top: 40px;
-  }
-
-  .tool-section h2 {
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
-  }
-
-  .tool-section ul {
-    margin-left: 20px;
-  }
-
-  .tool-section li {
-    margin-left: 10px;
-  }
-
-  .tag-info {
-    color: #777;
-    font-size: 16px;
-    margin-left: 20px;
-  }
-
-  h1 {
-    text-align: center;
-    color: #b32323;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-  }
-
-  input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-
-  input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  input[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-
-  /* Result Styles */
-  .result {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-
-  .result-title {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  .dns-resolver {
-  margin-top: 40px;
-}
-
-.dns-resolver .result-title {
-  color: #007bff;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.dns-resolver .record-type {
-  margin-bottom: 20px;
-}
-
-.dns-resolver .record-type h3 {
-  color: #555;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.dns-resolver .record-list {
-  list-style: none;
-  padding-left: 0;
-}
-
-.dns-resolver .record-list li {
-  color: #777;
-  font-size: 16px;
-  margin-left: 20px;
-}
-
-  .result-details {
-    margin-left: 20px;
-  }
-
-  .record-type {
-    margin-bottom: 20px;
-  }
-
-  .record-type h3 {
-    color: #555;
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-
-  .record-list {
-    list-style: none;
-    padding-left: 0;
-  }
-
-  .record-list li {
-    color: #777;
-    font-size: 16px;
-    margin-left: 20px;
-  }
-
-  .progress-container {
-    width: 100%;
-    background-color: #ddd;
-    border-radius: 4px;
-    margin-bottom: 20px;
-  }
-
-  .progress-bar {
-    width: 0%;
-    height: 20px;
-    background-color: #007bff;
-    border-radius: 4px;
-    transition: width 0.3s ease-in-out;
-  }
-  /* CSS styles for Port Scanner Results */
-.port-scanner {
-  margin-top: 40px;
-}
-
-.port-scanner .result-title {
-  color: #007bff;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.port-list {
-  list-style: none;
-  padding: 0;
-}
-
-.port-item {
-  margin-bottom: 20px;
-}
-
-.port-number {
-  font-weight: bold;
-}
-
-.service {
-  color: #777;
-}
-b {
-  display: inline-block;
-  max-width: 100%; 
-  overflow-wrap: break-word;
-}
-
-</style>
-    </style>
-
+      <style>
+        /* Reset and General Styles */
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+          color: #333;
+          font-size: 16px; /* Base font size */
+        }
+    
+        .container {
+          max-width: 1000px;
+          margin: 10px auto;
+          padding: 5px;
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          height: 600px; /* Adjust height as needed */
+          overflow-y: auto;
+        }
+    
+        /* Typography */
+        h1, h2 {
+          text-align: center;
+          color: #007bff; /* Keep original color */
+        }
+    
+        h1 {
+          font-size: 28px; /* Larger font size for h1 */
+          margin-bottom: 16px; /* Reduced margin bottom */
+        }
+    
+        h2 {
+          font-size: 22px; /* Larger font size for h2 */
+          margin-top: 24px; /* Adjusted margin top */
+          margin-bottom: 12px; /* Adjusted margin bottom */
+        }
+    
+        p {
+          margin-bottom: 14px; /* Reduced margin bottom for paragraphs */
+          line-height: 1.6; /* Improved line height for readability */
+        }
+    
+        b {
+          color: #007bff; /* Keep original color */
+        }
+    
+        /* Form Styles */
+        .form-group {
+          margin-bottom: 14px; /* Reduced margin bottom for form groups */
+        }
+    
+        label {
+          display: block;
+          margin-bottom: 6px; /* Reduced margin bottom for labels */
+          color: #555;
+        }
+    
+        input[type="text"] {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+          font-size: 16px; /* Base font size for input fields */
+        }
+    
+        input[type="submit"] {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 16px; /* Adjusted padding for button */
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          font-size: 16px; /* Base font size for buttons */
+        }
+    
+        input[type="submit"]:hover {
+          background-color: #0056b3;
+        }
+    
+        /* Result Section */
+        .result {
+          margin-top: 16px; /* Reduced margin top */
+          padding: 16px; /* Adjusted padding */
+          background-color: #f9f9f9;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+    
+        .result-title {
+          color: #333;
+          font-size: 20px; /* Adjusted font size for result title */
+          margin-bottom: 10px; /* Reduced margin bottom */
+        }
+    
+        /* Specific Sections */
+        .dns-resolver, .port-scanner {
+          margin-top: 24px; /* Adjusted margin top */
+        }
+    
+        .dns-resolver .result-title, .port-scanner .result-title {
+          color: #007bff; /* Keep original color */
+          font-size: 20px; /* Adjusted font size for section titles */
+          margin-bottom: 14px; /* Reduced margin bottom */
+        }
+    
+        .dns-resolver .record-type h3, .port-scanner .port-number {
+          color: #555;
+          font-size: 18px; /* Adjusted font size for section headings */
+          margin-bottom: 6px; /* Reduced margin bottom */
+        }
+    
+        .dns-resolver .record-list li, .port-scanner .service {
+          color: #777;
+          font-size: 16px; /* Adjusted font size for section list items */
+          margin-left: 16px; /* Adjusted margin left */
+        }
+    
+        /* Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+          body {
+            font-size: 14px; /* Smaller base font size for smaller screens */
+          }
+    
+          h1 {
+            font-size: 24px; /* Adjusted font size for h1 on smaller screens */
+            margin-bottom: 12px; /* Reduced margin bottom */
+          }
+    
+          h2 {
+            font-size: 20px; /* Adjusted font size for h2 on smaller screens */
+            margin-top: 20px; /* Adjusted margin top */
+            margin-bottom: 10px; /* Reduced margin bottom */
+          }
+    
+          p {
+            margin-bottom: 12px; /* Reduced margin bottom for paragraphs */
+          }
+    
+          label {
+            font-size: 14px; /* Adjusted font size for labels */
+            margin-bottom: 4px; /* Reduced margin bottom for labels */
+          }
+    
+          input[type="text"] {
+            font-size: 14px; /* Adjusted font size for input fields */
+            padding: 8px; /* Adjusted padding for input fields */
+          }
+    
+          input[type="submit"] {
+            padding: 8px 14px; /* Adjusted padding for button */
+            font-size: 14px; /* Adjusted font size for button */
+          }
+    
+          .result-title {
+            font-size: 18px; /* Adjusted font size for result title */
+            margin-bottom: 8px; /* Reduced margin bottom */
+          }
+    
+          .dns-resolver .result-title, .port-scanner .result-title {
+            font-size: 18px; /* Adjusted font size for section titles */
+            margin-bottom: 12px; /* Reduced margin bottom */
+          }
+    
+          .dns-resolver .record-type h3, .port-scanner .port-number {
+            font-size: 16px; /* Adjusted font size for section headings */
+            margin-bottom: 4px; /* Reduced margin bottom */
+          }
+    
+          .dns-resolver .record-list li, .port-scanner .service {
+            font-size: 14px; /* Adjusted font size for section list items */
+            margin-left: 12px; /* Adjusted margin left */
+          }
+        }
+      </style>
     <style>
       /* Google Fonts Import Link */
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
@@ -341,6 +288,7 @@ b {
         align-items: center;
         text-decoration: none;
       }
+
       .sidebar .nav-links li a .link_name {
         font-size: 18px;
         font-weight: 400;
@@ -528,20 +476,26 @@ b {
   </head>
   <body>
     <div class="sidebar close">
+      <!-- Logo and Name -->
       <div class="logo-details">
         <a href="/"><i class='bx bxs-shield-plus'></i></a>
         <span class="logo_name">SafeSecureAudit</span>
       </div>
+  
+      <!-- Main Navigation Links -->
       <ul class="nav-links">
+        <!-- Dashboard -->
         <li>
-          <a href="{% url 'index' %}?tool=allinone">
+          <a href="#">
             <i class="bx bx-grid-alt"></i>
             <span class="link_name">Dashboard</span>
           </a>
           <ul class="sub-menu blank">
-            <li><a class="link_name" href="{% url 'index' %}?tool=allinone">SafeSecureAudit360</a></li>
+            <li><a href="{% url 'index' %}?tool=allinone">SafeSecureAudit360</a></li>
           </ul>
         </li>
+  
+        <!-- Information Gathering -->
         <li>
           <div class="iocn-link">
             <a href="#">
@@ -551,24 +505,16 @@ b {
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a class="link_name" href="#">Information Gathering</a></li>
-            <a
-              href="{% url 'index' %}?tool=dnsresolvertool"
-              class="sidebar-link">DNS LOOKUP
-            </a>
-            <a href="{% url 'index' %}?tool=dnslookuptool" class="sidebar-link"
-              >DNS LOOKUP DEEP</a
-            >
-            <a href="{% url 'index' %}?tool=reversednstool" class="sidebar-link"
-              >Reverse DNS LookUp</a
-            >
-            <a href="{% url 'index' %}?tool=ipgeotool" class="sidebar-link"
-              >GEO LOCATION</a
-            >
-              <a href="{% url 'index' %}?tool=phoneinfo" class="sidebar-link"
-              >Phone Info</a>
+            <li><a href="#">Information Gathering</a></li>
+            <li><a href="{% url 'index' %}?tool=dnsresolvertool" class="sidebar-link">DNS LOOKUP</a></li>
+            <li><a href="{% url 'index' %}?tool=dnslookuptool" class="sidebar-link">DNS LOOKUP DEEP</a></li>
+            <li><a href="{% url 'index' %}?tool=reversednstool" class="sidebar-link">Reverse DNS LookUp</a></li>
+            <li><a href="{% url 'index' %}?tool=ipgeotool" class="sidebar-link">GEO LOCATION</a></li>
+            <li><a href="{% url 'index' %}?tool=phoneinfo" class="sidebar-link">Phone Info</a></li>
           </ul>
         </li>
+  
+        <!-- Detection Tools -->
         <li>
           <div class="iocn-link">
             <a href="#">
@@ -578,32 +524,29 @@ b {
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a class="link_name" href="#">Detection Tools</a></li>
-            <a href="{% url 'index' %}?tool=waf" class="sidebar-link"
-              >WAF CHECKER</a>
-              <a href="{% url 'index' %}?tool=breachdata" class="sidebar-link"
-              >Data Breach Checker</a>
+            <li><a href="#">Detection Tools</a></li>
+            <li><a href="{% url 'index' %}?tool=waf" class="sidebar-link">WAF CHECKER</a></li>
+            <li><a href="{% url 'index' %}?tool=breachdata" class="sidebar-link">Data Breach Checker</a></li>
           </ul>
         </li>
+  
+        <!-- Web Scraping -->
         <li>
           <div class="iocn-link">
             <a href="#">
               <i class="bx bx-pie-chart-alt-2"></i>
-              <span class="link_name">Web Scrapping</span>
+              <span class="link_name">Web Scraping</span>
             </a>
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a class="link_name" href="#">Web Scrapping</a></li>
-            <a href="{% url 'index' %}?tool=page_extract" class="sidebar-link"
-              >PAGE EXTRACTS</a
-            >
-            <a href="{% url 'index' %}?tool=extract_emails" class="sidebar-link"
-              >EMAIL EXTRACT</a
-            >
+            <li><a href="#">Web Scraping</a></li>
+            <li><a href="{% url 'index' %}?tool=page_extract" class="sidebar-link">PAGE EXTRACTS</a></li>
+            <li><a href="{% url 'index' %}?tool=extract_emails" class="sidebar-link">EMAIL EXTRACT</a></li>
           </ul>
         </li>
-        <!-- Vuln -->
+  
+        <!-- Vulnerability Scanner -->
         <li>
           <div class="iocn-link">
             <a href="#">
@@ -613,38 +556,40 @@ b {
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a class="link_name" href="#">Vulnerability Scanner</a></li>
-            <a href="{% url 'index' %}?tool=portscanner" class="sidebar-link"
-              >Port Scanner</a>
+            <li><a href="#">Vulnerability Scanner</a></li>
+            <li><a href="{% url 'index' %}?tool=portscanner" class="sidebar-link">Port Scanner</a></li>
           </ul>
         </li>
+  
+        <!-- Bug Hunting Methodology -->
         <li>
-          <a href="learning">
-            <i class="bx bx-line-chart"></i>
-            <span class="link_name">Learning</span>
-          </a>
-          <ul class="sub-menu blank">
-            <li><a class="link_name" href="/learning">Learn CyberSecurity</a></li>
+          <div class="iocn-link">
+            <a href="#">
+              <i class="bx bx-bug-alt"></i>
+              <span class="link_name">Bug Hunting Methodology</span>
+            </a>
+            <i class="bx bxs-chevron-down arrow"></i>
+          </div>
+          <ul class="sub-menu">
+            <li><a href="#">Bug Hunting Methodology</a></li>
+            <li><a href="/learning" class="sidebar-link">Learn CyberSecurity</a></li>
+            <li><a href="/Allaboutbugbounty" class="sidebar-link">All about Vulnerability</a></li>
+            <li><a href="/bughuntingmethodology" class="sidebar-link">Bug Hunting Live</a></li>
           </ul>
         </li>
+  
+        <!-- Terms & Conditions -->
         <li>
           <a href="#">
-            <i class="bx bx-compass"></i>
-            <span class="link_name">Explore</span>
-          </a>
-          <ul class="sub-menu blank">
-            <li><a class="link_name" href="/Allaboutbugbounty">All about bug bounty</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="/termsandcondition">
             <i class="bx bx-cog"></i>
-            <span class="link_name">Terms&Conditions</span>
+            <span class="link_name">Terms & Conditions</span>
           </a>
           <ul class="sub-menu blank">
-            <li><a class="link_name" href="/termsandcondition">Terms&Conditions</a></li>
+            <li><a href="/termsandcondition">Terms & Conditions</a></li>
           </ul>
         </li>
+  
+        <!-- Profile Details -->
         <li>
           <div class="profile-details">
             <div class="profile-content">
@@ -659,6 +604,8 @@ b {
         </li>
       </ul>
     </div>
+  </body>
+  
     <section class="home-section">
       <div class="home-content">
 
@@ -666,8 +613,6 @@ b {
       </div>
       <div class="content">{% block body %} {% endblock %}</div>
     </section>
-
-    <script src="{% static 'script.js'%}"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         var scanResult = document.getElementById("scanResult");

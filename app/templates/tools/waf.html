@@ -7,7 +7,7 @@
     {% csrf_token %}
     <div class="form-group">
       <label for="websiteUrl">Enter Website URL:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" required />
+      <input type="text" id="websiteUrl" name="websiteUrl" value="{{domain_name}}" placeholder="example.com" required />
     </div>
     <input type="submit" value="Scan" />
   </form>
@@ -20,9 +20,9 @@
   <div class="result waf-detector">
     {% if is_cloudflare is not None %}
       {% if is_cloudflare %}
-        <h2 class="result-title">The website is using Cloudflare.</h2>
+        <h2 class="result-title">The website is using firewall.</h2>
       {% else %}
-        <h2 class="result-title">The website is not behind Cloudflare.</h2>
+        <h2 class="result-title">The website is not behind firewall.</h2>
       {% endif %}
     {% endif %}
     {% if error_message %}

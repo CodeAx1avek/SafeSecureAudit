@@ -7,7 +7,7 @@
     {% csrf_token %}
     <div class="form-group">
       <label for="websiteUrl">Enter Phone Number:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="enter 10 digit number with +91" required />
+      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="enter 10 digit number with +91" value="{{domain_name}}" required />
     </div>
     <input type="submit" value="Scan" />
   </form>

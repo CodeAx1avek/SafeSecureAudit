@@ -6,69 +6,148 @@
         <title>Learning Path for Hacker</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
-            body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #ffffff;
-        color: #fff;
-    }
-    
-    .learning-path {
-        margin: 50px auto;
-        padding: 30px;
-        background-color: #fffafa;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-    
-    h1 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #000000;
-    }
-    
-    .task {
+          body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #fff;
+}
 
-        margin-bottom: 10px;
+.learning-path {
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fffafa;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #000000;
+}
+
+.task {
+    margin-bottom: 10px;
+}
+
+.task-title {
+    padding: 15px;
+    cursor: pointer;
+    background-color: rgb(21, 28, 43);
+    color: white;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-title:hover {
+    background-color: #444;
+}
+
+.task-content {
+    padding: 15px;
+    display: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+    color: rgb(0, 0, 0);
+}
+
+.task-content p {
+    margin: 0;
+}
+
+.task-title i {
+    transition: transform 0.3s;
+}
+
+.task-title.open i {
+    transform: rotate(180deg);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .learning-path {
+        margin: 20px auto;
+        padding: 20px;
     }
-    
+    h1 {
+        font-size: 24px;
+        text-align: left;
+    }
     .task-title {
-        padding: 15px;
-        cursor: pointer;
-        background-color: rgb(21, 28, 43);
-        color: white;
-        border-radius: 4px;
-        margin-bottom: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        font-size: 16px;
+        padding: 10px;
     }
-    
-    .task-title:hover {
-        background-color: #444;
-    }
-    
     .task-content {
-        padding: 15px;
-        display: none;
-        background-color: #ffffff;
-        border-radius: 4px;
-        color: rgb(0, 0, 0);
+        font-size: 14px;
+        padding: 10px;
     }
-    
-    .task-content p {
-        margin: 0;
+}
+
+@media (max-width: 576px) {
+    h1 {
+        font-size: 20px;
     }
-    
-    .task-title i {
-        transition: transform 0.3s;
+    .task-title {
+        font-size: 14px;
+        padding: 8px;
     }
-    
-    .task-title.open i {
-        transform: rotate(180deg);
+    .task-content {
+        font-size: 12px;
+        padding: 8px;
     }
-    
+}
+/* MCQ */
+.task-content h2 {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #000;
+}
+
+.task-content p {
+    font-size: 16px;
+    color: #000;
+    margin: 10px 0;
+}
+
+.task-content .answer-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.task-content input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+    flex-grow: 1;
+}
+
+.task-content button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.task-content button:hover {
+    background-color: #0056b3;
+}
+
+.task-content p[id$="-result"] {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
         </style>
     </head>
     <body>
@@ -105,8 +184,15 @@
                     
                     <h2>Conclusion:</h2>
                     <p>Congratulations on completing this introduction to networking in cybersecurity! By mastering these concepts and implementing appropriate security measures, you are well on your way to becoming a cybersecurity expert.</p>
-    </div> 
-            </div>
+                   <br> <h2 style="text-align: left;">Question:</h2>
+        <p style="color: #0056b3;">What network security component monitors and controls network traffic?</p>
+        <div class="answer-container">
+            <input type="text" id="answer1" placeholder="Your answer here: ********">
+            <button onclick="submitAnswer('task1', 'answer1', 'firewall')">Submit</button>
+        </div>
+        <p id="task1-result"></p>
+    </div>
+</div>
             <div class="task" id="task2">
                 <div class="task-title" onclick="toggleTask('task2')">
                     Task 2: Security Fundamentals
@@ -248,6 +334,13 @@
                         organizations can protect their assets, data, and reputation from
                         evolving threats and vulnerabilities.
                       </p>
+                      <h2 style="text-align: left;">Question:</h2>
+                      <p style="color: #0056b3;">What ensures that sensitive information is accessible only to authorized users?</p>
+                      <div class="answer-container">
+                        <input type="text" id="answer2" placeholder="Your answer here: ***************">
+                        <button onclick="submitAnswer('task2', 'answer2', 'confidentiality')">Submit</button>
+                    </div>
+                    <p id="task2-result"></p>
                 </div>
             </div>
             <div class="task" id="task3">
@@ -342,6 +435,13 @@
                         maximizing productivity and effectiveness in a Linux-based
                         environment.
                       </p>
+                      <h2 style="text-align: left;">Question:</h2>
+                      <p style="color: #0056b3;">What Linux command is used to display the contents of a file?</p>
+                      <div class="answer-container">
+                        <input type="text" id="answer3" placeholder="Your answer here: ***">
+                        <button onclick="submitAnswer('task3', 'answer3', 'cat')">Submit</button>
+                    </div>
+                    <p id="task3-result"></p>
                 </div>
             </div>
             <div class="task" id="task4">
@@ -481,6 +581,15 @@
                         best practices, organizations can enhance OS security, minimize
                         security risks, and maintain trust in their IT infrastructure.
                       </p>   
+                      <h2 style="text-align: left;">Question:</h2>
+                      <p style="color: #0056b3;">What security measure encrypts sensitive data to prevent unauthorized access and data?</p>
+                      <div class="answer-container">
+                        <input type="text" id="answer4" placeholder="Your answer here: ***">
+                        <button onclick="submitAnswer('task4', 'answer4', 'encryption')">Submit</button>
+                    </div>
+                    <p id="task4-result"></p>
+                </div>
+            </div>
                 </div>
             </div>
             <div class="task" id="task5">
@@ -1427,28 +1536,35 @@
                             </div>  
         </div>
         <script>
-            function toggleTask(taskId) {
-        const tasks = document.querySelectorAll('.task-content');
-        const icons = document.querySelectorAll('.task-title i');
-    
-        tasks.forEach(task => {
-            if (task.parentElement.id === taskId) {
-                if (task.style.display === 'none' || task.style.display === '') {
-                    task.style.display = 'block';
-                    task.previousElementSibling.classList.add('open');
-                } else {
-                    task.style.display = 'none';
-                    task.previousElementSibling.classList.remove('open');
-                }
-            } else {
-                task.style.display = 'none';
-                task.previousElementSibling.classList.remove('open');
-            }
-        });
-    }
-    
-        </script>
+          function submitAnswer(taskId, answerId, correctAnswer) {
+              var answer = document.getElementById(answerId).value.trim();  // No need for toLowerCase() here
+              var result = document.getElementById(taskId + '-result');
+              
+              if (answer.toLowerCase() === correctAnswer.toLowerCase()) {  // Compare ignoring case
+                  result.textContent = 'Completed';
+                  result.style.color = 'green';
+              } else {
+                  result.textContent = 'Try Again';
+                  result.style.color = 'red';
+              }
+          }
+      
+          function toggleTask(taskId) {
+              var taskContent = document.getElementById(taskId).querySelector('.task-content');
+              var icon = document.getElementById(taskId).querySelector('.task-title i');
+              
+              if (taskContent.style.display === 'block') {
+                  taskContent.style.display = 'none';
+                  icon.classList.remove('open');
+              } else {
+                  taskContent.style.display = 'block';
+                  icon.classList.add('open');
+              }
+          }
+      </script>
+      
+       
     </body>
-    
+    <center><p style="color: black;">&copy; Copyright CodeAx1</p></center>
     
     {% endblock %}</div>

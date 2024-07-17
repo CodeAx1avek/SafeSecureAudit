@@ -93,6 +93,7 @@ def fetch_all_in_one_data(domain_name):
     response = requests.get(url, headers=headers, params=querystring)
     if response.status_code == 200:
         return response.json()
+    
     else:
         print("erorrrr")
     

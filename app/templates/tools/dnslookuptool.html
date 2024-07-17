@@ -6,7 +6,7 @@
     {% csrf_token %}
     <div class="form-group">
       <label for="websiteUrl">Enter Website URL:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" required />
+      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{domain_name}}" required />
     </div>
     <input type="submit" value="Scan" />
   </form>

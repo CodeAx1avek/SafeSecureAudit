@@ -1,0 +1,245 @@
+{% extends './base.html' %}
+<div class="content">{% block body %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Learning Path for Hacker</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #ffffff;
+                color: #fff;
+            }
+
+            .learning-path {
+                margin: 50px auto;
+                padding: 30px;
+                background-color: #fffafa;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
+
+            h1 {
+                text-align: center;
+                margin-bottom: 30px;
+                color: #000000;
+            }
+
+            .task {
+                margin-bottom: 10px;
+            }
+
+            .task-title {
+                padding: 15px;
+                cursor: pointer;
+                background-color: rgb(21, 28, 43);
+                color: white;
+                border-radius: 4px;
+                margin-bottom: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .task-title:hover {
+                background-color: #444;
+            }
+
+            .task-content {
+                padding: 15px;
+                display: none;
+                background-color: #ffffff;
+                border-radius: 4px;
+                color: rgb(0, 0, 0);
+            }
+
+            .task-content p {
+                margin: 0;
+            }
+
+            .task-title i {
+                transition: transform 0.3s;
+            }
+
+            .task-title.open i {
+                transform: rotate(180deg);
+            }
+
+            /* CSS for ol and li elements */
+            .task-content ol {
+                padding-left: 20px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                color: #000000;
+            }
+
+            .task-content li {
+                margin-bottom: 10px;
+            }
+
+            .task-content pre {
+                background-color: #f4f4f4;
+                padding: 10px;
+                border-radius: 4px;
+                overflow-x: auto;
+            }
+
+            .task-content code {
+                background-color: #f4f4f4;
+                padding: 2px 4px;
+                border-radius: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="learning-path">
+            <h1>Bug Hunting Methodology</h1>
+            <div class="task" id="task1">
+                <div class="task-title" onclick="toggleTask('task1')">
+                    Task 1: Introduction
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>
+                        Welcome to the Bug Hunting Methodology guide. This section will take you through a comprehensive process for identifying and reporting bugs, leveraging various tools and techniques. Whether you're a beginner or an experienced bug hunter, this guide will help you hone your skills and improve your success rate in finding vulnerabilities.
+                    </p>
+                    <h2>Tools You Will Need</h2>
+                    <ul>
+                        <li>Subfinder</li>
+                        <li>Httpx-toolkit</li>
+                        <li>Katana</li>
+                        <li>Nuclei</li>
+                        <li>Dirsearch</li>
+                        <li>Subzy</li>
+                        <li>Python3 (for custom scripts)</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="task" id="task2">
+                <div class="task-title" onclick="toggleTask('task2')">
+                    Task 2: Recon: Subdomain Enumeration
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Use <code>subfinder</code> to enumerate subdomains for the target domain.</p>
+                    <pre><code>subfinder -d example.com -all -recursive > subdomain.txt</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task3">
+                <div class="task-title" onclick="toggleTask('task3')">
+                    Task 3: Recon: Check for Alive Subdomains
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Check which subdomains are alive using <code>httpx-toolkit</code>.</p>
+                    <pre><code>cat subdomain.txt | httpx-toolkit -ports 80,443,8080,8000,8888 -threads 200 > subdomains_alive.txt</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task4">
+                <div class="task-title" onclick="toggleTask('task4')">
+                    Task 4: Recon: URL Discovery
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Use <code>katana</code> to find URLs.</p>
+                    <pre><code>katana -u subdomains_alive.txt -d 5 -ps -pss waybackarchive,commoncrawl,alienvault -kf -jc -fx -ef woff,css,png,svg,jpg,woff2,jpeg,gif,svg -o allurls.txt</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task5">
+                <div class="task-title" onclick="toggleTask('task5')">
+                    Task 5: Recon: Search for Sensitive Files
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Search for sensitive files using <code>grep</code>.</p>
+                    <pre><code>cat allurls.txt | grep -E "\.txt|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.json|\.gz|\.rar|\.zip|\.config"</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task6">
+                <div class="task-title" onclick="toggleTask('task6')">
+                    Task 6: Recon: Identify JavaScript Files
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Identify JavaScript files for further analysis.</p>
+                    <pre><code>cat allurls.txt | grep -E "\.js$" >> alljs.txt</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task7">
+                <div class="task-title" onclick="toggleTask('task7')">
+                    Task 7: Recon: Run Nuclei for Exposures
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Run <code>nuclei</code> against JavaScript files to find exposures.</p>
+                    <pre><code>cat alljs.txt | nuclei -t /home/indcrypt/nuclei-templates/http/exposures/</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task8">
+                <div class="task-title" onclick="toggleTask('task8')">
+                    Task 8: Recon: Run Nuclei for Main Domain
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Run <code>nuclei</code> on the main domain to find exposures.</p>
+                    <pre><code>echo www.example.com | katana -ps | grep -E "\.js$" | nuclei -t /home/indcrypt/nuclei-templates/http/exposures/ -c 30</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task9">
+                <div class="task-title" onclick="toggleTask('task9')">
+                    Task 9: Recon: Directory Search
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Use <code>dirsearch</code> for finding hidden directories and files.</p>
+                    <pre><code>dirsearch -u https://www.example.com -e conf,config,bak,backup,swp,old,db,sql,asp,aspx,aspx~,asp~,py,py~,rb,rb~,php,php~,bak,bkp,cache,cgi,conf,csv,html,inc,jar,js,json,jsp,jsp~,lock,log,rar,old,sql,sql.gz,sql.zip,sql.tar.gz,sql~,swp,swp~,tar,tar.bz2,tar.gz,txt,wadl,zip,.log,.xml,.js.,.json</code></pre>
+                </div>
+            </div>
+    
+            <div class="task" id="task10">
+                <div class="task-title" onclick="toggleTask('task10')">
+                    Task 10: Recon: Automated Vulnerability Scanning
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <p>Run automated scanning using a combination of tools and scripts.</p>
+                    <pre><code>subfinder -d example.com | httpx-toolkit -silent | katana -ps -f qurl | gf xss | bxss -appendMode -payload '">' -parameters</code></pre>
+                    <pre><code>subzy run --targets subdomains.txt --concurrency 100 --hide_fails --verify_ssl</code></pre>
+                    <pre><code>python3 corsy.py -i /home/indcrypt/vaitor/subdomains_alive.txt -t 10 --headers "User-Agent: GoogleBot\nCookie: SESSION=Hacked"</code></pre>
+                    <pre><code>nuclei -list subdomains_alive.txt -t /home/indcrypt/Priv8-Nuclei/cors</code></pre>
+                    <pre><code>nuclei -list ~/vaitor/subdomains_alive.txt -tags cve,osint,tech</code></pre>
+                    <pre><code>cat allurls.txt | gf lfi | nuclei -tags lfi</code></pre>
+                    <pre><code>cat allurls.txt | gf redirect | openredirex -p /home/indcrypt/openRedirect</code></pre>
+                </div>
+            </div>
+        </div>
+    </body>
+    <center><p style="color: black;">&copy; Copyright CodeAx1, Lostsec</p></center>
+    <script> 
+        function toggleTask(taskId) {
+            const taskContent = document.querySelector(`#${taskId} .task-content`);
+            const icon = document.querySelector(`#${taskId} .task-title i`);
+            if (taskContent.style.display === "none" || taskContent.style.display === "") {
+                taskContent.style.display = "block";
+                icon.classList.remove("fa-chevron-down");
+                icon.classList.add("fa-chevron-up");
+            } else {
+                taskContent.style.display = "none";
+                icon.classList.remove("fa-chevron-up");
+                icon.classList.add("fa-chevron-down");
+            }
+        }
+    </script>
+    {% endblock %}</div>
+    
