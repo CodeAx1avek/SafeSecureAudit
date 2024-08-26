@@ -1,6 +1,8 @@
 import dns.resolver
 import requests
 import re
+from bs4 import BeautifulSoup
+from requests.exceptions import RequestException
 
 def dns_record_lookup(domain_name, record_type):
     try:
@@ -58,16 +60,30 @@ def ipgeotool(domain_name):
         return results
     else:
         return None
+
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+def page_extract(url):
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        links = [a.get('href') for a in soup.find_all('a', href=True)]
+
+        if not links:
+            return [], "No links found on the page."
+
+        return links, None
     
-def page_extract(domain_name):
-    url = f"https://api.hackertarget.com/pagelinks/?q={domain_name}"
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        results = response.text.splitlines()
-        return results
-    else:
-        return None
+    except RequestException as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return [], f"An error occurred: {str(e)}"
+
+
 
 def extract_emails(url):
     try:

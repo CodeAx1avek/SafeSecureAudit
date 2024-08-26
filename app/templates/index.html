@@ -1,67 +1,282 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block body %}
-<div class="container">
     <style>
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
+        /* General body and font styling */
+        body {
+            font-family: 'Anonymous Pro', monospace;
+            background-color: #101010;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-image: radial-gradient(circle, #333333 0%, #000000 80%);
         }
 
+
+        /* Main Heading with glitch effect */
+        .glitch {
+            font-size: 3.5em;
+            color: #00ff99;
+            position: relative;
+            text-shadow: 0 0 10px #00ff99, 0 0 20px #ff00ff, 0 0 30px #00ffff;
+            animation: glitch 1.5s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                transform: skew(0deg);
+            }
+            50% {
+                transform: skew(3deg);
+            }
+        }
+
+        /* Flickering neon text for subtext */
+        .neon-text {
+            color: #00ff99;
+            text-shadow: 0 0 10px #00ff99, 0 0 20px #00ff99, 0 0 30px #00ff99;
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: #1a1a1a;
+            padding: 0 20px;
+            color: #00ff99;
+            background-image: radial-gradient(circle, #333333 0%, #000000 80%);
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin: 0;
+            color: #00ff99;
+            text-shadow: 0 0 20px #00ff99, 0 0 30px #ff00ff;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin: 20px 0 40px;
+            color: #b3f7d1;
+        }
+
+        .hero button {
+            background-color: #00ff99;
+            border: none;
+            color: #0e0e0e;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #00cc79;
+            transform: translateY(-5px);
+        }
+
+        /* Main Content Section */
         .main-content {
-            padding: 20px;
+            padding: 60px 20px;
             text-align: center;
+            background-color: #1a1a1a;
+            background-image: radial-gradient(circle, #333333 0%, #000000 80%);
         }
 
+        .main-content h2 {
+            font-size: 2.5em;
+            color: #00ff99;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #00ff99;
+        }
+
+        /* Dashboard Elements */
         .dashboard {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
         }
 
         .dashboard-element {
-            background-color: #f4f4f4;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #181818;
+            padding: 40px;
+            border-radius: 15px;
             width: 300px;
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.1);
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .dashboard-element:hover {
+            box-shadow: 0 0 60px rgba(0, 255, 153, 0.5);
+            transform: scale(1.05);
         }
 
         .dashboard-element h3 {
-            color: #333;
+            font-size: 1.8em;
+            color: #00ff99;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #00ff99;
         }
 
         .dashboard-element p {
+            font-size: 1.1em;
+            color: #b3b3b3;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-element a {
+            color: #00ff99;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 1px solid #00ff99;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+        }
+
+        .dashboard-element a:hover {
+            color: #ff00ff;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        /* New Sections */
+        .services {
+            padding: 60px 20px;
+            background-color: #1a1a1a;
+            text-align: center;
+            background-image: radial-gradient(circle, #333333 0%, #000000 80%);
+        }
+
+        .services h2 {
+            font-size: 2.5em;
+            color: #00ff99;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #00ff99;
+        }
+
+        .services-list {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .service-item {
+            background-color: #181818;
+            padding: 40px;
+            border-radius: 15px;
+            width: 300px;
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.1);
+        }
+
+        .service-item h3 {
+            font-size: 1.8em;
+            color: #00ff99;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #00ff99;
+        }
+
+        .service-item p {
+            font-size: 1.1em;
+            color: #b3b3b3;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            padding: 40px 20px;
+            text-align: center;
             color: #666;
+            margin-top: 60px;
+            border-top: 1px solid #333;
+        }
+
+        footer p {
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        footer a {
+            color: #00ff99;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #ff00ff;
         }
     </style>
-</head>
-<body>
-    <header>
-        <h1>Welcome to Our Cybersecurity Platform</h1>
-    </header>
+
+    <!-- Subtle Fog Overlay -->
+    <div class="fog-overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch">System Breach Detected</h1>
+            <p class="neon-text">You are not alone in the dark web...</p>
+            <button>Access Now</button>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
     <section class="main-content">
-        <h2>Dashboard</h2>
+        <h2 class="neon-text">Explore the Underground</h2>
         <div class="dashboard">
             <div class="dashboard-element">
-                <h3>Learning Resources</h3>
-                <p>Access curated learning materials to enhance your cybersecurity knowledge.
-                    <a href="/learning">Learn Cyber</a> and  <a href="/Allaboutbugbounty">Allaboutbugbounty</a>
-                </p>
+                <h3>Dark Web Resources</h3>
+                <p>Unearth secrets hidden deep in the digital abyss.</p>
+                <p><a href="/learning">Start Learning</a></p>
             </div>
             <div class="dashboard-element">
-                <h3>Tools</h3>
-                <p>Utilize various tools for information gathering and threat detection.
-                    <a href="?tool=allinone">Tools</a>
-                </p>
+                <h3>Hacker Arsenal</h3>
+                <p>Access a wide array of tools for testing and exploration.</p>
+                <p><a href="?tool=allinone">Launch Tools</a></p>
             </div>
             <div class="dashboard-element">
-                <h3>Community</h3>
-                <p>Connect with other cybersecurity enthusiasts and professionals.</p>
+                <h3>Encrypted Forums</h3>
+                <p>Connect with elite hackers and share knowledge in encrypted spaces.</p>
+                <p><a href="/community">Join the Network</a></p>
             </div>
         </div>
     </section>
-  </div>
+
+    <!-- Services Section -->
+    <section class="services">
+        <h2 class="neon-text">Our Services</h2>
+        <div class="services-list">
+            <div class="service-item">
+                <h3>Penetration Testing</h3>
+                <p>Simulate real attacks to identify vulnerabilities in your systems.</p>
+            </div>
+            <div class="service-item">
+                <h3>Digital Forensics</h3>
+                <p>Trace cyber breaches and gather evidence for incident response.</p>
+            </div>
+            <div class="service-item">
+                <h3>Consulting</h3>
+                <p>Receive expert advice on how to bolster your defenses against emerging threats.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Cyber Underground. All rights reserved.</p>
+        <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/contact">Contact Us</a></p>
+    </footer>
 {% endblock %}

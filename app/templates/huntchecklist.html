@@ -1,0 +1,381 @@
+{% extends './base.html' %}
+<div class="content">
+{% block body %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Hunter Checklist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .huntchecklist {
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1300px;
+        }
+
+        .huntchecklist h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .checklist-category {
+            margin-top: 20px;
+        }
+
+        .checklist-category h2 {
+            color: #555;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #fafafa;
+        }
+
+        .checklist-item .task-title {
+            padding: 10px;
+            cursor: pointer;
+            background-color: rgb(21, 28, 43);
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checklist-item .task-title:hover {
+            background-color: #16344f;
+        }
+
+        .checklist-item .task-content {
+            padding: 15px;
+            display: none;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .checklist-item .task-title i {
+            transition: transform 0.3s;
+        }
+
+        .checklist-item .task-title.open i {
+            transform: rotate(180deg);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            accent-color: #4CAF50; /* Change the checkbox color */
+            width: 20px; /* Adjust the size of the checkbox */
+            height: 20px; /* Adjust the size of the checkbox */
+            margin-right: 10px; /* Space between checkbox and label */
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+
+        .checklist-item textarea {
+            width: 100%;
+            height: 45px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .details {
+            margin-left: 25px;
+            color: #5e4d4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="huntchecklist">
+        <h1>Bug Bounty Hunter Checklist</h1>
+
+        <div class="checklist-category">
+            <h2>Reconnaissance</h2>
+            <div class="checklist-item" id="recon-1">
+                <div class="task-title" onclick="toggleTask('recon-1')">
+                    <input type="checkbox" id="task-recon-1">
+                    <label for="task-recon-1">Identify target scope</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Define the target's scope, including subdomains, IP ranges, and services.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="recon-2">
+                <div class="task-title" onclick="toggleTask('recon-2')">
+                    <input type="checkbox" id="task-recon-2">
+                    <label for="task-recon-2">Gather subdomains</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Amass, Sublist3r, Assetfinder, Subfinder</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="recon-3">
+                <div class="task-title" onclick="toggleTask('recon-3')">
+                    <input type="checkbox" id="task-recon-3">
+                    <label for="task-recon-3">Scan for open ports</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Nmap, Masscan</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="recon-4">
+                <div class="task-title" onclick="toggleTask('recon-4')">
+                    <input type="checkbox" id="task-recon-4">
+                    <label for="task-recon-4">Discover services and technologies</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: WhatWeb, Wappalyzer, BuiltWith</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="recon-5">
+                <div class="task-title" onclick="toggleTask('recon-5')">
+                    <input type="checkbox" id="task-recon-5">
+                    <label for="task-recon-5">Check for exposed sensitive data</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: GitRob, TruffleHog, GitLeaks</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-category">
+            <h2>Scanning</h2>
+            <div class="checklist-item" id="scan-1">
+                <div class="task-title" onclick="toggleTask('scan-1')">
+                    <input type="checkbox" id="task-scan-1">
+                    <label for="task-scan-1">Perform vulnerability scanning</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Nessus, OpenVAS, Nikto</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="scan-2">
+                <div class="task-title" onclick="toggleTask('scan-2')">
+                    <input type="checkbox" id="task-scan-2">
+                    <label for="task-scan-2">Analyze scan results</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Review and validate the findings from automated scans.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="scan-3">
+                <div class="task-title" onclick="toggleTask('scan-3')">
+                    <input type="checkbox" id="task-scan-3">
+                    <label for="task-scan-3">Check for web vulnerabilities</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Burp Suite, OWASP ZAP</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-category">
+            <h2>Exploitation</h2>
+            <div class="checklist-item" id="exploit-1">
+                <div class="task-title" onclick="toggleTask('exploit-1')">
+                    <input type="checkbox" id="task-exploit-1">
+                    <label for="task-exploit-1">Test for SQL injection</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Sqlmap, Burp Suite</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="exploit-2">
+                <div class="task-title" onclick="toggleTask('exploit-2')">
+                    <input type="checkbox" id="task-exploit-2">
+                    <label for="task-exploit-2">Test for XSS vulnerabilities</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: XSSer, Burp Suite</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="exploit-3">
+                <div class="task-title" onclick="toggleTask('exploit-3')">
+                    <input type="checkbox" id="task-exploit-3">
+                    <label for="task-exploit-3">Test for CSRF vulnerabilities</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: OWASP ZAP, Burp Suite</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="exploit-4">
+                <div class="task-title" onclick="toggleTask('exploit-4')">
+                    <input type="checkbox" id="task-exploit-4">
+                    <label for="task-exploit-4">Test for SSRF vulnerabilities</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: SSRFmap, Burp Suite</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="exploit-5">
+                <div class="task-title" onclick="toggleTask('exploit-5')">
+                    <input type="checkbox" id="task-exploit-5">
+                    <label for="task-exploit-5">Test for IDOR vulnerabilities</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Burp Suite, Postman</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-category">
+            <h2>Post-Exploitation</h2>
+            <div class="checklist-item" id="post-exploit-1">
+                <div class="task-title" onclick="toggleTask('post-exploit-1')">
+                    <input type="checkbox" id="task-post-exploit-1">
+                    <label for="task-post-exploit-1">Escalate privileges</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Metasploit, LinPEAS, WinPEAS</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="post-exploit-2">
+                <div class="task-title" onclick="toggleTask('post-exploit-2')">
+                    <input type="checkbox" id="task-post-exploit-2">
+                    <label for="task-post-exploit-2">Maintain access</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Tools: Netcat, Meterpreter</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="post-exploit-3">
+                <div class="task-title" onclick="toggleTask('post-exploit-3')">
+                    <input type="checkbox" id="task-post-exploit-3">
+                    <label for="task-post-exploit-3">Exfiltrate data</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Ensure data is securely extracted without detection.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-category">
+            <h2>Reporting</h2>
+            <div class="checklist-item" id="report-1">
+                <div class="task-title" onclick="toggleTask('report-1')">
+                    <input type="checkbox" id="task-report-1">
+                    <label for="task-report-1">Document findings</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Record all discovered vulnerabilities with evidence.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="report-2">
+                <div class="task-title" onclick="toggleTask('report-2')">
+                    <input type="checkbox" id="task-report-2">
+                    <label for="task-report-2">Create a detailed report</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Include steps to reproduce, impact assessment, and mitigation recommendations.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="report-3">
+                <div class="task-title" onclick="toggleTask('report-3')">
+                    <input type="checkbox" id="task-report-3">
+                    <label for="task-report-3">Submit report to the platform</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Follow the platform's guidelines for submitting your findings.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+
+            <div class="checklist-item" id="report-4">
+                <div class="task-title" onclick="toggleTask('report-4')">
+                    <input type="checkbox" id="task-report-4">
+                    <label for="task-report-4">Follow up on the report</label>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="task-content">
+                    <div class="details">Ensure the report is acknowledged and track the status of the resolution.</div>
+                    <textarea placeholder="Enter your findings..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleTask(id) {
+            var item = document.getElementById(id);
+            var content = item.querySelector('.task-content');
+            var title = item.querySelector('.task-title');
+            var icon = title.querySelector('i');
+
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                title.classList.add('open');
+            } else {
+                content.style.display = 'none';
+                title.classList.remove('open');
+            }
+        }
+    </script>
+    <center><p style="color: black;">&copy; Copyright CodeAx1</p></center>
+{% endblock %}
+</div>

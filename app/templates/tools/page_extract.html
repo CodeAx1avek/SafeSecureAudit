@@ -1,32 +1,38 @@
 {% extends 'base.html' %} 
+
 {% block body %}
 <div class="container">
   <h1>WEBPAGE SCRAPPER</h1>
+  
   <!-- Scan Form -->
   <form id="scanForm" action="" method="POST">
     {% csrf_token %}
     <div class="form-group">
       <label for="websiteUrl">Enter Website URL:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{domain_name}}" required />
+      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{ domain_name }}" required />
     </div>
     <input type="submit" value="Scan" />
   </form>
 
   <!-- Scan Results -->
-  <div class="result" id="scanResult" style="display: none;">
-    <h2 class="result-title">Scan Results</h2>
-<!-- PAGE EXTRACTER -->
-{% if tool == "page_extract" %}
-<p><strong>Domain Name or IP Address:</strong> {{ domain_name }}</p>
-    <h2>PAGE LINK EXTRACTER</h2>
+  {% if tool == "page_extract" %}
+  <div class="result" id="scanResult">
+    <h2 class="result-title">PAGE LINK EXTRACTOR</h2>
+    
+    {% if page_extract_results %}
     <ul>
-    {% for result in page_extract_results %}
-        <li>{{ result }}</li>
-    {% endfor %}
+      {% for result in page_extract_results %}
+      <li><a href="{{ result }}" target="_blank">{{ result }}</a></li>
+      {% endfor %}
     </ul>
-{% endif %}
-{% if error_message %}
-<div class="alert alert-danger" role="alert">{{ error_message }}</div>
-{% endif %}
-
+    {% else %}
+    <p>No links found or an error occurred.</p>
+    {% endif %}
+    
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

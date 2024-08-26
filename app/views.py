@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .utils import portscanner
 from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,extract_emails,fetch_all_in_one_data
-from .utils.waf import check_cloudflare
+from .utils.waf import check_waf
+from .utils.tool import page_extract
 from .utils.phone_info_tool import gather_phone_info
 import requests
 import json
@@ -45,9 +46,18 @@ def index(request):
                 domain_name = domain_name[4:]
             ipgeotool_results = ipgeotool(domain_name)
             return render(request, 'tools/ipgeotool.html', {'tool': tool, 'domain_name': domain_name, 'ipgeotool_results': ipgeotool_results})
+      
         elif tool == "page_extract":
-            page_extract_results = page_extract(domain_name)
-            return render(request, 'tools/page_extract.html', {'tool': tool, 'domain_name': domain_name,'page_extract_results':page_extract_results})
+            page_extract_results = []
+            error_message = None
+            page_extract_results, error_message = page_extract(domain_name)
+            context = {
+                'tool': tool,
+                'domain_name': domain_name,
+                'page_extract_results': page_extract_results,
+                'error_message': error_message
+                 }
+            return render(request, 'tools/page_extract.html', context)
 
         elif tool == 'portscanner':
             if domain_name.startswith(('http://', 'https://')):
@@ -65,8 +75,8 @@ def index(request):
         elif tool == 'waf':
             if not domain_name.startswith(('http://', 'https://')):
                 domain_name = "https://" + domain_name
-            is_cloudflare = check_cloudflare(domain_name)
-            context = {'tool': tool, 'is_cloudflare': is_cloudflare, 'domain_name': domain_name}
+            waf_name = check_waf(domain_name)
+            context = {'tool': tool, 'waf_name': waf_name, 'domain_name': domain_name}
             return render(request, 'tools/waf.html', context)
         
         elif tool == "phoneinfo":
@@ -162,3 +172,6 @@ def termsandcondition(request):
 
 def bughuntingmethodology(request):
     return render(request,template_name="bughuntingmethodology.html")
+
+def huntchecklist(request):
+    return render(request,template_name="huntchecklist.html")
