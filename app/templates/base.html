@@ -14,182 +14,186 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <style>
-        /* Reset and General Styles */
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #f4f4f4;
-          color: #333;
-          font-size: 16px; /* Base font size */
-        }
-    
-        .container {
-          max-width: 1000px;
-          margin: 10px auto;
-          padding: 5px;
-          background-color: #fff;
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          height: 600px; /* Adjust height as needed */
-          overflow-y: auto;
-        }
-    
-        /* Typography */
-        h1, h2 {
-          text-align: center;
-          color: #007bff; /* Keep original color */
-        }
-    
-        h1 {
-          font-size: 28px; /* Larger font size for h1 */
-          margin-bottom: 16px; /* Reduced margin bottom */
-        }
-    
-        h2 {
-          font-size: 22px; /* Larger font size for h2 */
-          margin-top: 24px; /* Adjusted margin top */
-          margin-bottom: 12px; /* Adjusted margin bottom */
-        }
-    
-        p {
-          margin-bottom: 14px; /* Reduced margin bottom for paragraphs */
-          line-height: 1.6; /* Improved line height for readability */
-        }
-    
-        b {
-          color: #007bff; /* Keep original color */
-        }
-    
-        /* Form Styles */
-        .form-group {
-          margin-bottom: 14px; /* Reduced margin bottom for form groups */
-        }
-    
-        label {
-          display: block;
-          margin-bottom: 6px; /* Reduced margin bottom for labels */
-          color: #ffffff;
-        }
-    
-        input[type="text"] {  
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-          font-size: 16px; /* Base font size for input fields */
-        }
-    
-        input[type="submit"] {
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          padding: 10px 16px; /* Adjusted padding for button */
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-          font-size: 16px; /* Base font size for buttons */
-        }
-    
-        input[type="submit"]:hover {
-          background-color: #0056b3;
-        }
-    
-        /* Result Section */
-        .result {
-          margin-top: 16px; /* Reduced margin top */
-          padding: 16px; /* Adjusted padding */
-          background-color: #f9f9f9;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-    
-        .result-title {
-          color: #333;
-          font-size: 20px; /* Adjusted font size for result title */
-          margin-bottom: 10px; /* Reduced margin bottom */
-        }
-    
-        /* Specific Sections */
-        .dns-resolver, .port-scanner {
-          margin-top: 24px; /* Adjusted margin top */
-        }
-    
-        .dns-resolver .result-title, .port-scanner .result-title {
-          color: #007bff; /* Keep original color */
-          font-size: 20px; /* Adjusted font size for section titles */
-          margin-bottom: 14px; /* Reduced margin bottom */
-        }
-    
-        .dns-resolver .record-type h3, .port-scanner .port-number {
-          color: #555;
-          font-size: 18px; /* Adjusted font size for section headings */
-          margin-bottom: 6px; /* Reduced margin bottom */
-        }
-    
-        .dns-resolver .record-list li, .port-scanner .service {
-          color: #777;
-          font-size: 16px; /* Adjusted font size for section list items */
-          margin-left: 16px; /* Adjusted margin left */
-        }
-    
-        /* Responsive Adjustments */
-        @media screen and (max-width: 768px) {
-          body {
-            font-size: 14px; /* Smaller base font size for smaller screens */
-          }
-    
-          h1 {
-            font-size: 24px; /* Adjusted font size for h1 on smaller screens */
-            margin-bottom: 12px; /* Reduced margin bottom */
-          }
-    
-          h2 {
-            font-size: 20px; /* Adjusted font size for h2 on smaller screens */
-            margin-top: 20px; /* Adjusted margin top */
-            margin-bottom: 10px; /* Reduced margin bottom */
-          }
-    
-          p {
-            margin-bottom: 12px; /* Reduced margin bottom for paragraphs */
-          }
-    
-          label {
-            font-size: 14px; /* Adjusted font size for labels */
-            margin-bottom: 4px; /* Reduced margin bottom for labels */
-          }
-    
-          input[type="text"] {
-            font-size: 14px; /* Adjusted font size for input fields */
-            padding: 8px; /* Adjusted padding for input fields */
-          }
-    
-          input[type="submit"] {
-            padding: 8px 14px; /* Adjusted padding for button */
-            font-size: 14px; /* Adjusted font size for button */
-          }
-    
-          .result-title {
-            font-size: 18px; /* Adjusted font size for result title */
-            margin-bottom: 8px; /* Reduced margin bottom */
-          }
-    
-          .dns-resolver .result-title, .port-scanner .result-title {
-            font-size: 18px; /* Adjusted font size for section titles */
-            margin-bottom: 12px; /* Reduced margin bottom */
-          }
-    
-          .dns-resolver .record-type h3, .port-scanner .port-number {
-            font-size: 16px; /* Adjusted font size for section headings */
-            margin-bottom: 4px; /* Reduced margin bottom */
-          }
-    
-          .dns-resolver .record-list li, .port-scanner .service {
-            font-size: 14px; /* Adjusted font size for section list items */
-            margin-left: 12px; /* Adjusted margin left */
-          }
-        }
+     /* Reset and General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #121212;
+    color: #e0e0e0;
+}
+
+.container {
+    max-width: 1200px; /* Increased max-width for larger screens */
+    margin: 20px auto; /* Increased margin for better spacing */
+    padding: 20px; /* Increased padding for more space */
+    background-color: #1e1e1e; /* Darker background for better contrast */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Larger shadow for a more prominent effect */
+    height: auto; /* Allow content to dictate height */
+    overflow-y: auto;
+}
+
+/* Typography */
+h1, h2 {
+    text-align: center;
+    color: #007bff; /* Bright accent color */
+}
+
+h1 {
+    font-size: 32px; /* Larger font size for main headings */
+    margin-bottom: 20px; /* More spacing below main heading */
+}
+
+h2 {
+    font-size: 24px; /* Larger font size for subheadings */
+    margin-top: 30px; /* More spacing above subheadings */
+    margin-bottom: 15px; /* More spacing below subheadings */
+}
+
+p {
+    margin-bottom: 20px; /* Increased spacing below paragraphs */
+    line-height: 1.8; /* Improved line height for readability */
+}
+
+b {
+    color: #007bff; /* Keep original color for emphasis */
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px; /* More spacing between form elements */
+}
+
+label {
+    display: block;
+    margin-bottom: 10px; /* Increased spacing below labels */
+    color: #ffffff;
+}
+
+input[type="text"] {  
+    width: 100%;
+    padding: 12px; /* Increased padding for better user interaction */
+    border: 1px solid #444; /* Darker border color */
+    border-radius: 6px; /* More rounded corners */
+    box-sizing: border-box;
+    font-size: 16px; /* Consistent font size */
+    background-color: #2a2a2a; /* Darker background for input fields */
+    color: #fff; /* White text color */
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px; /* Increased padding */
+    border-radius: 6px; /* More rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 16px; /* Consistent font size */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Subtle scaling effect on hover */
+}
+
+/* Result Section */
+.result {
+    margin-top: 20px; /* Increased margin for better separation */
+    padding: 20px; /* Increased padding */
+    background-color: #2a2a2a; /* Darker background for result section */
+    border: 1px solid #333; /* Darker border */
+    border-radius: 6px; /* More rounded corners */
+}
+
+.result-title {
+    color: #e0e0e0; /* Lighter color for titles */
+    font-size: 22px; /* Larger font size for result titles */
+    margin-bottom: 15px; /* More spacing below titles */
+}
+
+/* Specific Sections */
+.dns-resolver, .port-scanner {
+    margin-top: 30px; /* Increased margin for better separation */
+}
+
+.dns-resolver .result-title, .port-scanner .result-title {
+    color: #007bff; /* Keep original color */
+    font-size: 22px; /* Larger font size for section titles */
+    margin-bottom: 20px; /* More spacing below section titles */
+}
+
+.dns-resolver .record-type h3, .port-scanner .port-number {
+    color: #ccc; /* Lighter color for headings */
+    font-size: 18px; /* Adjusted font size */
+    margin-bottom: 10px; /* More spacing below headings */
+}
+
+.dns-resolver .record-list li, .port-scanner .service {
+    color: #aaa; /* Lighter color for list items */
+    font-size: 16px; /* Consistent font size */
+    margin-left: 20px; /* More spacing to the left */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 16px; /* Larger base font size for readability */
+    }
+
+    h1 {
+        font-size: 28px; /* Adjusted font size for h1 on smaller screens */
+        margin-bottom: 16px; /* Adjusted margin bottom */
+    }
+
+    h2 {
+        font-size: 22px; /* Adjusted font size for h2 on smaller screens */
+        margin-top: 24px; /* Adjusted margin top */
+        margin-bottom: 14px; /* Adjusted margin bottom */
+    }
+
+    p {
+        margin-bottom: 18px; /* Adjusted margin bottom for paragraphs */
+    }
+
+    label {
+        font-size: 16px; /* Adjusted font size for labels */
+        margin-bottom: 6px; /* Adjusted margin bottom for labels */
+    }
+
+    input[type="text"] {
+        font-size: 16px; /* Adjusted font size for input fields */
+        padding: 10px; /* Adjusted padding for input fields */
+    }
+
+    input[type="submit"] {
+        padding: 10px 16px; /* Adjusted padding for button */
+        font-size: 16px; /* Adjusted font size for button */
+    }
+
+    .result-title {
+        font-size: 20px; /* Adjusted font size for result title */
+        margin-bottom: 12px; /* Adjusted margin bottom */
+    }
+
+    .dns-resolver .result-title, .port-scanner .result-title {
+        font-size: 20px; /* Adjusted font size for section titles */
+        margin-bottom: 16px; /* Adjusted margin bottom */
+    }
+
+    .dns-resolver .record-type h3, .port-scanner .port-number {
+        font-size: 18px; /* Adjusted font size for section headings */
+        margin-bottom: 6px; /* Adjusted margin bottom */
+    }
+
+    .dns-resolver .record-list li, .port-scanner .service {
+        font-size: 16px; /* Adjusted font size for section list items */
+        margin-left: 16px; /* Adjusted margin left */
+    }
+}
+
       </style>
     <style>
       /* Google Fonts Import Link */
@@ -417,12 +421,11 @@
       }
       .home-section {
         position: relative;
-        background: #315131;
         height: 100vh;
         left: 260px;
         width: calc(100% - 260px);
         transition: all 0.8s ease;
-        padding: 12px;
+       
       }
       .sidebar.close ~ .home-section {
         left: 78px;
@@ -435,7 +438,6 @@
       }
       .home-section .home-content .bx-menu,
       .home-section .home-content .text {
-        color: #11101d;
         font-size: 35px;
       }
       .home-section .home-content .bx-menu {
@@ -443,10 +445,8 @@
         margin-right: 10px;
       }
       .home-section .home-content .text {
-        font-size: 26px;
         font-weight: 600;
       }
-
       @media screen and (max-width: 400px) {
         .sidebar {
           width: 240px;
@@ -479,16 +479,14 @@
       <!-- Logo and Name -->
       <div class="logo-details">
         <a href="/"><i class='bx bxs-shield-plus'></i></a>
-        <span class="logo_name">SafeSecureAudit</span>
-      </div>
-  
-      <!-- Main Navigation Links -->
+      
+      </div>  
       <ul class="nav-links">
         <!-- Dashboard -->
         <li>
           <a href="#">
             <i class="bx bx-grid-alt"></i>
-            <span class="link_name">Dashboard</span>
+
           </a>
           <ul class="sub-menu blank">
             <li><a href="{% url 'index' %}?tool=allinone">SafeSecureAudit360</a></li>
@@ -614,17 +612,27 @@
       </div>
       <div class="content">{% block body %} {% endblock %}</div>
     </section>
+  
     <script>
+      // Ensure the scan result is displayed when the page loads
       document.addEventListener("DOMContentLoaded", function () {
         var scanResult = document.getElementById("scanResult");
-        scanResult.style.display = "block";
+        
+        // Safety check if element exists
+        if (scanResult) {
+          scanResult.style.display = "block";
+        }
       });
-    </script>
-     <script>
+    
+      // Toggle sidebar class on button/icon click
       function toggleSidebar() {
         var sidebar = document.querySelector('.sidebar');
-        sidebar.classList.toggle('close');
+        
+        if (sidebar) {
+          sidebar.classList.toggle('close');
+        }
       }
     </script>
+    
   </body>
 </html>
