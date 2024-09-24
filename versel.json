@@ -2,7 +2,7 @@
 
     "builds": [{
 
-        "src": "SafeSecurAudit/wsgi.py",
+        "src": "app/wsgi.py",
 
         "use": "@vercel/python",
 
@@ -16,7 +16,7 @@
 
             "src": "/(.*)",
 
-            "dest": "SafeSecurAudit/wsgi.py"
+            "dest": "app/wsgi.py"
 
         }
 
