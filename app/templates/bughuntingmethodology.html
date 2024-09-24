@@ -1,91 +1,100 @@
 {% extends './base.html' %}
-<div class="content">{% block body %}
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Learning Path for Hacker</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <style>
+{% block body %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Path for Hacker | Bug Hunting Methodology</title>
+    <meta name="description" content="A comprehensive guide to bug hunting methodology. Learn about subdomain enumeration, URL discovery, vulnerability scanning, and more.">
+    <meta name="keywords" content="bug hunting, vulnerability assessment, subdomain enumeration, security testing, cybersecurity, Nuclei, HTTPx, Katana">
+    <meta name="author" content="CodeAx1, Lostsec">
+    <meta property="og:title" content="Learning Path for Hacker">
+    <meta property="og:description" content="A comprehensive guide to bug hunting methodology. Learn about subdomain enumeration, URL discovery, vulnerability scanning, and more.">
+    <meta property="og:image" content="URL-to-image">
+    <meta property="og:url" content="URL-to-page">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Learning Path for Hacker">
+    <meta name="twitter:description" content="A comprehensive guide to bug hunting methodology. Learn about subdomain enumeration, URL discovery, vulnerability scanning, and more.">
+    <meta name="twitter:image" content="URL-to-image">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .learning-path {
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fffafa;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
 
-            .learning-path {
-                margin: 50px auto;
-                padding: 30px;
-                background-color: #fffafa;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #000000;
+        }
 
-            h1 {
-                text-align: center;
-                margin-bottom: 30px;
-                color: #000000;
-            }
+        .task {
+            margin-bottom: 10px;
+        }
 
-            .task {
-                margin-bottom: 10px;
-            }
+        .task-title {
+            padding: 15px;
+            cursor: pointer;
+            background-color: rgb(21, 28, 43);
+            color: white;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-            .task-title {
-                padding: 15px;
-                cursor: pointer;
-                background-color: rgb(21, 28, 43);
-                color: white;
-                border-radius: 4px;
-                margin-bottom: 5px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
+        .task-title:hover {
+            background-color: #444;
+        }
 
-            .task-title:hover {
-                background-color: #444;
-            }
+        .task-content {
+            padding: 15px;
+            display: none;
+            background-color: #ffffff;
+            border-radius: 4px;
+            color: rgb(0, 0, 0);
+        }
 
-            .task-content {
-                padding: 15px;
-                display: none;
-                background-color: #ffffff;
-                border-radius: 4px;
-                color: rgb(0, 0, 0);
-            }
+        .task-content p {
+            margin: 0;
+        }
 
-            .task-content p {
-                margin: 0;
-            }
+        .task-title i {
+            transition: transform 0.3s;
+        }
 
-            .task-title i {
-                transition: transform 0.3s;
-            }
+        .task-title.open i {
+            transform: rotate(180deg);
+        }
 
-            .task-title.open i {
-                transform: rotate(180deg);
-            }
+        .task-content ol {
+            padding-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #000000;
+        }
 
-            /* CSS for ol and li elements */
-            .task-content ol {
-                padding-left: 20px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-                color: #000000;
-            }
+        .task-content li {
+            margin-bottom: 10px;
+        }
 
-            .task-content li {
-                margin-bottom: 10px;
-            }
+        .task-content pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
 
-            .task-content pre {
-                background-color: #f4f4f4;
-                padding: 10px;
-                border-radius: 4px;
-                overflow-x: auto;
-            }
-
-            .task-content code {
-                background-color: #f4f4f4;
-                padding: 2px 4px;
-                border-radius: 4px;
-            }
-        </style>
+        .task-content code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
     </head>
     <body>
         <div class="learning-path">
@@ -218,21 +227,26 @@
             </div>
         </div>
     </body>
-    <center><p style="color: black;">&copy; Copyright CodeAx1, Lostsec</p></center>
-    <script> 
+    <center><p style="color: rgb(255, 255, 255);">&copy; Copyright CodeAx1, Lostsec</p></center>
+    <script>
         function toggleTask(taskId) {
-            const taskContent = document.querySelector(`#${taskId} .task-content`);
-            const icon = document.querySelector(`#${taskId} .task-title i`);
-            if (taskContent.style.display === "none" || taskContent.style.display === "") {
-                taskContent.style.display = "block";
-                icon.classList.remove("fa-chevron-down");
-                icon.classList.add("fa-chevron-up");
-            } else {
-                taskContent.style.display = "none";
-                icon.classList.remove("fa-chevron-up");
-                icon.classList.add("fa-chevron-down");
-            }
+            const tasks = document.querySelectorAll('.task-content');
+            const icons = document.querySelectorAll('.task-title i');
+
+            tasks.forEach(task => {
+                if (task.parentElement.id === taskId) {
+                    if (task.style.display === 'none' || task.style.display === '') {
+                        task.style.display = 'block';
+                        task.previousElementSibling.classList.add('open');
+                    } else {
+                        task.style.display = 'none';
+                        task.previousElementSibling.classList.remove('open');
+                    }
+                } else {
+                    task.style.display = 'none';
+                    task.previousElementSibling.classList.remove('open');
+                }
+            });
         }
     </script>
-    {% endblock %}</div>
-    
+{% endblock %}

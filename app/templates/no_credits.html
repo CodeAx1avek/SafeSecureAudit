@@ -1,0 +1,61 @@
+{% extends './base.html' %}
+{% block body %}
+<style>
+.no-credits-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
+}
+.no-credits-content {
+  text-align: center;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff5733;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .no-credits-section {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+</style>
+<div class="container">
+<h2>No Credits Left</h2>
+<p>You have no credits left. Please <a href="{% url 'login' %}">log in</a> or <a href="{% url 'signup' %}">sign up</a> to continue using the tools.</p>
+</div>
+{% endblock %}

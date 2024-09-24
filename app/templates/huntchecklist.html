@@ -1,11 +1,35 @@
 {% extends './base.html' %}
-<div class="content">
 {% block body %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <!-- Meta tags for SEO -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bug Bounty Hunter Checklist</title>
+    
+    <!-- Optimized Title with Keywords -->
+    <title>Comprehensive Bug Bounty Hunter Checklist - Ethical Hacking Guide</title>
+    
+    <!-- Meta Description -->
+    <meta name="description" content="Discover the ultimate bug bounty hunter checklist. This guide covers reconnaissance, scanning, exploitation, and reporting, helping ethical hackers find vulnerabilities.">
+
+    <!-- Open Graph Meta Tags for Social Media Sharing -->
+    <meta property="og:title" content="Comprehensive Bug Bounty Hunter Checklist">
+    <meta property="og:description" content="A detailed guide for ethical hackers covering all phases of bug bounty hunting from reconnaissance to reporting.">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="">
+
+    <!-- Favicon -->
+    <link rel="icon" href="" type="image/x-icon">
+
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Internal CSS -->
     <style>
         .huntchecklist {
             margin: 50px auto;
@@ -70,11 +94,11 @@
         }
 
         .checklist-item input[type="checkbox"] {
-            accent-color: #4CAF50; /* Change the checkbox color */
-            width: 20px; /* Adjust the size of the checkbox */
-            height: 20px; /* Adjust the size of the checkbox */
-            margin-right: 10px; /* Space between checkbox and label */
-            cursor: pointer; /* Change cursor to pointer on hover */
+            accent-color: #4CAF50; 
+            width: 20px;
+            height: 20px; 
+            margin-right: 10px; 
+            cursor: pointer;
         }
 
         .checklist-item textarea {
@@ -90,13 +114,19 @@
             margin-left: 25px;
             color: #5e4d4d;
         }
+
+        @media screen and (max-width: 768px) {
+            .huntchecklist {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="huntchecklist">
-        <h1>Bug Bounty Hunter Checklist</h1>
+    <main class="huntchecklist">
+        <h1>Comprehensive Bug Bounty Hunter Checklist</h1>
 
-        <div class="checklist-category">
+        <section class="checklist-category" id="reconnaissance">
             <h2>Reconnaissance</h2>
             <div class="checklist-item" id="recon-1">
                 <div class="task-title" onclick="toggleTask('recon-1')">
@@ -157,9 +187,9 @@
                     <textarea placeholder="Enter your findings..."></textarea>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="checklist-category">
+        <section class="checklist-category" id="scanning">
             <h2>Scanning</h2>
             <div class="checklist-item" id="scan-1">
                 <div class="task-title" onclick="toggleTask('scan-1')">
@@ -196,9 +226,9 @@
                     <textarea placeholder="Enter your findings..."></textarea>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="checklist-category">
+        <section class="checklist-category" id="exploitation">
             <h2>Exploitation</h2>
             <div class="checklist-item" id="exploit-1">
                 <div class="task-title" onclick="toggleTask('exploit-1')">
@@ -259,9 +289,9 @@
                     <textarea placeholder="Enter your findings..."></textarea>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="checklist-category">
+        <section class="checklist-category" id="post-exploitation">
             <h2>Post-Exploitation</h2>
             <div class="checklist-item" id="post-exploit-1">
                 <div class="task-title" onclick="toggleTask('post-exploit-1')">
@@ -298,9 +328,9 @@
                     <textarea placeholder="Enter your findings..."></textarea>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="checklist-category">
+        <section class="checklist-category" id="reporting">
             <h2>Reporting</h2>
             <div class="checklist-item" id="report-1">
                 <div class="task-title" onclick="toggleTask('report-1')">
@@ -349,8 +379,8 @@
                     <textarea placeholder="Enter your findings..."></textarea>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
     <script>
         function toggleTask(id) {
             var item = document.getElementById(id);
@@ -367,6 +397,7 @@
             }
         }
     </script>
-    <center><p style="color: black;">&copy; Copyright CodeAx1</p></center>
+    <footer style="text-align: center; padding: 20px; background-color: #f1f1f1;">
+        <p style="color: black;">&copy; 2024 CodeAx1. All rights reserved.</p>
+    </footer>
 {% endblock %}
-</div>

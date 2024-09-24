@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class="container">
-  <h1>SafeSecureAudit360</h1>
+  <h1>SecureAudit360</h1>
   <form id="scanForm" action="" method="POST">
     {% csrf_token %}
     <div class="form-group">
@@ -14,8 +14,8 @@
   <!-- Scan Results -->
   <div class="result" id="scanResult" style="display: none;">
     <h2 class="result-title">Scan Results</h2>
-
     {% if tool == 'allinone' %}
+    <button onclick="window.print()">Print Results</button>
     <div class="tool-section">
       <h1>Domain Information for <b>{{ domain_data.domain }}</b></h1>
       <div class="tool-section">
@@ -107,4 +107,20 @@
     {% endif %}
   </div>
 </div>
+
+<style>
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .result, .result * {
+      visibility: visible;
+    }
+    .result {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+</style>
 {% endblock %}

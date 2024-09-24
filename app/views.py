@@ -1,16 +1,44 @@
-from django.shortcuts import render
-from .utils import portscanner
+from django.shortcuts import render,redirect
+import uuid
+from .utils import ortscanner
 from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,extract_emails,fetch_all_in_one_data
 from .utils.waf import check_waf
 from .utils.tool import page_extract
 from .utils.phone_info_tool import gather_phone_info
-import requests
-import json
+import requests,json
+from django.contrib.auth import authenticate, login, logout 
+from .forms import SignUpForm,LoginForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
+
+
+def initialize_guest_credits(request):
+    if not request.user.is_authenticated:
+        user_id = request.COOKIES.get('guest_user_id')
+        if not user_id:
+            user_id = str(uuid.uuid4())  # Generate a new unique identifier
+            response = HttpResponse()
+            response.set_cookie('guest_user_id', user_id)  # Set the cookie
+            request.session['credits'] = 10  # Assign credits
+            return response  # Return the response to set the cookie
+        else:
+            # Optionally, check credits in the session or handle reinitialization logic
+            if 'credits' not in request.session:
+                request.session['credits'] = 10  # Reassign if needed
 def index(request):
+    response = initialize_guest_credits(request)
+
     tool = request.GET.get('tool', '')
     if request.method == 'POST':
         domain_name = request.POST.get('websiteUrl')
+        if not request.user.is_authenticated:
+            credits = request.session.get('credits', 0)
+            if credits < 3:
+                return render(request, 'no_credits.html', {'message': 'You have no credits left. Please log in to continue using the tools.'})
+            request.session['credits'] -= 3
+            request.session.modified = True
         if tool == "allinone":
             if domain_name.startswith(('http://', 'https://')):
                 domain_name = domain_name.split('//')[1] 
@@ -67,10 +95,9 @@ def index(request):
             if domain_name.endswith('/'):
                 domain_name = domain_name[:-1] 
 
-            open_ports = portscanner.port_scan(domain_name)
+            open_ports = ortscanner.port_scan(domain_name)
             context = {'open_ports': open_ports, 'tool': tool, 'domain_name': domain_name}
             return render(request, 'tools/portscanner.html', context)
-
         
         elif tool == 'waf':
             if not domain_name.startswith(('http://', 'https://')):
@@ -156,6 +183,8 @@ def index(request):
         elif tool == "breachdata":
             return render(request, 'tools/breachdata.html')
         else:
+            if request.user.is_authenticated:
+                return redirect('dashboard') 
             return render(request, 'index.html', {'error_message': 'Please select provided tool on sidebar.'})
 
 def learning(request):
@@ -175,3 +204,54 @@ def bughuntingmethodology(request):
 
 def huntchecklist(request):
     return render(request,template_name="huntchecklist.html")
+
+
+@login_required
+def dashboard(request):
+    data = {
+        'user_count': User.objects.count(), 
+        'recent_signups': User.objects.order_by('-date_joined')[:5], 
+    }
+    return render(request, 'dashboard.html', data)
+
+
+def user_signup(request):
+    if request.user.is_authenticated: 
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+            return redirect('dashboard') 
+    else:
+        form = SignUpForm()
+
+    return render(request, 'signup.html', {'form': form})
+
+def user_login(request):
+    if request.user.is_authenticated: 
+        return redirect('dashboard')  
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('dashboard')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
+
+def profile(request):
+    return render(request,template_name="profile.html")
+def user_logout(request):
+    logout(request)
+    return redirect('login')

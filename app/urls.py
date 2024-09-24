@@ -1,12 +1,15 @@
-from django.contrib import admin
 from django.urls import path
-from .views import index,learning,termsandcondition,Allaboutbugbounty,bughuntingmethodology,huntchecklist
+from .views import index,learning,termsandcondition,Allaboutbugbounty,bughuntingmethodology,huntchecklist,user_login,user_signup,user_logout,dashboard,profile
 urlpatterns = [
     path("",index,name="index"),
+    path('login/',user_login, name='login'),
+    path('signup/',user_signup, name='signup'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('logout/',user_logout, name='logout'),
     path("learning",learning,name="learning"),
     path("termsandcondition",termsandcondition,name="termsandcondition"),
     path("Allaboutbugbounty",Allaboutbugbounty,name="Allaboutbugbounty"),
     path("bughuntingmethodology",bughuntingmethodology,name="bughuntingmethodology"),
-    path("huntchecklist",huntchecklist,name="huntchecklist")
-
+    path("huntchecklist",huntchecklist,name="huntchecklist"),
+    path("profile",profile,name="profile")
 ]

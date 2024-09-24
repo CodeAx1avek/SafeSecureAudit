@@ -45,7 +45,7 @@ ROOT_URLCONF = 'SafeSecureAudit.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,7 +107,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# settings.py
 
+LOGIN_URL = '/login/'
+
+SESSION_COOKIE_AGE = 3600
 # Define STATIC_ROOT for collecting static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type

@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 {% block body %}
 <div class="container">
-  <h1>Website Scanner</h1>
+  <h1>WAF Scanner</h1>
   <!-- Scan Form -->
   <form id="scanForm" action="" method="POST">
     {% csrf_token %}
@@ -11,7 +11,6 @@
     </div>
     <input type="submit" value="Scan" />
   </form>
-
   <!-- Scan Results -->
   <div class="result" id="scanResult" style="display: none;">
     <h2 class="result-title">Scan Results</h2>

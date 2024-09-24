@@ -268,15 +268,14 @@
             }
         }
     </style>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="glitch">SafeSecure</h1>
             <p>Your ultimate platform for cybersecurity tools and education.</p>
-            <button>Get Started</button>
+            <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
         </div>
-    </section>
+    </section>    
 
     <!-- Main Content Section -->
     <section class="main-content">
@@ -285,21 +284,20 @@
             <div class="dashboard-element">
                 <h3>Information Gathering</h3>
                 <p>Use advanced tools to collect data and analyze potential vulnerabilities.</p>
-                <p><a href="/tools/information-gathering">Start Gathering</a></p>
+                <p><a href="{% url 'index' %}?tool=allinone">Start Gathering</a></p>
             </div>
             <div class="dashboard-element">
                 <h3>Vulnerability Scanning</h3>
                 <p>Scan and identify vulnerabilities in applications, networks, and systems.</p>
-                <p><a href="/tools/vulnerability-scanning">Start Scanning</a></p>
+                <p><a href="">Start Scanning</a></p>
             </div>
             <div class="dashboard-element">
                 <h3>Learning Paths</h3>
                 <p>Build your skills with structured courses and practical exercises.</p>
-                <p><a href="/learning-paths">Explore Courses</a></p>
+                <p><a href="/learning">Explore Learnings</a></p>
             </div>
         </div>
     </section>
-
     <!-- Services Section -->
     <section class="services">
         <h2>Our Services</h2>
@@ -322,7 +320,7 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 SafeSecure. All rights reserved.</p>
-        <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a></p>
+        <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/termsandcondition">Terms of Service</a></p>
     </footer>
 
 {% endblock %}

@@ -6,8 +6,8 @@
   <form id="scanForm" action="" method="POST">
     {% csrf_token %}
     <div class="form-group">
-      <label for="websiteUrl">Enter Website URL:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{domain_name}}" required />
+      <label for="websiteUrl">Enter IP Address:</label>
+      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="8.8.8.8" value="{{domain_name}}" required />
     </div>
     <input type="submit" value="Scan" />
   </form>
@@ -18,7 +18,7 @@
 
     <!-- reverse dns lookup  -->
     {% if tool == "reversednstool" %}
-    <p><strong>Domain Name or IP Address:</strong> {{ domain_name }}</p>
+    <p><strong>IP Address:</strong> {{ domain_name }}</p>
 
     <h2>Reverse DNS Results:</h2>
     <ul>

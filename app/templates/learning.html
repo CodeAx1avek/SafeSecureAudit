@@ -6,13 +6,7 @@
         <title>Learning Path for Hacker</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
-          body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-    color: #fff;
-}
+     
 
 .learning-path {
     margin: 50px auto;
@@ -71,7 +65,7 @@ h1 {
 /* Responsive Styles */
 @media (max-width: 768px) {
     .learning-path {
-        margin: 20px auto;
+        margin: 30px auto;
         padding: 20px;
     }
     h1 {
@@ -590,8 +584,7 @@ h1 {
                     <p id="task4-result"></p>
                 </div>
             </div>
-                </div>
-            </div>
+           
             <div class="task" id="task5">
                 <div class="task-title" onclick="toggleTask('task5')">
                     Task 5: Cryptography
@@ -1531,6 +1524,7 @@ h1 {
                                     systems in real-world applications.
                                   </p>  
                             </div>
+                          </div>
                             <div class="next-page">
                                 <a href="Allaboutbugbounty" class="next-button">Proceed to Next Page: all about bug hunting</a>
                             </div>  
@@ -1548,23 +1542,30 @@ h1 {
                   result.style.color = 'red';
               }
           }
-      
-          function toggleTask(taskId) {
-              var taskContent = document.getElementById(taskId).querySelector('.task-content');
-              var icon = document.getElementById(taskId).querySelector('.task-title i');
-              
-              if (taskContent.style.display === 'block') {
-                  taskContent.style.display = 'none';
-                  icon.classList.remove('open');
-              } else {
-                  taskContent.style.display = 'block';
-                  icon.classList.add('open');
-              }
-          }
       </script>
-      
+                 <script>
+                  function toggleTask(taskId) {
+              const tasks = document.querySelectorAll('.task-content');
+              const icons = document.querySelectorAll('.task-title i');
+          
+              tasks.forEach(task => {
+                  if (task.parentElement.id === taskId) {
+                      if (task.style.display === 'none' || task.style.display === '') {
+                          task.style.display = 'block';
+                          task.previousElementSibling.classList.add('open');
+                      } else {
+                          task.style.display = 'none';
+                          task.previousElementSibling.classList.remove('open');
+                      }
+                  } else {
+                      task.style.display = 'none';
+                      task.previousElementSibling.classList.remove('open');
+                  }
+              });
+          }
+              </script>
+              
        
     </body>
     <center><p style="color: black;">&copy; Copyright CodeAx1</p></center>
-    
     {% endblock %}</div>

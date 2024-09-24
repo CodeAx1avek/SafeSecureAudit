@@ -11,10 +11,9 @@
       href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <style>
-     /* Reset and General Styles */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -22,181 +21,190 @@ body {
     box-sizing: border-box;
     background: #121212;
     color: #e0e0e0;
+    user-select: none;
+    
 }
 
 .container {
-    max-width: 1200px; /* Increased max-width for larger screens */
-    margin: 20px auto; /* Increased margin for better spacing */
-    padding: 20px; /* Increased padding for more space */
-    background-color: #1e1e1e; /* Darker background for better contrast */
-    border-radius: 10px; /* More rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Larger shadow for a more prominent effect */
-    height: auto; /* Allow content to dictate height */
+    max-width: 1200px;
+    margin: 35px auto; 
+    padding: 20px; 
+    background-color: #1e1e1e;
+    border-radius: 10px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    height: auto;
     overflow-y: auto;
 }
-
-/* Typography */
 h1, h2 {
     text-align: center;
-    color: #007bff; /* Bright accent color */
+    color: #007bff;
+    
 }
-
 h1 {
-    font-size: 32px; /* Larger font size for main headings */
-    margin-bottom: 20px; /* More spacing below main heading */
+    font-size: 32px;
+    margin-bottom: 20px;
+   
+    
 }
 
 h2 {
-    font-size: 24px; /* Larger font size for subheadings */
-    margin-top: 30px; /* More spacing above subheadings */
-    margin-bottom: 15px; /* More spacing below subheadings */
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 p {
-    margin-bottom: 20px; /* Increased spacing below paragraphs */
-    line-height: 1.8; /* Improved line height for readability */
+    margin-bottom: 20px;
+    line-height: 1.8;
+    color: rgb(189, 158, 106);
 }
 
 b {
-    color: #007bff; /* Keep original color for emphasis */
+    color: #007bff;
 }
-
-/* Form Styles */
 .form-group {
-    margin-bottom: 20px; /* More spacing between form elements */
+    margin-bottom: 20px;
 }
-
+.highlight {
+    font-weight: bold;
+    background-color: #444444;   /* Dark gray background */
+    color: #e0e0e0;              /* Light text color for contrast */
+    padding: 2px 4px;
+    border-radius: 3px;
+    display: inline-block;
+}
+.credits-info {
+    font-size: 12px;
+    font-weight: 500;
+    color: #cb5d1c;
+    border-radius: 4px;
+    padding: 8px 12px;
+    position: absolute;
+    right: 20px; /* Adjust as needed */
+  }
 label {
     display: block;
-    margin-bottom: 10px; /* Increased spacing below labels */
+    margin-bottom: 10px;
     color: #ffffff;
 }
 
 input[type="text"] {  
     width: 100%;
-    padding: 12px; /* Increased padding for better user interaction */
-    border: 1px solid #444; /* Darker border color */
-    border-radius: 6px; /* More rounded corners */
+    padding: 12px;
+    border: 1px solid #444; 
+    border-radius: 6px;
     box-sizing: border-box;
-    font-size: 16px; /* Consistent font size */
-    background-color: #2a2a2a; /* Darker background for input fields */
-    color: #fff; /* White text color */
+    font-size: 16px;
+    background-color: #2a2a2a; 
+    color: #fff; 
 }
 
 input[type="submit"] {
     background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 12px 20px; /* Increased padding */
-    border-radius: 6px; /* More rounded corners */
+    padding: 12px 20px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    font-size: 16px; /* Consistent font size */
+    font-size: 16px;
 }
 
 input[type="submit"]:hover {
     background-color: #0056b3;
-    transform: scale(1.05); /* Subtle scaling effect on hover */
+    transform: scale(1.05);
 }
 
-/* Result Section */
 .result {
-    margin-top: 20px; /* Increased margin for better separation */
-    padding: 20px; /* Increased padding */
-    background-color: #2a2a2a; /* Darker background for result section */
-    border: 1px solid #333; /* Darker border */
-    border-radius: 6px; /* More rounded corners */
+    margin-top: 20px;
+    padding: 20px; 
+    background-color: #2a2a2a; 
+    border: 1px solid #333;
+    border-radius: 6px;
 }
 
 .result-title {
-    color: #e0e0e0; /* Lighter color for titles */
-    font-size: 22px; /* Larger font size for result titles */
-    margin-bottom: 15px; /* More spacing below titles */
+    color: #e0e0e0;
+    font-size: 22px; 
+    margin-bottom: 15px;
 }
-
-/* Specific Sections */
 .dns-resolver, .port-scanner {
-    margin-top: 30px; /* Increased margin for better separation */
+    margin-top: 30px;
 }
 
 .dns-resolver .result-title, .port-scanner .result-title {
-    color: #007bff; /* Keep original color */
-    font-size: 22px; /* Larger font size for section titles */
-    margin-bottom: 20px; /* More spacing below section titles */
+    color: #007bff;
+    font-size: 22px;
+    margin-bottom: 20px;
 }
 
 .dns-resolver .record-type h3, .port-scanner .port-number {
-    color: #ccc; /* Lighter color for headings */
-    font-size: 18px; /* Adjusted font size */
-    margin-bottom: 10px; /* More spacing below headings */
+    color: #ccc; 
+    font-size: 18px; 
+    margin-bottom: 10px;
 }
 
 .dns-resolver .record-list li, .port-scanner .service {
-    color: #aaa; /* Lighter color for list items */
-    font-size: 16px; /* Consistent font size */
-    margin-left: 20px; /* More spacing to the left */
+    color: #aaa;
+    font-size: 16px;
+    margin-left: 20px;
 }
-
-/* Responsive Adjustments */
 @media screen and (max-width: 768px) {
     body {
-        font-size: 16px; /* Larger base font size for readability */
+        font-size: 16px;
     }
 
     h1 {
-        font-size: 28px; /* Adjusted font size for h1 on smaller screens */
-        margin-bottom: 16px; /* Adjusted margin bottom */
+        font-size: 28px;
+        margin-bottom: 16px;
     }
-
     h2 {
-        font-size: 22px; /* Adjusted font size for h2 on smaller screens */
-        margin-top: 24px; /* Adjusted margin top */
-        margin-bottom: 14px; /* Adjusted margin bottom */
+        font-size: 22px;
+        margin-top: 24px;
+        margin-bottom: 14px;
     }
 
     p {
-        margin-bottom: 18px; /* Adjusted margin bottom for paragraphs */
+        margin-bottom: 18px;
     }
 
     label {
-        font-size: 16px; /* Adjusted font size for labels */
-        margin-bottom: 6px; /* Adjusted margin bottom for labels */
+        font-size: 16px;
+        margin-bottom: 6px;
     }
 
     input[type="text"] {
-        font-size: 16px; /* Adjusted font size for input fields */
-        padding: 10px; /* Adjusted padding for input fields */
+        font-size: 16px;
+        padding: 10px;
     }
 
     input[type="submit"] {
-        padding: 10px 16px; /* Adjusted padding for button */
-        font-size: 16px; /* Adjusted font size for button */
+        padding: 10px 16px;
+        font-size: 16px;
     }
-
     .result-title {
-        font-size: 20px; /* Adjusted font size for result title */
-        margin-bottom: 12px; /* Adjusted margin bottom */
+        font-size: 20px;
+        margin-bottom: 12px;
     }
 
     .dns-resolver .result-title, .port-scanner .result-title {
-        font-size: 20px; /* Adjusted font size for section titles */
-        margin-bottom: 16px; /* Adjusted margin bottom */
+        font-size: 20px;
+        margin-bottom: 16px; 
     }
 
     .dns-resolver .record-type h3, .port-scanner .port-number {
-        font-size: 18px; /* Adjusted font size for section headings */
-        margin-bottom: 6px; /* Adjusted margin bottom */
+        font-size: 18px;
+        margin-bottom: 6px; 
     }
 
     .dns-resolver .record-list li, .port-scanner .service {
-        font-size: 16px; /* Adjusted font size for section list items */
-        margin-left: 16px; /* Adjusted margin left */
+        font-size: 16px; 
+        margin-left: 16px; 
     }
 }
 
       </style>
     <style>
-      /* Google Fonts Import Link */
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
       * {
         margin: 0;
@@ -237,7 +245,6 @@ input[type="submit"]:hover {
         color: #fff;
         font-weight: 600;
         transition: all 0.8s ease;
-        /* transition-delay: 0.8s; */
       }
       .sidebar.close .logo-details .logo_name {
         transition-delay: 0s;
@@ -258,7 +265,6 @@ input[type="submit"]:hover {
       .sidebar .nav-links li {
         position: relative;
         list-style: none;
-        /* transition: all 0.3s ease; */
       }
       .sidebar .nav-links li:hover {
         background: #1d1b31;
@@ -438,7 +444,7 @@ input[type="submit"]:hover {
       }
       .home-section .home-content .bx-menu,
       .home-section .home-content .text {
-        font-size: 35px;
+        font-size: 30px;
       }
       .home-section .home-content .bx-menu {
         cursor: pointer;
@@ -472,19 +478,49 @@ input[type="submit"]:hover {
           width: calc(100% - 78px);
         }
       }
+      /* Tooltip styling */
+.lock-icon {
+    margin-left: 8px;
+    color: #ff0000;
+    font-size: 1em;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Tooltip container */
+.lock-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 125%;
+    transform: translateX(-50%);
+    padding: 3px 6px; /* Reduced padding */
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.8em;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+}
+.lock-icon:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
     </style>
   </head>
   <body>
     <div class="sidebar close">
-      <!-- Logo and Name -->
       <div class="logo-details">
         <a href="/"><i class='bx bxs-shield-plus'></i></a>
-      
       </div>  
       <ul class="nav-links">
-        <!-- Dashboard -->
         <li>
-          <a href="#">
+          <a>
             <i class="bx bx-grid-alt"></i>
 
           </a>
@@ -492,94 +528,109 @@ input[type="submit"]:hover {
             <li><a href="{% url 'index' %}?tool=allinone">SafeSecureAudit360</a></li>
           </ul>
         </li>
-  
         <!-- Information Gathering -->
         <li>
           <div class="iocn-link">
-            <a href="#">
+            <a >
               <i class="bx bx-collection"></i>
               <span class="link_name">Information Gathering</span>
             </a>
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a href="#">Information Gathering</a></li>
+            <li><a class="highlight">Information Gathering</a></li>
+            <li>
+              <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'index' %}?tool=dnslookuptool{% endif %}" class="sidebar-link">
+                  DNS LOOKUP DEEP
+                  {% if not user.is_authenticated %}
+                      <i class="fas fa-lock lock-icon" data-tooltip="Login"></i>
+                  {% endif %}
+              </a>
+          </li>          
             <li><a href="{% url 'index' %}?tool=dnsresolvertool" class="sidebar-link">DNS LOOKUP</a></li>
-            <li><a href="{% url 'index' %}?tool=dnslookuptool" class="sidebar-link">DNS LOOKUP DEEP</a></li>
             <li><a href="{% url 'index' %}?tool=reversednstool" class="sidebar-link">Reverse DNS LookUp</a></li>
             <li><a href="{% url 'index' %}?tool=ipgeotool" class="sidebar-link">GEO LOCATION</a></li>
             <li><a href="{% url 'index' %}?tool=phoneinfo" class="sidebar-link">Phone Info</a></li>
           </ul>
         </li>
-  
         <!-- Detection Tools -->
         <li>
           <div class="iocn-link">
-            <a href="#">
+            <a>
               <i class="bx bx-book-alt"></i>
               <span class="link_name">Detection Tools</span>
             </a>
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a href="#">Detection Tools</a></li>
+            <li><a class="highlight">Detection Tools</a></li>
             <li><a href="{% url 'index' %}?tool=waf" class="sidebar-link">WAF CHECKER</a></li>
-            <li><a href="{% url 'index' %}?tool=breachdata" class="sidebar-link">Data Breach Checker</a></li>
-          </ul>
+            <li>
+              <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'index' %}?tool=breachdata{% endif %}" class="sidebar-link">
+                  Data Breach Checker
+                  {% if not user.is_authenticated %}
+                      <i class="fas fa-lock lock-icon" data-tooltip="Login"></i>
+                  {% endif %}
+              </a>
+          </li>
+              </ul>
         </li>
-  
         <!-- Web Scraping -->
         <li>
           <div class="iocn-link">
-            <a href="#">
+            <a>
               <i class="bx bx-pie-chart-alt-2"></i>
               <span class="link_name">Web Scraping</span>
             </a>
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a href="#">Web Scraping</a></li>
+            <li><a class="highlight">Web Scraping</a></li>
             <li><a href="{% url 'index' %}?tool=page_extract" class="sidebar-link">PAGE EXTRACTS</a></li>
             <li><a href="{% url 'index' %}?tool=extract_emails" class="sidebar-link">EMAIL EXTRACT</a></li>
           </ul>
         </li>
-  
         <!-- Vulnerability Scanner -->
         <li>
           <div class="iocn-link">
-            <a href="#">
+            <a>
               <i class="bx bx-book-alt"></i>
               <span class="link_name">Vulnerability Scanner</span>
             </a>
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a href="#">Vulnerability Scanner</a></li>
+            <li><a class="highlight">Vulnerability Scanner</a></li>
             <li><a href="{% url 'index' %}?tool=portscanner" class="sidebar-link">Port Scanner</a></li>
           </ul>
         </li>
-  
         <!-- Bug Hunting Methodology -->
         <li>
           <div class="iocn-link">
-            <a href="#">
+            <a>
               <i class="bx bx-bug-alt"></i>
               <span class="link_name">Bug Hunting Methodology</span>
             </a>
             <i class="bx bxs-chevron-down arrow"></i>
           </div>
           <ul class="sub-menu">
-            <li><a href="#">Bug Hunting Methodology</a></li>
+            <li><a class="highlight">Bug Hunting Methodology</a></li>
             <li><a href="/learning" class="sidebar-link">Learn CyberSecurity</a></li>
             <li><a href="/Allaboutbugbounty" class="sidebar-link">All about Vulnerability</a></li>
             <li><a href="/bughuntingmethodology" class="sidebar-link">Bug Hunting Live</a></li>
-            <li><a href="/huntchecklist" class="sidebar-link">Bug Hunting checklist</a></li>
+            <li>
+              <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}/huntchecklist{% endif %}" class="sidebar-link">
+                  Bug Hunting Checklist
+                  {% if not user.is_authenticated %}
+                      <i class="fas fa-lock lock-icon" data-tooltip="Login"></i>
+                  {% endif %}
+              </a>
+          </li>
           </ul>
         </li>
-  
         <!-- Terms & Conditions -->
         <li>
-          <a href="#">
+          <a>
             <i class="bx bx-cog"></i>
             <span class="link_name">Terms & Conditions</span>
           </a>
@@ -587,52 +638,69 @@ input[type="submit"]:hover {
             <li><a href="/termsandcondition">Terms & Conditions</a></li>
           </ul>
         </li>
-  
         <!-- Profile Details -->
         <li>
           <div class="profile-details">
-            <div class="profile-content">
-              <img src="{% static 'image/profile.jpg' %}" alt="" />
-            </div>
-            <div class="name-job">
-              <div class="profile_name">CodeAx1</div>
-              <div class="job">Cyber Security Enthusiast</div>
-            </div>
-            <i class="bx bx-log-out"></i>
+            <a href="{% url 'profile' %}" class="profile-link">
+              <div class="profile-content">
+                <img src="{% static 'image/profile.jpg' %}" alt="Profile" />
+              </div>
+            </a>
           </div>
         </li>
       </ul>
     </div>
   </body>
-  
     <section class="home-section">
       <div class="home-content">
-
-        <span class="text">SafeSecureAudit</span>
+        <span class="text">SafeSecureAudit</a></span>
       </div>
+      {% if not user.is_authenticated %}
+      <p class="credits-info">You have {{ request.session.credits }} credits remaining.</p>
+      {% endif %}
       <div class="content">{% block body %} {% endblock %}</div>
+      
     </section>
-  
+    
     <script>
-      // Ensure the scan result is displayed when the page loads
       document.addEventListener("DOMContentLoaded", function () {
+        // Show scan result if element is present
         var scanResult = document.getElementById("scanResult");
-        
-        // Safety check if element exists
         if (scanResult) {
           scanResult.style.display = "block";
         }
       });
     
-      // Toggle sidebar class on button/icon click
+      // Toggle sidebar open and close
       function toggleSidebar() {
         var sidebar = document.querySelector('.sidebar');
-        
         if (sidebar) {
           sidebar.classList.toggle('close');
         }
       }
     </script>
-    
+    <script>
+      const longPressThreshold = 50;
+      let longPressTimer;
+  
+      document.addEventListener('DOMContentLoaded', function () {
+          const body = document.body;
+          body.addEventListener('mousedown', enableSelection);
+          body.addEventListener('touchstart', enableSelection);
+          body.addEventListener('mouseup', disableSelection);
+          body.addEventListener('mouseleave', disableSelection);
+          body.addEventListener('touchend', disableSelection);
+          function enableSelection(event) {
+              longPressTimer = setTimeout(function () {
+                  body.style.userSelect = 'auto'; // Enable selection after a long press
+              }, longPressThreshold);
+          }
+  
+          function disableSelection() {
+              clearTimeout(longPressTimer); // Cancel the long-press timer
+              body.style.userSelect = 'none'; // Disable selection after release
+          }
+      });
+  </script>  
   </body>
 </html>
