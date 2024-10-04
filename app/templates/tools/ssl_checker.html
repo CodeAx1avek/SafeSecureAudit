@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+  <h1>SSL Checker</h1>
+  
+  <!-- Scan Form -->
+  <form id="scanForm" action="" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="websiteUrl">Enter Website URL:</label>
+      <input type="text" id="websiteUrl" name="websiteUrl" value="{{ domain_name }}" placeholder="https://example.com" required />
+    </div>
+    <input type="submit" value="Scan" />
+  </form>
+
+  <!-- Scan Results -->
+  <div class="result" id="scanResult">
+    <h2 class="result-title">Scan Results</h2>
+    {% if ssl_results %}
+    <div class="result waf-detector" id="scanResult">
+      <h3>Validity: {{ ssl_results.is_valid|yesno:"Valid,Expired" }}</h3>
+      <h4>Validity Period:</h4>
+      <ul>
+        <li>Not Before: {{ ssl_results.validity_period.not_before }}</li>
+        <li>Not After: {{ ssl_results.validity_period.not_after }}</li>
+      </ul>
+
+      <h4>Certificate Information:</h4>
+      <ul>
+        <li>Subject: {{ ssl_results.certificate_info.subject }}</li>
+        <li>Issuer: {{ ssl_results.certificate_info.issuer }}</li>
+        <li>Version: {{ ssl_results.certificate_info.version }}</li>
+        <li>Fingerprint: {{ ssl_results.certificate_info.fingerprint }}</li>
+      </ul>
+
+    {% endif %}
+
+    {% if ssl_results.error %}
+      <div class="alert alert-danger" role="alert">{{ ssl_results.error }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

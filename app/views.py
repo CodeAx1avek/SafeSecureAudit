@@ -1,137 +1,132 @@
 from django.shortcuts import render,redirect
-import uuid
-from .utils import ortscanner
+from .utils import portscanners
 from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,extract_emails,fetch_all_in_one_data
+from .utils.ssl_checker import ssl_check
 from .utils.waf import check_waf
+from .utils.subdomain_enum import enumerate_and_check_subdomains
+from .models import Scan
 from .utils.tool import page_extract
 from .utils.phone_info_tool import gather_phone_info
 import requests,json
 from django.contrib.auth import authenticate, login, logout 
 from .forms import SignUpForm,LoginForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.http import HttpResponse
 
+def save_scan(user, domain_name, tool_used):
+    if user.is_authenticated:
+        Scan.objects.create(user=user, domain_name=domain_name, tool_used=tool_used)
 
-
-def initialize_guest_credits(request):
-    if not request.user.is_authenticated:
-        user_id = request.COOKIES.get('guest_user_id')
-        if not user_id:
-            user_id = str(uuid.uuid4())  # Generate a new unique identifier
-            response = HttpResponse()
-            response.set_cookie('guest_user_id', user_id)  # Set the cookie
-            request.session['credits'] = 10  # Assign credits
-            return response  # Return the response to set the cookie
-        else:
-            # Optionally, check credits in the session or handle reinitialization logic
-            if 'credits' not in request.session:
-                request.session['credits'] = 10  # Reassign if needed
 def index(request):
-    response = initialize_guest_credits(request)
-
     tool = request.GET.get('tool', '')
     if request.method == 'POST':
         domain_name = request.POST.get('websiteUrl')
-        if not request.user.is_authenticated:
-            credits = request.session.get('credits', 0)
-            if credits < 3:
-                return render(request, 'no_credits.html', {'message': 'You have no credits left. Please log in to continue using the tools.'})
-            request.session['credits'] -= 3
-            request.session.modified = True
+        if not domain_name:
+            return render(request, 'index.html', {'message': 'Please enter a valid domain name.'})
+        domain_name = sanitize_domain(domain_name)  # Ensure the domain is sanitized
+
+        # Create a record for each tool
         if tool == "allinone":
-            if domain_name.startswith(('http://', 'https://')):
-                domain_name = domain_name.split('//')[1] 
-            if domain_name.startswith('www.'):
-                domain_name = domain_name[4:]
             domain_data = fetch_all_in_one_data(domain_name)
-            return render(request, 'tools/allinone.html', {'domain_data': domain_data,"tool":tool,"domain_name":domain_name})
+            # Save the scan
+            save_scan(request.user, domain_name, tool)
+            return render(request, 'tools/allinone.html', {'domain_data': domain_data, "tool": tool, "domain_name": domain_name})
         
         elif tool == 'dnsresolvertool':
-            if domain_name.startswith(('http://', 'https://')):
-                domain_name = domain_name.split('//')[1] 
-            if domain_name.startswith('www.'):
-                domain_name = domain_name[4:]
             record_types = ["A", "MX", "TXT", "NS"]
-            dns_results = {}
-            for record_type in record_types:
-                dns_results[record_type] = dns_record_lookup(domain_name, record_type)
+            dns_results = {record_type: dns_record_lookup(domain_name, record_type) for record_type in record_types}
+            save_scan(request.user, domain_name, tool)
             context = {'tool': tool, 'dns_results': dns_results}
             return render(request, 'tools/dnsresolvertool.html', context)
-        
+
         elif tool == "dnslookuptool":
             dns_results = dnslookup(domain_name)
-            return render(request, 'tools/dnslookuptool.html', {'tool':tool,'domain_name': domain_name, 'dns_results': dns_results})
-        
+            save_scan(request.user, domain_name, tool)
+            return render(request, 'tools/dnslookuptool.html', {'tool': tool, 'domain_name': domain_name, 'dns_results': dns_results})
+
         elif tool == "reversednstool":
             reverse_dns_results = reverse_dns(domain_name)
+            save_scan(request.user, domain_name, tool)
             return render(request, 'tools/reversednstool.html', {'tool': tool, 'domain_name': domain_name, 'reverse_dns_results': reverse_dns_results})
-        
-        elif tool  == "ipgeotool":
-            if domain_name.startswith(('http://', 'https://')):
-                domain_name = domain_name.split('//')[1] 
-            if domain_name.startswith('www.'):
-                domain_name = domain_name[4:]
+
+        elif tool == "ipgeotool":
             ipgeotool_results = ipgeotool(domain_name)
+            save_scan(request.user, domain_name, tool)
             return render(request, 'tools/ipgeotool.html', {'tool': tool, 'domain_name': domain_name, 'ipgeotool_results': ipgeotool_results})
-      
+        
         elif tool == "page_extract":
-            page_extract_results = []
-            error_message = None
+            if not domain_name.startswith(('http://', 'https://')):
+                domain_name = "https://" + domain_name
             page_extract_results, error_message = page_extract(domain_name)
+            save_scan(request.user, domain_name, tool)
             context = {
                 'tool': tool,
                 'domain_name': domain_name,
                 'page_extract_results': page_extract_results,
                 'error_message': error_message
-                 }
+            }
             return render(request, 'tools/page_extract.html', context)
+        
+        elif tool == "dork":
+            google_dorks = generate_dorks(domain_name)
+            save_scan(request.user, domain_name, tool)
+            return render(request, "tools/dork.html", {'google_dorks': google_dorks, 'domain_name': domain_name})
 
         elif tool == 'portscanner':
-            if domain_name.startswith(('http://', 'https://')):
-                domain_name = domain_name.split('//')[1]
-            if domain_name.startswith('www.'):
-                domain_name = domain_name[4:]
-            if domain_name.endswith('/'):
-                domain_name = domain_name[:-1] 
-
-            open_ports = ortscanner.port_scan(domain_name)
+            open_ports = portscanners.scan_port(domain_name)
+            save_scan(request.user, domain_name, tool)
             context = {'open_ports': open_ports, 'tool': tool, 'domain_name': domain_name}
             return render(request, 'tools/portscanner.html', context)
-        
+
         elif tool == 'waf':
             if not domain_name.startswith(('http://', 'https://')):
                 domain_name = "https://" + domain_name
             waf_name = check_waf(domain_name)
+            save_scan(request.user, domain_name, tool)
             context = {'tool': tool, 'waf_name': waf_name, 'domain_name': domain_name}
             return render(request, 'tools/waf.html', context)
         
+        elif tool == "ssl_checker_tool":
+            domain_name = domain_name.lstrip('http://').lstrip('https://')
+            ssl_results = ssl_check(domain_name) 
+            save_scan(request.user, domain_name, tool)
+            return render(request, 'tools/ssl_checker.html', {
+            'tool': tool,
+            'domain_name': domain_name,
+            'ssl_results': ssl_results,
+        })
+
+        elif tool == "subdomain_enum_tool":
+            found_subdomains = enumerate_and_check_subdomains(domain_name)
+            save_scan(request.user, domain_name, tool)
+            return render(request, 'tools/subdomain_enum.html', {
+                'tool': tool,
+                'domain_name': domain_name,
+                'found_subdomains': found_subdomains,
+                'scan_done': True, 
+            })
+        
         elif tool == "phoneinfo":
             phone_info_results = gather_phone_info(domain_name)
+            save_scan(request.user, domain_name, tool)
             return render(request, 'tools/phoneinfo.html', {'tool': tool, 'domain_name': domain_name, 'phone_info_results': phone_info_results})
-        
+
         elif tool == "extract_emails":
-            extract_emails_results = extract_emails(domain_name)
-            return render(request, 'tools/extract_emails.html', {'tool': tool, 'domain_name': domain_name,'extract_emails_results':extract_emails_results})
-        
+            extract_emails_results = "we are working on it"
+            save_scan(request.user, domain_name, tool)
+            return render(request, 'tools/extract_emails.html', {'tool': tool, 'domain_name': domain_name, 'extract_emails_results': extract_emails_results})
+
         elif tool == "breachdata":
             url = "https://credential-verification.p.rapidapi.com/restpeopleMOB/MA/MaWcf.svc/Makshouf"
             payload = {
                 "Service_Flag": "",
                 "Criterias": [
-                    {
-                "Field": "page",
-                "Value": "1"
-                    },
-                    {
-                "Field": "SEARCH_KEY",
-                "Value": domain_name
-                    }
+                    {"Field": "page", "Value": "1"},
+                    {"Field": "SEARCH_KEY", "Value": domain_name}
                 ]
             }
             headers = {
                 "content-type": "application/json",
-                "X-RapidAPI-Key": "9814b3a6d1msh41b9e25311f05bap13521ejsn9147e8e70ae1",
+                "X-RapidAPI-Key": "9814b3a6d1msh41b9e25311f05bap13521ejsn9147e8e70ae1", 
                 "X-RapidAPI-Host": "credential-verification.p.rapidapi.com"
             }
             response = requests.post(url, json=payload, headers=headers)
@@ -143,17 +138,23 @@ def index(request):
                 message = result['Message']
                 breaches = json.loads(result['Result'])  # Parsing the JSON string
                 for breach in breaches:
-                    summary.append({'breach_name': breach.get('BREACH_NAME', ''),
-                            'breach_summary': breach.get('BREACH_SUMMARY', '')})
+                    summary.append({
+                        'breach_name': breach.get('BREACH_NAME', ''),
+                        'breach_summary': breach.get('BREACH_SUMMARY', '')
+                    })
 
+            save_scan(request.user, domain_name, tool)
             return render(request, 'tools/breachdata.html', {"message": message, "tool": tool, 'domain_name': domain_name, 'summary': summary})
+
         else:
-            return render(request, 'index.html', {'error_message': 'Please select provided tool on sidebar.'})
+            return render(request, 'index.html', {'error_message': 'Please select a tool from the sidebar.'})
+        
         
     if request.method == 'GET':
         if tool == "allinone":
              return render(request, 'tools/allinone.html')
-        
+        elif tool == "dork":
+            return render(request, 'tools/dork.html')
         elif tool == 'dnsresolvertool':
             return render(request, 'tools/dnsresolvertool.html')
 
@@ -180,6 +181,13 @@ def index(request):
         
         elif tool == "extract_emails":
             return render(request, 'tools/extract_emails.html')
+        
+        elif tool == "ssl_checker_tool":
+            return render(request, 'tools/ssl_checker.html')
+    
+        elif tool == 'subdomain_enum_tool':
+            return render(request, 'tools/subdomain_enum.html')
+
         elif tool == "breachdata":
             return render(request, 'tools/breachdata.html')
         else:
@@ -206,13 +214,11 @@ def huntchecklist(request):
     return render(request,template_name="huntchecklist.html")
 
 
+# views.py
 @login_required
 def dashboard(request):
-    data = {
-        'user_count': User.objects.count(), 
-        'recent_signups': User.objects.order_by('-date_joined')[:5], 
-    }
-    return render(request, 'dashboard.html', data)
+    recent_scans = Scan.objects.filter(user=request.user).order_by('-timestamp')[:5]
+    return render(request, 'dashboard.html', {'recent_scans': recent_scans})
 
 
 def user_signup(request):
@@ -255,3 +261,42 @@ def profile(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def sanitize_domain(domain_name):
+    if domain_name.startswith(('http://', 'https://')):
+        domain_name = domain_name.split('//')[1]
+    if domain_name.startswith('www.'):
+        domain_name = domain_name[4:]
+    return domain_name
+
+def generate_dorks(domain_name):
+    """Generates a list of advanced Google Dork queries for recon on a target domain."""
+    dorks = [
+        f'site:{domain_name} inurl:admin',  # Admin panels
+        f'site:{domain_name} intitle:"index of"',  # Directory listings
+        f'site:{domain_name} ext:php',  # PHP pages (commonly vulnerable)
+        f'site:{domain_name} ext:sql | ext:db | ext:bak',  # Database files
+        f'site:{domain_name} "login" | "signin"',  # Login pages
+        f'site:{domain_name} "forgot password" | "reset password"',  # Password reset pages
+        f'site:{domain_name} "config.php" | "wp-config.php"',  # Configuration files (PHP)
+        f'site:{domain_name} "password" filetype:txt | filetype:log',  # Passwords in text/log files
+        f'site:{domain_name} filetype:log',  # Log files (might contain sensitive data)
+        f'site:{domain_name} filetype:sql | filetype:db | filetype:sql.gz',  # Exposed database dumps
+        f'site:{domain_name} inurl:/wp-admin/',  # WordPress admin login
+        f'site:{domain_name} inurl:dashboard',  # Admin dashboards
+        f'site:{domain_name} inurl:ftp',  # Exposed FTP services
+        f'site:{domain_name} ext:xml | ext:json "api"',  # API keys or sensitive data in XML/JSON
+        f'site:{domain_name} ext:env',  # Environment configuration files (.env)
+        f'site:{domain_name} "intitle:login" "admin"',  # Admin login portals
+        f'site:{domain_name} intext:"credentials" | intext:"username" | intext:"password"',  # Credential leaks
+        f'site:{domain_name} filetype:pdf | filetype:xls | filetype:doc | filetype:csv "confidential"',  # Exposed documents
+        f'site:{domain_name} "htaccess" | "robots.txt" | "sitemap.xml"',  # Access control files
+        f'site:{domain_name} inurl:"/cgi-bin/"',  # Common CGI vulnerabilities
+        f'site:{domain_name} "Powered by WordPress" | "Joomla" | "Drupal"',  # Identify CMS for exploitation
+        f'site:{domain_name} "phpinfo" "version"',  # PHP info pages (leak server info)
+        f'site:{domain_name} inurl:"shell" | intitle:"shell" filetype:php',  # Possible backdoors or web shells
+        f'site:{domain_name} "Apache Status" | "nginx status"',  # Exposed server status pages
+        f'site:{domain_name} filetype:bak | filetype:old | filetype:backup',  # Backup files
+    ]
+    return dorks

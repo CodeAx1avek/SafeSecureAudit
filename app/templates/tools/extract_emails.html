@@ -1,33 +1,39 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
 {% block body %}
 <div class="container">
-  <h1>Email Extracter</h1>
+  <h1>Email Extractor</h1>
   <!-- Scan Form -->
   <form id="scanForm" action="" method="POST">
     {% csrf_token %}
     <div class="form-group">
-      <s>Work in progress</s>
       <label for="websiteUrl">Enter Website URL:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="https://example.com" value="{{domain_name}}" required />
+      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{domain_name}}" required />
     </div>
     <input type="submit" value="Scan" />
   </form>
 
   <!-- Scan Results -->
-  <div class="result" id="scanResult" style="display: none;">
+  {% if tool == "extract_emails" %}
+  <div class="result" id="scanResult" style="display: block;">
     <h2 class="result-title">Scan Results</h2>
-<!-- Email Extracter -->
-{% if tool == "extract_emails" %}
-<p><strong>Domain Name:</strong> {{ domain_name }}</p>
-    <h2>PAGE LINK EXTRACTER</h2>
-    <ul>
-    {% for result in extract_emails_results %}
-        <li>{{ result }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-{% if error_message %}
-<div class="alert alert-danger" role="alert">{{ error_message }}</div>
-{% endif %}
+    <p><strong>Domain Name:</strong> {{ domain_name }}</p>
 
+    {% if extract_emails_results %}
+      <h3>Found Email Addresses:</h3>
+      <ul>
+        {% for email in extract_emails_results %}
+          <li>{{ email }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No email addresses found.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+  
+  {% if error_message %}
+    <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+  {% endif %}
+</div>
 {% endblock %}

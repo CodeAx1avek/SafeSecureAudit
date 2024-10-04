@@ -84,19 +84,36 @@ def page_extract(url):
         return [], f"An error occurred: {str(e)}"
 
 
-
 def extract_emails(url):
     try:
-        response = requests.get(url)
-        response.raise_for_status() 
-        if response.status_code == 200:
-            emails = re.findall(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', response.text)
-            return emails
-        else:
-            print("Failed to fetch the webpage. Status code:", response.status_code)
-            return []
-    except requests.RequestException as e:
-        print("Error occurred during HTTP request:", e)
+        # Send HTTP request to the URL with a timeout and headers
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+        response = requests.get(f"http://{url}", headers=headers, timeout=10)
+        response.raise_for_status()
+
+        # Get the HTML content of the page
+        html_content = response.text
+
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        # Extract text from key sections only (like body, footer, etc.)
+        page_text = soup.find('body').get_text() if soup.find('body') else soup.get_text()
+
+        # Regular expression pattern for extracting emails
+        email_pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+
+        # Find all email addresses in the page text
+        emails = re.findall(email_pattern, page_text)
+
+        # Remove duplicates by converting the list to a set
+        unique_emails = set(emails)
+
+        return list(unique_emails)
+
+    except requests.exceptions.RequestException as e:
+        # Handle error and return an empty list if the request fails
         return []
 
 def fetch_all_in_one_data(domain_name):

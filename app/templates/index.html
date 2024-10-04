@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
     <style>
-        /* General body and font styling */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -9,196 +8,141 @@
             box-sizing: border-box;
             background: #121212;
             color: #e0e0e0;
+            overflow-x: hidden;
         }
-
-        /* Glitch Effect */
-        .glitch {
-            font-size: 5em;
-            color: #00ff99;
-            position: relative;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: glitch-animation 2s infinite;
-            text-shadow: 0 0 20px #00ff99, 0 0 30px #00ff99, 0 0 40px #00ff99;
-        }
-
-        @keyframes glitch-animation {
-            0% { transform: translate(0); }
-            10% { transform: translate(-3px, -3px) skew(3deg); }
-            20% { transform: translate(3px, 3px) skew(-3deg); }
-            30% { transform: translate(-3px, 3px); }
-            40% { transform: translate(3px, -3px); }
-            50% { transform: translate(-3px, 0); }
-            60% { transform: translate(3px, 3px); }
-            70% { transform: translate(-3px, -3px); }
-            80% { transform: translate(3px, -3px); }
-            90% { transform: translate(-3px, 0); }
-            100% { transform: translate(0); }
-        }
-
-        /* Hero Section */
         .hero {
+            height: 90vh;
+            background: linear-gradient(135deg, rgba(13, 13, 13, 0.8), rgba(29, 29, 29, 0.9));
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
+            align-items: center;
             text-align: center;
-            padding: 0 20px;
-            background: linear-gradient(to right, #1a1a1a, #000);
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 20px;
         }
 
         .hero h1 {
-            font-size: 5em;
-            margin: 0;
-            text-shadow: 0 0 15px #00ff99;
+            font-size: 4em;
+            color: #00ff99;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: #ff00ff;
+            font-weight: 900;
         }
 
         .hero p {
-            font-size: 1.6em;
-            margin: 20px 0;
-            color: #b3f7d1;
-            max-width: 800px;
-            line-height: 1.4;
+            font-size: 1.3em;
+            color: #b3b3b3;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
         }
 
-        .hero button {
+        .hero a {
+            display: inline-block;
+            font-size: 1.1em;
+            padding: 15px 35px;
+            color: #121212;
             background-color: #00ff99;
             border: none;
-            color: #0e0e0e;
-            padding: 15px 30px;
-            font-size: 1.5em;
-            cursor: pointer;
-            border-radius: 30px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            outline: none;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
         }
 
-        .hero button:hover {
-            background-color: #00cc79;
-            transform: translateY(-5px);
+        .hero a:hover {
+            background-color: #ff00ff;
         }
 
-        /* Main Content Section */
+        /* Main Content Section - unchanged */
         .main-content {
-            padding: 60px 20px;
+            padding: 40px 15px;
             background-color: #1a1a1a;
             text-align: center;
         }
 
         .main-content h2 {
-            font-size: 3.5em;
+            font-size: 2.8em;
             color: #00ff99;
-            margin-bottom: 40px;
-            text-shadow: 0 0 15px #00ff99;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #7d0ba6;
         }
 
         .dashboard {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
             justify-content: center;
-            gap: 40px;
+            padding: 20px;
         }
 
         .dashboard-element {
             background-color: #101010;
-            padding: 40px;
-            border-radius: 20px;
-            width: 350px;
-            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
-            transition: all 0.3s ease-in-out;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
         }
 
         .dashboard-element:hover {
-            box-shadow: 0 0 60px rgba(0, 255, 153, 0.5);
-            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 153, 0.4);
+            transform: translateY(-5px);
         }
 
         .dashboard-element h3 {
-            font-size: 2.2em;
+            font-size: 1.5em;
             color: #00ff99;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff99;
+            margin-bottom: 10px;
         }
 
         .dashboard-element p {
-            font-size: 1.2em;
+            font-size: 0.9em;
             color: #b3b3b3;
-            line-height: 1.6;
+            margin-bottom: 15px;
+            line-height: 1.4;
         }
 
         .dashboard-element a {
             color: #00ff99;
             text-decoration: none;
             font-weight: bold;
-            border-bottom: 2px solid #00ff99;
-            transition: color 0.3s ease, border-bottom 0.3s ease;
+            padding: 8px 10px;
+            background-color: transparent;
+            border: 1px solid #9f0ab3;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
         .dashboard-element a:hover {
             color: #ff00ff;
-            border-bottom: 2px solid #ff00ff;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 60px 20px;
-            background-color: #111111;
-            text-align: center;
-        }
-
-        .services h2 {
-            font-size: 3.5em;
-            color: #00ff99;
-            margin-bottom: 40px;
-            text-shadow: 0 0 15px #00ff99;
-        }
-
-        .services-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .service-item {
-            background-color: #101010;
-            padding: 40px;
-            border-radius: 20px;
-            width: 350px;
-            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
-        }
-
-        .service-item h3 {
-            font-size: 2.2em;
-            color: #00ff99;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff99;
-        }
-
-        .service-item p {
-            font-size: 1.2em;
-            color: #b3b3b3;
+            border-color: #ff00ff;
         }
 
         /* Footer */
         footer {
             background-color: #101010;
-            padding: 40px 20px;
+            padding: 30px 15px;
             text-align: center;
             color: #666;
             border-top: 1px solid #333;
         }
 
         footer p {
-            margin: 10px 0;
-            font-size: 1em;
+            margin: 8px 0;
+            font-size: 0.9em;
             color: #999;
         }
 
@@ -211,38 +155,33 @@
         footer a:hover {
             color: #ff00ff;
         }
-
-        /* Responsive Design */
         @media screen and (max-width: 768px) {
             .hero h1 {
-                font-size: 3em;
+                font-size: 2.8em;
             }
 
             .hero p {
-                font-size: 1.2em;
+                font-size: 1.1em;
             }
 
-            .hero button {
+            .hero a {
                 font-size: 1em;
-                padding: 10px 20px;
+                padding: 12px 30px;
             }
 
             .main-content h2 {
-                font-size: 2.5em;
+                font-size: 2.2em;
             }
 
-            .dashboard, .services-list {
-                flex-direction: column;
-                align-items: center;
+            .dashboard-element h3 {
+                font-size: 1.4em;
             }
 
-            .dashboard-element, .service-item {
-                width: 100%;
-                max-width: 500px;
-                padding: 20px;
+            .dashboard-element p {
+                font-size: 0.85em;
             }
         }
-        
+
         @media screen and (max-width: 480px) {
             .hero h1 {
                 font-size: 2.2em;
@@ -252,74 +191,106 @@
                 font-size: 1em;
             }
 
-            .hero button {
+            .hero a {
                 font-size: 0.9em;
-                padding: 8px 16px;
+                padding: 10px 25px;
             }
 
             .main-content h2 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
 
-            .dashboard-element, .service-item {
-                width: 100%;
-                max-width: 400px;
+            .dashboard-element {
                 padding: 15px;
+            }
+
+            .dashboard-element h3 {
+                font-size: 1.3em;
+            }
+
+            .dashboard-element p {
+                font-size: 0.8em;
             }
         }
     </style>
-    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <h1 class="glitch">SafeSecure</h1>
-            <p>Your ultimate platform for cybersecurity tools and education.</p>
-            <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
-        </div>
-    </section>    
-
-    <!-- Main Content Section -->
-    <section class="main-content">
-        <h2>Explore Our Features</h2>
+        <h1>Secure Your <span>Digital</span> World</h1>
+        <p>Empower your online security with cutting-edge tools that keep you safe. Start your journey today with a range of powerful cybersecurity solutions.</p>
+        <a href="#explore-tools">Explore Our Tools</a>
+    </section>
+    <section class="main-content" id="explore-tools">
+        <h2>Explore Our Tools</h2>
         <div class="dashboard">
             <div class="dashboard-element">
-                <h3>Information Gathering</h3>
-                <p>Use advanced tools to collect data and analyze potential vulnerabilities.</p>
-                <p><a href="{% url 'index' %}?tool=allinone">Start Gathering</a></p>
+                <h3>Security Audits 360</h3>
+                <p>A comprehensive audit tool for assessing security vulnerabilities.</p>
+                <a href="{% url 'index' %}?tool=allinone">Start Audit</a>
             </div>
             <div class="dashboard-element">
-                <h3>Vulnerability Scanning</h3>
-                <p>Scan and identify vulnerabilities in applications, networks, and systems.</p>
-                <p><a href="">Start Scanning</a></p>
+                <h3>Subdomain Enumeration</h3>
+                <p>Enumerate some of Subdomain fast as ease.</p>
+                <a href="{% url 'index' %}?tool=subdomain_enum_tool">Extract Emails</a>
             </div>
             <div class="dashboard-element">
-                <h3>Learning Paths</h3>
-                <p>Build your skills with structured courses and practical exercises.</p>
-                <p><a href="/learning">Explore Learnings</a></p>
+                <h3>Google Dork Recon</h3>
+                <p>Utilize Google Dorks for information gathering and reconnaissance.</p>
+                <a href="{% url 'index' %}?tool=dork">Start Dorking</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>DNS Lookup Deep</h3>
+                <p>Perform in-depth DNS lookups to gather detailed domain information.</p>
+                <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'index' %}?tool=dnslookuptool{% endif %}">Run DNS Lookup</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Reverse DNS Lookup</h3>
+                <p>Identify the domain name associated with an IP address.</p>
+                <a href="{% url 'index' %}?tool=reversednstool">Start Reverse Lookup</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Geo Location Tool</h3>
+                <p>Locate the geographic position of an IP address.</p>
+                <a href="{% url 'index' %}?tool=ipgeotool">Check Location</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Phone Info Tool</h3>
+                <p>Gather information about a phone number.</p>
+                <a href="{% url 'index' %}?tool=phoneinfo">Get Phone Info</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Data Breach Checker</h3>
+                <p>Check if your data has been compromised in known breaches.</p>
+                <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'index' %}?tool=breachdata{% endif %}">Check Breach</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>SSL Checker</h3>
+                <p>Verify SSL certificates for secure connections.</p>
+                <a href="{% url 'index' %}?tool=ssl_checker_tool">Analyze SSL</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>WAF Checker</h3>
+                <p>Test the effectiveness of your Web Application Firewall.</p>
+                <a href="{% url 'index' %}?tool=waf">Run WAF Test</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Port Scanner</h3>
+                <p>Scan for open ports to identify security weaknesses.</p>
+                <a href="{% url 'index' %}?tool=portscanner">Start Port Scan</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Page Extractor</h3>
+                <p>Extract content from web pages for analysis.</p>
+                <a href="{% url 'index' %}?tool=page_extract">Extract Pages</a>
+            </div>
+            <div class="dashboard-element">
+                <h3>Email Extractor</h3>
+                <p>Scrape emails from web pages for outreach.</p>
+                <a href="{% url 'index' %}?tool=extract_emails">Extract Emails</a>
             </div>
         </div>
-    </section>
-    <!-- Services Section -->
-    <section class="services">
-        <h2>Our Services</h2>
-        <div class="services-list">
-            <div class="service-item">
-                <h3>Penetration Testing</h3>
-                <p>Simulate attacks to find weaknesses before the real hackers do.</p>
-            </div>
-            <div class="service-item">
-                <h3>Security Audits</h3>
-                <p>Thorough reviews of your systems and processes to ensure security compliance.</p>
-            </div>
-            <div class="service-item">
-                <h3>Consulting</h3>
-                <p>Expert advice on how to strengthen your cybersecurity posture.</p>
-            </div>
-        </div>
-    </section>
-
+    </section>    
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 SafeSecure. All rights reserved.</p>
+        <p>&copy; 2024 SecureAudit360. All rights reserved.</p>
         <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/termsandcondition">Terms of Service</a></p>
     </footer>
 

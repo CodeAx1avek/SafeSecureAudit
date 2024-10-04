@@ -1,34 +1,53 @@
 {% extends 'base.html' %}
-
 {% block body %}
 <style>
     .dashboard-container {
+        margin: 0 auto;
+       
         padding: 20px;
     }
 
-    .widget {
-        background: #39526c;
+    .user-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .user-info h2 {
+        margin: 0;
+        color: #39526c;
+    }
+
+    .scan-form {
+        margin-bottom: 40px;
+    }
+
+    .scan-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .scan-form input[type="text"] {
+        width: calc(100% - 40px);
+        padding: 10px;
+        border: 1px solid #ccc;
         border-radius: 5px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(88, 83, 83, 0.1);
-    }
-
-    .widget h2 {
-        margin-top: 0;
-    }
-
-    .widget ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .widget ul li {
         margin-bottom: 10px;
     }
 
-    .widget ul li:last-child {
-        margin-bottom: 0;
+    .scan-form input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #39526c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .scan-form input[type="submit"]:hover {
+        background-color: #314558;
     }
 
     .card {
@@ -39,85 +58,105 @@
         margin-bottom: 20px;
     }
 
-    .user-info {
+    .card h3 {
+        margin: 0 0 10px 0;
+        color: #39526c;
+    }
+
+    .card .timestamp {
+        font-size: 0.9em;
+        color: #ccc;
+        margin-bottom: 10px;
+    }
+
+    .scan-report {
+        margin-bottom: 10px;
+        padding: 10px 0;
+    }
+
+    .scan-separator {
+        border-top: 1px solid #ccc;
+        margin: 10px 0;
+    }
+
+    .dashboard-cards {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
+        flex-direction: column;
     }
 
-    .user-info h2 {
-        margin: 0;
+
+        .user-info {
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+
+        .scan-form input[type="text"] {
+            width: calc(100% - 20px); /* Adjust input width for smaller screens */
+        }
+
+        .scan-form input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .card {
+            padding: 15px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+        }
     }
 
-    .logout-button {
-        background-color: #dc3545;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+    @media (max-width: 480px) {
+        .user-info {
+            margin-bottom: 20px;
+        }
 
-    .logout-button:hover {
-        background-color: #c82333;
+        .scan-form label, .scan-form input[type="text"] {
+            font-size: 14px;
+        }
+
+        .scan-form input[type="submit"] {
+            font-size: 14px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+        }
     }
 </style>
+
 <div class="dashboard-container">
-    <div class="user-info">
-        <h2>Welcome, {{ user.username }}!</h2>
-        <form method="POST" action="{% url 'logout' %}">
+    <div class="scan-form">
+        <form id="scanForm" action="{% url 'index' %}?tool=allinone" method="POST">
             {% csrf_token %}
-            <button type="submit" class="logout-button">Logout</button>
+            <div class="form-group">
+                <label for="websiteUrl">Enter Website URL:</label>
+                <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{ domain_name }}" required />
+            </div>
+            <input type="submit" value="Scan" />
         </form>
     </div>
 
-    <div class="widget">
-        <h2>Total Users</h2>
-        <p>{{ user_count }}</p>
+    <div class="dashboard-cards">
+        <div class="card">
+            <h3>Recent Scans</h3>
+            {% if recent_scans %}
+                {% for scan in recent_scans %}
+                    <div class="scan-report">
+                        <div class="timestamp">{{ scan.timestamp|date:"F j, Y, g:i a" }}</div>
+                        <p>Tool Name: <strong>{{ scan.tool_used }}</strong> | Domain: <strong>{{ scan.domain_name }}</strong></p>
+                    </div>
+                    {% if not forloop.last %}
+                        <div class="scan-separator"></div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>No recent scans.</p>
+            {% endif %}
+        </div>
     </div>
-
-    <div class="widget">
-        <h2>Recent Signups</h2>
-        <ul>
-            {% for user in recent_signups %}
-                <li>{{ user.username }} ({{ user.date_joined }})</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>User Growth</h2>
-        <canvas id="userGrowthChart"></canvas>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var ctx = document.getElementById('userGrowthChart').getContext('2d');
-        var userGrowthChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                    label: 'User Growth',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true,
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
 </div>
 {% endblock %}

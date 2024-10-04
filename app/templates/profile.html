@@ -2,7 +2,7 @@
 {% block body %}
 <style>
   .user-info {
-    margin: 30px auto;
+    margin: 60px auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
@@ -275,91 +275,33 @@
       font-size: 12px;
     }
 
-    .close-btn {
-      font-size: 12px;
-      padding: 6px 12px;
+
+  .logout-button {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
     }
 
-    .star {
-      font-size: 12px;
+    .logout-button:hover {
+        background-color: #c82333;
     }
-  }
 </style>
 
 <div class="user-info">
   {% if request.user.is_authenticated %}
     <h2>Welcome, {{ request.user.username }}</h2>
     <p>Your current plan: <strong>Basic</strong></p>
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="logout-button">Logout</button>
+  </form>
   {% else %}
     <h2>Welcome, Guest</h2>
     <p>Your current plan: <strong>Guest (limited access)</strong></p>
     <a href="{% url 'login' %}" class="auth-button">Log in to Upgrade</a>
   {% endif %}
 </div>
-
-<!-- Subscription Plans -->
-<div class="plans">
-  <div class="plan">
-    <h3 class="plan-title">Basic Plan</h3>
-    <p class="plan-credits">20 Credits</p>
-    <p class="plan-price">Free</p>
-    <button class="select-plan" onclick="showCelebration('Basic')">Select</button>
-  </div>
-
-  <div class="plan">
-    <h3 class="plan-title">Star Plan</h3>
-    <p class="plan-credits">100 Credits</p>
-    <p class="plan-price">₹50</p>
-    <button class="select-plan" onclick="showCelebration('Star')">Select</button>
-  </div>
-
-  <div class="plan">
-    <h3 class="plan-title">Premium Plan</h3>
-    <p class="plan-credits">300 Credits</p>
-    <p class="plan-price">₹150</p>
-    <button class="select-plan" onclick="showCelebration('Premium')">Select</button>
-  </div>
-</div>
-
-<!-- Modal -->
-<div id="celebrationModal" class="modal">
-  <div class="modal-content">
-    <h2>Congratulations!</h2>
-    <p>You have selected the <strong id="selected-plan"></strong> plan.</p>
-    <button class="close-btn" onclick="closeModal()">Close</button>
-  </div>
-</div>
-
-<!-- Star Animation -->
-<script>
-  function showCelebration(plan) {
-    const modal = document.getElementById('celebrationModal');
-    modal.classList.add('active');
-    document.getElementById('selected-plan').innerText = plan;
-
-    // Add stars for celebration
-    for (let i = 0; i < 30; i++) {
-      createStar();
-    }
-  }
-
-  function closeModal() {
-    const modal = document.getElementById('celebrationModal');
-    modal.classList.remove('active');
-  }
-
-  function createStar() {
-    const star = document.createElement('div');
-    star.innerHTML = '★';
-    star.classList.add('star');
-    star.style.left = Math.random() * 100 + 'vw';
-    star.style.animationDuration = Math.random() * 2 + 3 + 's';
-    document.body.appendChild(star);
-
-    setTimeout(() => {
-      star.remove();
-    }, 5000);
-  }
-</script>
-
 {% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <h1>Google Dork Generator</h1>
+    
+    <!-- Input Form -->
+    <form id="scanForm" action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="websiteUrl">Enter Website URL:</label>
+            <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{domain_name}}" required />
+        </div>
+        <input type="submit" value="Generate Dorks" />
+    </form>
+    <div class="result" id="scanResult">
+    <h2 class="result-title">Scan Results</h2>
+    {% if google_dorks %}
+    <h2>Generated Dorks for {{ domain_name }}</h2>
+    <ul>
+        {% for dork in google_dorks %}
+        <li>
+            <a href="https://www.google.com/search?q={{ dork|urlencode }}" target="_blank">{{ dork }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

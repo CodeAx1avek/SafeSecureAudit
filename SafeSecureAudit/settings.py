@@ -108,7 +108,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 # settings.py
-
 LOGIN_URL = '/login/'
 
 SESSION_COOKIE_AGE = 3600
