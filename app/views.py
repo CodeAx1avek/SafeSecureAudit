@@ -86,14 +86,23 @@ def index(request):
             return render(request, 'tools/waf.html', context)
         
         elif tool == "ssl_checker_tool":
-            domain_name = domain_name.lstrip('http://').lstrip('https://')
-            ssl_results = ssl_check(domain_name) 
+            ssl_results_https = ssl_check(domain_name) 
+            if not ssl_results_https.get('is_valid'):
+                http_domain_name = "http://" + domain_name
+                ssl_results_http = ssl_check(http_domain_name) 
+                
+                if ssl_results_http.get('is_valid'):
+                    ssl_results = ssl_results_http
+                else:
+                    ssl_results = {'error': 'Both HTTPS and HTTP checks failed.'}
+            else:
+                ssl_results = ssl_results_https
             save_scan(request.user, domain_name, tool)
             return render(request, 'tools/ssl_checker.html', {
-            'tool': tool,
-            'domain_name': domain_name,
-            'ssl_results': ssl_results,
-        })
+                'tool': tool,
+                'domain_name': domain_name,
+                'ssl_results': ssl_results,
+            })
 
         elif tool == "subdomain_enum_tool":
             found_subdomains = enumerate_and_check_subdomains(domain_name)
@@ -258,6 +267,8 @@ def user_login(request):
 
 def profile(request):
     return render(request,template_name="profile.html")
+
+
 def user_logout(request):
     logout(request)
     return redirect('login')
