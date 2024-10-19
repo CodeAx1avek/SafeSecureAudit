@@ -3,6 +3,7 @@ from .utils import portscanners
 from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,extract_emails,fetch_all_in_one_data
 from .utils.ssl_checker import ssl_check
 from .utils.waf import check_waf
+from .utils.ipchecker import fetch_ip_details
 from .utils.subdomain_enum import enumerate_and_check_subdomains
 from .models import Scan
 from .utils.tool import page_extract
@@ -124,6 +125,21 @@ def index(request):
             save_scan(request.user, domain_name, tool)
             return render(request, 'tools/extract_emails.html', {'tool': tool, 'domain_name': domain_name, 'extract_emails_results': extract_emails_results})
 
+        elif tool == "ipreputation":
+            results = fetch_ip_details(domain_name)
+            if "error" in results:
+                return render(request, 'tools/ipreputation.html', {
+                    'tool': tool, 
+                    'domain_name': domain_name, 
+                    'error_message': results["error"]
+                })
+
+            return render(request, 'tools/ipreputation.html', {
+                'tool': tool, 
+                'domain_name': domain_name, 
+                'ip_results': results
+            })
+
         elif tool == "breachdata":
             url = "https://credential-verification.p.rapidapi.com/restpeopleMOB/MA/MaWcf.svc/Makshouf"
             payload = {
@@ -199,6 +215,8 @@ def index(request):
 
         elif tool == "breachdata":
             return render(request, 'tools/breachdata.html')
+        elif tool == "ipreputation":
+            return render(request, 'tools/ipreputation.html')
         else:
             if request.user.is_authenticated:
                 return redirect('dashboard') 

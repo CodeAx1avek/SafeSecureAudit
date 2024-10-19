@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+  <h1>IP Reputation Checker</h1>
+
+  <!-- Form -->
+  <form id="scanForm" method="POST" action="">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="websiteUrl">Enter IP Address:</label>
+      <input type="text" id="websiteUrl" name="websiteUrl" placeholder="Enter IP or Domain" value="{{domain_name}}" required />
+    </div>
+    <input type="submit" value="Scan" />
+  </form>
+
+  <!-- Error Message -->
+  {% if error_message %}
+  <br>
+  <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+  {% endif %}
+
+  <!-- Results -->
+  {% if ip_results %}
+  <div class="result" id="scanResult">
+    <h2>IP Fraud Risk Report for {{ domain_name }}</h2>
+    <ul>
+      <li><strong>Score:</strong> {{ ip_results.score }}</li>
+      <li><strong>Risk:</strong> {{ ip_results.risk }}</li>
+      <li><strong>Hostname:</strong> {{ ip_results.hostname }}</li>
+      <li><strong>ASN:</strong> {{ ip_results.asn }}</li>
+      <li><strong>ISP:</strong> {{ ip_results.isp }}</li>
+      <li><strong>Organization:</strong> {{ ip_results.organization }}</li>
+      <li><strong>Connection Type:</strong> {{ ip_results.connection }}</li>
+      <li><strong>Country:</strong> {{ ip_results.country }}</li>
+      <li><strong>State:</strong> {{ ip_results.state }}</li>
+      <li><strong>City:</strong> {{ ip_results.city }}</li>
+      <li><strong>Postal Code:</strong> {{ ip_results.postal }}</li>
+      <li><strong>Coordinates:</strong> {{ ip_results.latitude }}, {{ ip_results.longitude }}</li>
+      <li><strong>Anonymizing VPN:</strong> {{ ip_results.vpn }}</li>
+      <li><strong>Tor Exit Node:</strong> {{ ip_results.tor }}</li>
+      <li><strong>Public Proxy:</strong> {{ ip_results.public_proxy }}</li>
+      <li><strong>Web Proxy:</strong> {{ ip_results.web_proxy }}</li>
+      <li><strong>Search Engine Bot:</strong> {{ ip_results.search_engine_bot }}</li>
+      <li><strong>Domain Name:</strong> {{ ip_results.domain_name }}</li>
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

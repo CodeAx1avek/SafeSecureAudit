@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'django_recaptcha',
 ]
 
 
@@ -110,7 +111,12 @@ STATIC_URL = 'static/'
 # settings.py
 LOGIN_URL = '/login/'
 
-SESSION_COOKIE_AGE = 3600
+
+RECAPTCHA_PUBLIC_KEY = '6LfnaVwqAAAAAL5uRS9Tba9xC3f0rnTToL7mklRs'
+RECAPTCHA_PRIVATE_KEY = '6LfnaVwqAAAAAEEshltt2Dt5bpPhSiIfoP_swjIi'
+
+
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 # Define STATIC_ROOT for collecting static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
