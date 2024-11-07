@@ -11,7 +11,7 @@ def create_session():
         total=3,  # Retry 3 times
         backoff_factor=0.3,
         status_forcelist=[500, 502, 503, 504],  # Retry on certain errors
-        method_whitelist=["HEAD", "GET", "POST"]  # Retry only specific HTTP methods
+        allowed_methods=["HEAD", "GET", "POST"]  # Retry only specific HTTP methods
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
@@ -37,4 +37,3 @@ def check_waf(url):
     except Exception as e:
         # Catch all other exceptions
         return f"Error: {e}"
-
