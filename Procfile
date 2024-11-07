@@ -1,1 +1,1 @@
-web: gunicorn SafeSecurAudit.wsgi:application
+web: gunicorn SafeSecureAudit.wsgi
