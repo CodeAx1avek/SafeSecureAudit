@@ -1,0 +1,25 @@
+# Virtual environment
+env/
+
+# Django migration files
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+
+# Local settings
+local_settings.py
+
+# IDE files
+.vscode/
+.idea/
+
+# Python cache files
+*.pyc
+*.pyo
+
+# Other logs or temp files
+*.log
+*.bak
+*.swp

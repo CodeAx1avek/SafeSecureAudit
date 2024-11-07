@@ -1,12 +1,16 @@
 from django.shortcuts import render,redirect
 from .utils import portscanners
-from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,extract_emails,fetch_all_in_one_data
+from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,fetch_all_in_one_data
 from .utils.ssl_checker import ssl_check
 from .utils.waf import check_waf
 from .utils.ipchecker import fetch_ip_details
 from .utils.subdomain_enum import enumerate_and_check_subdomains
 from django.contrib.auth.models import User
 from .utils.tool import page_extract
+import plotly.express as px
+from .models import Scan
+from django.db import models
+import pandas as pd
 from .utils.phone_info_tool import gather_phone_info
 import requests,json
 from .config import api
@@ -264,11 +268,7 @@ def huntchecklist(request):
     return render(request,template_name="huntchecklist.html")
 
 import plotly.express as px
-import pandas as pd
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from .models import Scan
-from django.db import models  # Ensure this import is included
 
 
 
