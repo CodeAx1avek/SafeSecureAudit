@@ -1,0 +1,10 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+    <div class="statistics-summary" style="margin-bottom: 20px;">
+        <h3>Visit Statistics</h3>
+        <p><strong>Logged-in User Visits:</strong> {{ total_logged_in_visits }}</p>
+        <p><strong>Anonymous User Visits:</strong> {{ total_anonymous_visits }}</p>
+    </div>
+    {{ block.super }}
+{% endblock %}

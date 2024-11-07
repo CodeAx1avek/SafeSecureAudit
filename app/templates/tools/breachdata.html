@@ -1,36 +1,79 @@
-{% extends 'base.html' %} {% block body %}
+{% extends 'base.html' %}
+
+{% block body %}
 <div class="container">
   <h1>Data Breach Checker</h1>
+<style>
+  /* Apply blur to the content when not authenticated */
+.blurred-content {
+  position: relative;
+}
+
+.blurred {
+  filter: blur(5px); /* Adjust blur amount as needed */
+  pointer-events: none; /* Disable interaction with blurred content */
+  opacity: 0.6; /* Optional: make it a bit more transparent */
+}
+</style>
   <!-- Scan Form -->
   <form id="scanForm" action="" method="POST">
     {% csrf_token %}
     <div class="form-group">
-      <label for="websiteUrl">Enter MAIL ID</label>
+      <label for="websiteUrl">Enter Email ID</label>
       <input 
         type="email"
         id="websiteUrl"
         name="websiteUrl"
         placeholder="example@gmail.com"
-        value="{{domain_name}}"
+        value="{{ domain_name }}"
       />
     </div>
     <input type="submit" value="Scan" />
   </form>
 
-  <!-- Scan Results -->
-  <div class="result" id="scanResult">
-    <h2 class="result-title">Scan Results</h2>
-    <p><strong>Domain Name:</strong> {{ domain_name }}</p>
-    <p><strong>Massage</strong> {{ message }}</p>
-    <p>{{ summary|length }} breaches found:</p>
-    <ul>
-      {% for breach in summary %}
-      <li>
-        <strong>Breach Name:</strong> {{ breach.breach_name }}<br />
-        <strong>Breach Summary:</strong> {{ breach.breach_summary }}
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+  <!-- Scan Results Section -->
+  {% if domain_name %}
+    <div class="result" id="scanResult">
+      {% if user.is_authenticated %}
+        <!-- Show the scan results if the user is authenticated -->
+        {% if summary %}
+          <h2 class="result-title">Scan Results</h2>
+          <p><strong>Domain Name:</strong> {{ domain_name }}</p>
+          <p><strong>Message:</strong> {{ message }}</p>
+          <p>{{ summary|length }} breaches found:</p>
+          <ul>
+            {% for breach in summary %}
+            <li>
+              <strong>Breach Name:</strong> {{ breach.breach_name }}<br />
+              <strong>Breach Summary:</strong> {{ breach.breach_summary }}
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <strong>No results found.</strong>
+        {% endif %}
+      {% else %}
+        <!-- For non-authenticated users, show blurred results -->
+        <div class="blurred-content">
+          <p><strong>Domain Name:</strong> {{ domain_name }}</p>
+          <p><strong>Message:</strong> {{ message }}</p>
+          <p>breaches found:</p>
+          <ul>
+              <strong>Breach Name:</strong>           Login and get your output <a href="/login">Login here</a><br />
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
 </div>
+
+{% block extra_js %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (!{{ user.is_authenticated|lower }}) {
+        document.querySelector('.blurred-content').classList.add('blurred');
+      }
+    });
+  </script>
+{% endblock %}
 {% endblock %}

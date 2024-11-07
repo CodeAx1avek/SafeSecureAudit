@@ -2,39 +2,25 @@
 {% block body %}
 <style>
     .dashboard-container {
+        max-width: 1200px;
         margin: 0 auto;
-       
         padding: 20px;
-    }
-
-    .user-info {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 40px;
-    }
-
-    .user-info h2 {
-        margin: 0;
-        color: #39526c;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
     }
 
     .scan-form {
+        display: flex;
+        justify-content: center; /* Center the form */
         margin-bottom: 40px;
     }
 
-    .scan-form label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
     .scan-form input[type="text"] {
-        width: calc(100% - 40px);
+        width: calc(100% - 100px); /* Input field width */
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        margin-bottom: 10px;
+        margin-right: 10px; /* Space between input and button */
     }
 
     .scan-form input[type="submit"] {
@@ -44,86 +30,87 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        transition: background-color 0.3s;
     }
 
     .scan-form input[type="submit"]:hover {
-        background-color: #314558;
+        background-color: #314558; /* Darker on hover */
     }
 
-    .card {
-        background: #141715;
+    .chart-card {
+        background: #141715; /* Card background */
         border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(106, 94, 94, 0.1);
         padding: 20px;
         margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(106, 94, 94, 0.1);
+        color: #ffffff; /* Text color for card */
     }
 
-    .card h3 {
-        margin: 0 0 10px 0;
+    .chart-card h3 {
+        margin: 0 0 20px 0;
         color: #39526c;
-    }
-
-    .card .timestamp {
-        font-size: 0.9em;
-        color: #ccc;
-        margin-bottom: 10px;
+        font-size: 1.5em; /* Increase heading size */
     }
 
     .scan-report {
         margin-bottom: 10px;
         padding: 10px 0;
-    }
-
-    .scan-separator {
-        border-top: 1px solid #ccc;
-        margin: 10px 0;
-    }
-
-    .dashboard-cards {
+        border-bottom: 1px solid #ccc; /* Separator for reports */
         display: flex;
-        flex-direction: column;
+        justify-content: space-between; /* Align items on each scan report */
+        align-items: center; /* Center the items vertically */
     }
 
+    .delete-button {
+        background-color: #e74c3c; /* Red background for delete */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 5px 10px;
+    }
 
-        .user-info {
-            flex-direction: column;
-            margin-bottom: 30px;
+    .delete-button:hover {
+        background-color: #c0392b; /* Darker red on hover */
+    }
+
+    .show-more {
+        cursor: pointer;
+        color: #39526c; /* Color for "Show More" */
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #39526c;
+        border-radius: 5px;
+        background-color: transparent; /* Background color */
+        transition: background-color 0.3s;
+    }
+
+    .show-more:hover {
+        background-color: #39526c; /* Background on hover */
+        color: white; /* Text color on hover */
+    }
+
+    @media (max-width: 768px) {
+        .scan-form {
+            flex-direction: column; /* Stack form elements on smaller screens */
         }
 
-        .scan-form input[type="text"] {
-            width: calc(100% - 20px); /* Adjust input width for smaller screens */
-        }
-
+        .scan-form input[type="text"], 
         .scan-form input[type="submit"] {
             width: 100%;
-            padding: 12px;
-            font-size: 16px;
+            margin-right: 0; /* Remove right margin on mobile */
+            margin-bottom: 10px; /* Space between stacked elements */
         }
 
-        .card {
-            padding: 15px;
+        .scan-report {
+            flex-direction: column; /* Stack items on mobile */
+            align-items: flex-start; /* Align items to the start */
         }
 
-        .card h3 {
-            font-size: 18px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .user-info {
-            margin-bottom: 20px;
-        }
-
-        .scan-form label, .scan-form input[type="text"] {
-            font-size: 14px;
-        }
-
-        .scan-form input[type="submit"] {
-            font-size: 14px;
-        }
-
-        .card h3 {
-            font-size: 16px;
+        .delete-button {
+            width: 100%; /* Make delete button full width on mobile */
+            margin-top: 10px; /* Space above delete button */
         }
     }
 </style>
@@ -132,31 +119,60 @@
     <div class="scan-form">
         <form id="scanForm" action="{% url 'index' %}?tool=allinone" method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="websiteUrl">Enter Website URL:</label>
-                <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{ domain_name }}" required />
-            </div>
+            <input type="text" id="websiteUrl" name="websiteUrl" placeholder="example.com" value="{{ domain_name }}" required />
             <input type="submit" value="Scan" />
         </form>
     </div>
 
     <div class="dashboard-cards">
-        <div class="card">
-            <h3>Recent Scans</h3>
-            {% if recent_scans %}
-                {% for scan in recent_scans %}
-                    <div class="scan-report">
-                        <div class="timestamp">{{ scan.timestamp|date:"F j, Y, g:i a" }}</div>
-                        <p>Tool Name: <strong>{{ scan.tool_used }}</strong> | Domain: <strong>{{ scan.domain_name }}</strong></p>
-                    </div>
-                    {% if not forloop.last %}
-                        <div class="scan-separator"></div>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <p>No recent scans.</p>
-            {% endif %}
-        </div>
+        <h3>Recent Scans</h3>
+        {% if recent_scans %}
+            {% for scan in recent_scans %}
+                <div class="scan-report" id="scan-{{ scan.id }}">
+                    <div class="timestamp">{{ scan.timestamp|date:"F j, Y, g:i a" }}</div>
+                    <p>Tool Name: <strong>{{ scan.tool_used }}</strong> | Domain: <strong>{{ scan.domain_name }}</strong></p>
+                    <form action="{% url 'delete_scan' scan.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" class="delete-button" />
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No recent scans.</p>
+        {% endif %}
+        
+        <!-- Show More Button -->
+        {% if more_scans %}
+            <div class="show-more" id="showMore">Show More</div>
+        {% endif %}
+    </div>
+
+    <div class="more-scans" style="display:none;">
+        {% for scan in more_scans %}
+            <div class="scan-report" id="scan-{{ scan.id }}">
+                <div class="timestamp">{{ scan.timestamp|date:"F j, Y, g:i a" }}</div>
+                <p>Tool Name: <strong>{{ scan.tool_used }}</strong> | Domain: <strong>{{ scan.domain_name }}</strong></p>
+                <form action="{% url 'delete_scan' scan.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="submit" value="Delete" class="delete-button" />
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="chart-card">
+        <h3>Distribution of Tools Used for Scans</h3>
+        {{ chart|safe }}  <!-- Ensure this line remains for rendering the chart -->
     </div>
 </div>
+
+<script>
+    document.getElementById('showMore').addEventListener('click', function() {
+        const moreScans = document.querySelector('.more-scans');
+        moreScans.style.display = moreScans.style.display === 'none' ? 'block' : 'none';
+        this.classList.toggle('active');
+        this.innerText = this.classList.contains('active') ? 'Show Less' : 'Show More';
+    });
+</script>
+
 {% endblock %}

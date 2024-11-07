@@ -15,7 +15,18 @@
 <meta name="keywords" content="cybersecurity, information gathering, vulnerability scanning, penetration testing, security audits">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
-      <style>
+     
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VDK7KHCDV5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VDK7KHCDV5');
+</script>
+
+     <style>
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -540,11 +551,8 @@ input[type="submit"]:hover {
                 <ul class="sub-menu">
                     <li><a class="highlight">Information Gathering</a></li>
                     <li>
-                        <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'index' %}?tool=dnslookuptool{% endif %}" class="sidebar-link">
+                        <a href="{% url 'index' %}?tool=dnslookuptool" class="sidebar-link">
                             DNS LOOKUP DEEP
-                            {% if not user.is_authenticated %}
-                            <i class="fas fa-lock lock-icon"></i>
-                            {% endif %}
                         </a>
                     </li>
                     <li><a href="{% url 'index' %}?tool=dnsresolvertool" class="sidebar-link">DNS LOOKUP</a></li>
@@ -565,11 +573,8 @@ input[type="submit"]:hover {
                 <ul class="sub-menu">
                     <li><a class="highlight">Detection Tools</a></li>
                     <li>
-                        <a href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'index' %}?tool=breachdata{% endif %}" class="sidebar-link">
+                        <a href="{% url 'index' %}?tool=breachdata" class="sidebar-link">
                             Data Breach Checker
-                            {% if not user.is_authenticated %}
-                            <i class="fas fa-lock lock-icon"></i>
-                            {% endif %}
                         </a>
                     </li>
                     <li><a href="{% url 'index' %}?tool=ssl_checker_tool" class="sidebar-link">SSL CHECKER</a></li>
@@ -661,7 +666,7 @@ input[type="submit"]:hover {
         {% else %}
         <p class="credits-info">Welcome back, {{ user.username }}! You are logged in.</p>
         {% endif %}
-
+        <br>
         <div class="content">
             {% block body %} 
             {% endblock %}

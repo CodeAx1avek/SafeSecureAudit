@@ -66,7 +66,6 @@
   }
 }
 </style>
-
 <div class="container">
   <h1>Port Scanner</h1>
   
@@ -75,7 +74,7 @@
     {% csrf_token %}
     <div class="form-group">
       <label for="websiteUrl">Enter Website URL:</label>
-      <input type="text" id="websiteUrl" name="websiteUrl" value="{{domain_name}}" placeholder="example.com" required />
+      <input type="text" id="websiteUrl" name="websiteUrl" value="{{ domain_name }}" placeholder="example.com" required />
     </div>
     <input type="submit" value="Scan" />
   </form>
@@ -92,10 +91,10 @@
           <div class="open-ports">
             <h2 class="result-title">Open Ports:</h2>
             <ul class="port-list">
-              {% for port, service in open_ports.items %}
-                <li class="port-item">
+              {% for port, status in open_ports.items %}
+                <li class="port-item open-port">
                   <span class="port-number">Port {{ port }}:</span> 
-                  <span class="service">{{ service }}</span>
+                  <span class="service">{{ status }}</span>
                 </li>
               {% endfor %}
             </ul>
@@ -103,72 +102,56 @@
         {% else %}
           <div class="alert alert-success" role="alert">No open ports found.</div>
         {% endif %}
-
-        <!-- Closed Ports -->
-        {% if closed_ports %}
-          <div class="closed-ports" style="margin-top: 20px;">
-            <h2 class="result-title">Closed Ports:</h2>
-            <ul class="port-list">
-              {% for port in closed_ports %}
-                <li class="port-item">
-                  <span class="port-number">Port {{ port }}:</span> 
-                  <span class="status">Closed</span>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
-      </div>
-
-      <!-- Extended List of Common Ports -->
-      <div class="extended-port-list" style="margin-top: 30px;">
-        <h2>Extended List of Common Ports:</h2>
-        <div class="table-container">
-          <table class="port-table">
-            <thead>
-              <tr>
-                <th>Port</th>
-                <th>Service</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>21</td><td>FTP (File Transfer Protocol)</td><td>Used for file transfers</td></tr>
-              <tr><td>22</td><td>SSH (Secure Shell)</td><td>Secure remote login</td></tr>
-              <tr><td>23</td><td>Telnet</td><td>Unencrypted text communications</td></tr>
-              <tr><td>25</td><td>SMTP (Simple Mail Transfer Protocol)</td><td>Used to send emails</td></tr>
-              <tr><td>53</td><td>DNS (Domain Name System)</td><td>Resolves domain names to IP addresses</td></tr>
-              <tr><td>80</td><td>HTTP (Hypertext Transfer Protocol)</td><td>Web traffic (unencrypted)</td></tr>
-              <tr><td>110</td><td>POP3 (Post Office Protocol)</td><td>Used to receive emails</td></tr>
-              <tr><td>123</td><td>NTP (Network Time Protocol)</td><td>Synchronizes clocks on the network</td></tr>
-              <tr><td>143</td><td>IMAP (Internet Message Access Protocol)</td><td>Email retrieval protocol</td></tr>
-              <tr><td>443</td><td>HTTPS (HTTP Secure)</td><td>Web traffic (encrypted)</td></tr>
-              <tr><td>465</td><td>SMTPS (Secure SMTP)</td><td>Secure email sending</td></tr>
-              <tr><td>587</td><td>SMTP (with authentication)</td><td>Used for sending emails securely</td></tr>
-              <tr><td>993</td><td>IMAPS (Secure IMAP)</td><td>Secure email retrieval</td></tr>
-              <tr><td>995</td><td>POP3S (Secure POP3)</td><td>Secure email retrieval</td></tr>
-              <tr><td>3306</td><td>MySQL</td><td>Database access for MySQL</td></tr>
-              <tr><td>3389</td><td>RDP (Remote Desktop Protocol)</td><td>Remote desktop access</td></tr>
-              <tr><td>5432</td><td>PostgreSQL</td><td>PostgreSQL database service</td></tr>
-              <tr><td>5900</td><td>VNC (Virtual Network Computing)</td><td>Remote desktop access</td></tr>
-              <tr><td>8080</td><td>HTTP Proxy</td><td>Alternative HTTP port</td></tr>
-              <tr><td>8443</td><td>HTTPS Proxy</td><td>Alternative HTTPS port</td></tr>
-              <tr><td>6379</td><td>Redis</td><td>In-memory data structure store</td></tr>
-              <tr><td>27017</td><td>MongoDB</td><td>MongoDB database</td></tr>
-              <tr><td>389</td><td>LDAP</td><td>Directory services</td></tr>
-              <tr><td>137-139</td><td>NetBIOS</td><td>NetBIOS over TCP/IP for local network communication</td></tr>
-              <tr><td>445</td><td>SMB</td><td>File sharing over networks</td></tr>
-              <tr><td>49152-65535</td><td>Ephemeral Ports</td><td>Dynamic ports assigned by the system</td></tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     {% endif %}
+  </div>
+
+  <!-- Extended List of Common Ports (Optional) -->
+  <div class="extended-port-list" style="margin-top: 30px;">
+    <h2>Extended List of Common Ports:</h2>
+    <div class="table-container">
+      <table class="port-table">
+        <thead>
+          <tr>
+            <th>Port</th>
+            <th>Service</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>21</td><td>FTP (File Transfer Protocol)</td><td>Used for file transfers</td></tr>
+          <tr><td>22</td><td>SSH (Secure Shell)</td><td>Secure remote login</td></tr>
+          <tr><td>23</td><td>Telnet</td><td>Unencrypted text communications</td></tr>
+          <tr><td>25</td><td>SMTP (Simple Mail Transfer Protocol)</td><td>Used to send emails</td></tr>
+          <tr><td>53</td><td>DNS (Domain Name System)</td><td>Resolves domain names to IP addresses</td></tr>
+          <tr><td>80</td><td>HTTP (Hypertext Transfer Protocol)</td><td>Web traffic (unencrypted)</td></tr>
+          <tr><td>110</td><td>POP3 (Post Office Protocol)</td><td>Used to receive emails</td></tr>
+          <tr><td>123</td><td>NTP (Network Time Protocol)</td><td>Synchronizes clocks on the network</td></tr>
+          <tr><td>143</td><td>IMAP (Internet Message Access Protocol)</td><td>Email retrieval protocol</td></tr>
+          <tr><td>443</td><td>HTTPS (HTTP Secure)</td><td>Web traffic (encrypted)</td></tr>
+          <tr><td>465</td><td>SMTPS (Secure SMTP)</td><td>Secure email sending</td></tr>
+          <tr><td>587</td><td>SMTP (with authentication)</td><td>Used for sending emails securely</td></tr>
+          <tr><td>993</td><td>IMAPS (Secure IMAP)</td><td>Secure email retrieval</td></tr>
+          <tr><td>995</td><td>POP3S (Secure POP3)</td><td>Secure email retrieval</td></tr>
+          <tr><td>3306</td><td>MySQL</td><td>Database access for MySQL</td></tr>
+          <tr><td>3389</td><td>RDP (Remote Desktop Protocol)</td><td>Remote desktop access</td></tr>
+          <tr><td>5432</td><td>PostgreSQL</td><td>PostgreSQL database service</td></tr>
+          <tr><td>5900</td><td>VNC (Virtual Network Computing)</td><td>Remote desktop access</td></tr>
+          <tr><td>8080</td><td>HTTP Proxy</td><td>Alternative HTTP port</td></tr>
+          <tr><td>8443</td><td>HTTPS Proxy</td><td>Alternative HTTPS port</td></tr>
+          <tr><td>6379</td><td>Redis</td><td>In-memory data structure store</td></tr>
+          <tr><td>27017</td><td>MongoDB</td><td>MongoDB database</td></tr>
+          <tr><td>389</td><td>LDAP</td><td>Directory services</td></tr>
+          <tr><td>137-139</td><td>NetBIOS</td><td>NetBIOS over TCP/IP for local network communication</td></tr>
+          <tr><td>445</td><td>SMB</td><td>File sharing over networks</td></tr>
+          <tr><td>49152-65535</td><td>Ephemeral Ports</td><td>Dynamic ports assigned by the system</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   {% if error_message %}
     <div class="alert alert-danger" role="alert">{{ error_message }}</div>
   {% endif %}
-  
 </div>
 {% endblock %}

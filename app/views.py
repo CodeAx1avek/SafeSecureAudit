@@ -5,17 +5,16 @@ from .utils.ssl_checker import ssl_check
 from .utils.waf import check_waf
 from .utils.ipchecker import fetch_ip_details
 from .utils.subdomain_enum import enumerate_and_check_subdomains
-from .models import Scan
+from django.contrib.auth.models import User
 from .utils.tool import page_extract
 from .utils.phone_info_tool import gather_phone_info
 import requests,json
-from django.contrib.auth import authenticate, login, logout 
+from .config import api
+from django.contrib.auth import login, logout 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
 from .forms import SignUpForm,LoginForm
 from django.contrib.auth.decorators import login_required
-
-def save_scan(user, domain_name, tool_used):
-    if user.is_authenticated:
-        Scan.objects.create(user=user, domain_name=domain_name, tool_used=tool_used)
 
 def index(request):
     tool = request.GET.get('tool', '')
@@ -29,36 +28,36 @@ def index(request):
         if tool == "allinone":
             domain_data = fetch_all_in_one_data(domain_name)
             # Save the scan
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/allinone.html', {'domain_data': domain_data, "tool": tool, "domain_name": domain_name})
         
         elif tool == 'dnsresolvertool':
             record_types = ["A", "MX", "TXT", "NS"]
             dns_results = {record_type: dns_record_lookup(domain_name, record_type) for record_type in record_types}
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             context = {'tool': tool, 'dns_results': dns_results}
             return render(request, 'tools/dnsresolvertool.html', context)
 
         elif tool == "dnslookuptool":
             dns_results = dnslookup(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/dnslookuptool.html', {'tool': tool, 'domain_name': domain_name, 'dns_results': dns_results})
 
         elif tool == "reversednstool":
             reverse_dns_results = reverse_dns(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/reversednstool.html', {'tool': tool, 'domain_name': domain_name, 'reverse_dns_results': reverse_dns_results})
 
         elif tool == "ipgeotool":
             ipgeotool_results = ipgeotool(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/ipgeotool.html', {'tool': tool, 'domain_name': domain_name, 'ipgeotool_results': ipgeotool_results})
         
         elif tool == "page_extract":
             if not domain_name.startswith(('http://', 'https://')):
                 domain_name = "https://" + domain_name
             page_extract_results, error_message = page_extract(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             context = {
                 'tool': tool,
                 'domain_name': domain_name,
@@ -69,23 +68,40 @@ def index(request):
         
         elif tool == "dork":
             google_dorks = generate_dorks(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, "tools/dork.html", {'google_dorks': google_dorks, 'domain_name': domain_name})
+        
 
         elif tool == 'portscanner':
             open_ports = portscanners.scan_port(domain_name)
-            save_scan(request.user, domain_name, tool)
-            context = {'open_ports': open_ports, 'tool': tool, 'domain_name': domain_name}
+            save_scan(request.user, domain_name, tool, request)
+            context = {
+            'open_ports': open_ports.get('open_ports', {}),
+            'tool': tool,
+            'domain_name': domain_name
+            }
             return render(request, 'tools/portscanner.html', context)
-
+        
+        # In your Django view
         elif tool == 'waf':
             if not domain_name.startswith(('http://', 'https://')):
                 domain_name = "https://" + domain_name
-            waf_name = check_waf(domain_name)
-            save_scan(request.user, domain_name, tool)
-            context = {'tool': tool, 'waf_name': waf_name, 'domain_name': domain_name}
+            try:
+                waf_name = check_waf(domain_name)
+            except Exception as e:
+                waf_name = None
+                error_message = str(e)
+
+            save_scan(request.user, domain_name, tool, request)
+            context = {
+            'tool': tool,
+            'waf_name': waf_name,
+            'domain_name': domain_name,
+            'error_message': error_message if 'error_message' in locals() else None
+                }
             return render(request, 'tools/waf.html', context)
-        
+
+
         elif tool == "ssl_checker_tool":
             ssl_results_https = ssl_check(domain_name) 
             if not ssl_results_https.get('is_valid'):
@@ -98,7 +114,7 @@ def index(request):
                     ssl_results = {'error': 'Both HTTPS and HTTP checks failed.'}
             else:
                 ssl_results = ssl_results_https
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/ssl_checker.html', {
                 'tool': tool,
                 'domain_name': domain_name,
@@ -107,7 +123,7 @@ def index(request):
 
         elif tool == "subdomain_enum_tool":
             found_subdomains = enumerate_and_check_subdomains(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/subdomain_enum.html', {
                 'tool': tool,
                 'domain_name': domain_name,
@@ -117,12 +133,12 @@ def index(request):
         
         elif tool == "phoneinfo":
             phone_info_results = gather_phone_info(domain_name)
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/phoneinfo.html', {'tool': tool, 'domain_name': domain_name, 'phone_info_results': phone_info_results})
 
         elif tool == "extract_emails":
             extract_emails_results = "we are working on it"
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/extract_emails.html', {'tool': tool, 'domain_name': domain_name, 'extract_emails_results': extract_emails_results})
 
         elif tool == "ipreputation":
@@ -151,7 +167,7 @@ def index(request):
             }
             headers = {
                 "content-type": "application/json",
-                "X-RapidAPI-Key": "9814b3a6d1msh41b9e25311f05bap13521ejsn9147e8e70ae1", 
+                "X-RapidAPI-Key": api, 
                 "X-RapidAPI-Host": "credential-verification.p.rapidapi.com"
             }
             response = requests.post(url, json=payload, headers=headers)
@@ -161,20 +177,19 @@ def index(request):
             summary = []
             if 'Count' in result and result['Count'] > 0:
                 message = result['Message']
-                breaches = json.loads(result['Result'])  # Parsing the JSON string
+                breaches = json.loads(result['Result']) 
                 for breach in breaches:
                     summary.append({
                         'breach_name': breach.get('BREACH_NAME', ''),
                         'breach_summary': breach.get('BREACH_SUMMARY', '')
                     })
 
-            save_scan(request.user, domain_name, tool)
+            save_scan(request.user, domain_name, tool, request)
             return render(request, 'tools/breachdata.html', {"message": message, "tool": tool, 'domain_name': domain_name, 'summary': summary})
 
         else:
             return render(request, 'index.html', {'error_message': 'Please select a tool from the sidebar.'})
-        
-        
+         
     if request.method == 'GET':
         if tool == "allinone":
              return render(request, 'tools/allinone.html')
@@ -222,6 +237,13 @@ def index(request):
                 return redirect('dashboard') 
             return render(request, 'index.html', {'error_message': 'Please select provided tool on sidebar.'})
 
+def save_scan(user, domain_name, tool_used, request):
+    ip_address = request.META.get('REMOTE_ADDR')
+    if user.is_authenticated:
+        Scan.objects.create(user=user, domain_name=domain_name, tool_used=tool_used, ip_address=ip_address)
+    else:
+        Scan.objects.create(user=None, domain_name=domain_name, tool_used=tool_used, ip_address=ip_address)
+
 def learning(request):
     if request.method == 'GET':
             return render(request,template_name="learning.html")
@@ -237,15 +259,59 @@ def termsandcondition(request):
 def bughuntingmethodology(request):
     return render(request,template_name="bughuntingmethodology.html")
 
+@login_required
 def huntchecklist(request):
     return render(request,template_name="huntchecklist.html")
 
+import plotly.express as px
+import pandas as pd
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Scan
+from django.db import models  # Ensure this import is included
 
-# views.py
+
+
 @login_required
 def dashboard(request):
+    # Fetch the most recent scans (first 5)
     recent_scans = Scan.objects.filter(user=request.user).order_by('-timestamp')[:5]
-    return render(request, 'dashboard.html', {'recent_scans': recent_scans})
+    more_scans = Scan.objects.filter(user=request.user).order_by('-timestamp')[5:10]
+
+    # Prepare data for the chart
+    tool_count = recent_scans.values('tool_used').annotate(count=models.Count('id'))
+    df = pd.DataFrame(tool_count)
+    # Check if the DataFrame is empty
+    if df.empty:
+        return render(request, 'dashboard.html', {
+            'recent_scans': recent_scans,
+            'chart': None,  # No chart to display
+            'more_scans': more_scans,
+        })
+
+    # Create a pie chart
+    fig = px.pie(df, 
+                 names='tool_used', 
+                 values='count', 
+                 title='Distribution of Tools Used for Scans',
+                 color='tool_used', 
+                 color_discrete_sequence=px.colors.qualitative.Plotly)
+
+    # Convert the plotly figure to HTML
+    chart = fig.to_html(full_html=False)
+
+    return render(request, 'dashboard.html', {
+        'recent_scans': recent_scans, 
+        'chart': chart,
+        'more_scans': more_scans,
+    })
+
+@login_required
+def delete_scan(request, scan_id):
+    scan = get_object_or_404(Scan, id=scan_id, user=request.user)
+    scan.delete()
+    messages.success(request, 'Scan report deleted successfully.')
+    return redirect('dashboard')
 
 
 def user_signup(request):
@@ -255,36 +321,44 @@ def user_signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(request, username=username, password=password)
-            if user:
-                login(request, user)
-            return redirect('dashboard') 
+            user = form.save(commit=False)
+            user.first_name = form.cleaned_data['name']
+            user.save()
+            login(request, user)
+            return redirect('dashboard')
     else:
         form = SignUpForm()
 
-    return render(request, 'signup.html', {'form': form})
-
+    return render(request, 'user/signup.html', {'form': form})
 def user_login(request):
-    if request.user.is_authenticated: 
-        return redirect('dashboard')  
+    if request.user.is_authenticated:
+        return redirect('dashboard')  # Redirect if user is already authenticated
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user:
+            # Use email as username for authentication
+            try:
+                user = User.objects.get(email=email)  # Get the user by email
+            except User.DoesNotExist:
+                form.add_error(None, "Invalid email or password")
+                return render(request, 'user/login.html', {'form': form})
+
+            # Authenticate using the user object
+            if user.check_password(password):
                 login(request, user)
-                return redirect('dashboard')
+                return redirect('dashboard')  # Redirect to the dashboard upon successful login
+            else:
+                form.add_error(None, "Invalid email or password")  # Handle invalid login
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+
+    return render(request, 'user/login.html', {'form': form})
 
 def profile(request):
-    return render(request,template_name="profile.html")
+    return render(request,template_name="user/profile.html")
 
 
 def user_logout(request):

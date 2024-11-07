@@ -1,0 +1,179 @@
+{% extends '../base.html' %}
+{% block body %}
+<style>
+  .user-info {
+    margin: 60px auto;
+    padding: 20px;
+    background-color: #2a2a2a; /* Darker background for user info */
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .user-info h2 {
+    font-size: 26px;
+    color: #ffcc66; /* Bright accent color for headers */
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .user-info p {
+    font-size: 18px;
+    color: #ffffff; /* Maintain white text for readability */
+    margin-bottom: 15px;
+  }
+
+  .auth-button, .logout-button {
+    padding: 12px 24px;
+    background-color: #ff5733; /* Vibrant button color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+  }
+
+  .auth-button:hover, .logout-button:hover {
+    background-color: #e14a28; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight scaling effect */
+  }
+
+  .plans-comparison {
+    display: flex;
+    justify-content: space-between; /* Space cards evenly */
+    flex-wrap: wrap;
+    margin: 40px auto;
+    max-width: 1200px;
+    text-align: center;
+  }
+
+  .plan-card {
+    background-color: #333333; /* Dark background for plan cards */
+    border: 1px solid #444444; /* Darker border for contrast */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    margin: 10px; /* Smaller margin between cards */
+    padding: 20px; /* Reduced padding for more compact design */
+    flex: 1 1 30%; /* Flex-grow to allow cards to adjust */
+    min-width: 250px; /* Minimum width for small screens */
+    max-width: 300px; /* Maximum width for cards */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
+  }
+
+  .plan-title {
+    font-size: 22px; /* Smaller title font size */
+    color: #ff5733; /* Bright title color */
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .plan-features {
+    list-style-type: none;
+    padding: 0;
+    text-align: left; /* Align text to the left for better readability */
+  }
+
+  .plan-features li {
+    padding: 6px 0; /* Less padding for features */
+    font-size: 16px;
+    color: #ffffff; /* White text for plan features */
+  }
+
+  .check-icon {
+    color: #28a745; /* Green for check icons */
+    margin-right: 10px;
+  }
+
+  .cross-icon {
+    color: #dc3545; /* Red for cross icons */
+    margin-right: 10px;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .plans-comparison {
+      flex-direction: column; /* Stack cards vertically on small screens */
+      align-items: center; /* Center cards */
+    }
+
+    .plan-card {
+      width: 90%; /* Cards take 90% width on mobile */
+      margin: 10px 0; /* Margin only top and bottom */
+      padding: 15px; /* Further reduced padding */
+    }
+
+    .user-info {
+      margin: 20px; /* Reduce margin for user info on mobile */
+      padding: 15px; /* Adjust padding for mobile */
+    }
+
+    .user-info h2 {
+      font-size: 22px; /* Adjust heading size for mobile */
+    }
+
+    .user-info p {
+      font-size: 16px; /* Adjust paragraph size for mobile */
+    }
+
+    .auth-button, .logout-button {
+      font-size: 16px; /* Reduce button size for mobile */
+      padding: 10px 20px; /* Adjust padding for buttons */
+    }
+  }
+</style>
+
+<div class="user-info">
+  {% if request.user.is_authenticated %}
+    <h2>Welcome, {{ request.user.username }}</h2>
+    <p>Your current plan: <strong>Basic</strong></p>
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="logout-button">Logout</button>
+    </form>
+  {% else %}
+    <h2>Welcome, Guest</h2>
+    <p>Your current plan: <strong>Basic (limited access)</strong></p>
+    <a href="{% url 'login' %}" class="auth-button">Log in to Upgrade</a>
+  {% endif %}
+</div>
+<!-- Plans Comparison Section -->
+<div class="plans-comparison">
+  <div class="plan-card">
+    <h3 class="plan-title">Basic</h3>
+    <ul class="plan-features">
+      <li><span class="check-icon">✔️</span>Access to Basic Tools</li>
+      <li><span class="cross-icon">❌</span>Advanced Scanning</li>
+      <li><span class="cross-icon">❌</span>Priority Support</li>
+      <li><span class="cross-icon">❌</span>Scan Reports</li>
+    </ul>
+  </div>
+
+  <div class="plan-card">
+    <h3 class="plan-title">Star</h3>
+    <ul class="plan-features">
+      <li><span class="check-icon">✔️</span>Access to Basic Tools</li>
+      <li><span class="check-icon">✔️</span>Advanced Scanning</li>
+      <li><span class="cross-icon">❌</span>Priority Support</li>
+      <li><span class="check-icon">✔️</span>Scan Reports</li>
+    </ul>
+  </div>
+
+  <div class="plan-card">
+    <h3 class="plan-title">Premium</h3>
+    <ul class="plan-features">
+      <li><span class="check-icon">✔️</span>Access to Basic Tools</li>
+      <li><span class="check-icon">✔️</span>Advanced Scanning</li>
+      <li><span class="check-icon">✔️</span>Priority Support</li>
+      <li><span class="check-icon">✔️</span>Scan Reports</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

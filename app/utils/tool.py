@@ -60,12 +60,7 @@ def ipgeotool(domain_name):
         return results
     else:
         return None
-
-
-import logging
-
-logger = logging.getLogger(__name__)
-
+    
 def page_extract(url):
     try:
         response = requests.get(url, timeout=10)
