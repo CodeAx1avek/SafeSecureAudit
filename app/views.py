@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .utils import portscanners
 from .utils.tool import dns_record_lookup,dnslookup,reverse_dns,ipgeotool,page_extract,fetch_all_in_one_data
 from .utils.ssl_checker import ssl_check
+from .util import get_client_ip
 from .utils.waf import check_waf
 from .utils.ipchecker import fetch_ip_details
 from .utils.subdomain_enum import enumerate_and_check_subdomains
@@ -22,6 +23,7 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     tool = request.GET.get('tool', '')
+    ip_address = get_client_ip(request)
     if request.method == 'POST':
         domain_name = request.POST.get('websiteUrl')
         if not domain_name:
@@ -32,36 +34,36 @@ def index(request):
         if tool == "allinone":
             domain_data = fetch_all_in_one_data(domain_name)
             # Save the scan
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/allinone.html', {'domain_data': domain_data, "tool": tool, "domain_name": domain_name})
         
         elif tool == 'dnsresolvertool':
             record_types = ["A", "MX", "TXT", "NS"]
             dns_results = {record_type: dns_record_lookup(domain_name, record_type) for record_type in record_types}
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             context = {'tool': tool, 'dns_results': dns_results}
             return render(request, 'tools/dnsresolvertool.html', context)
 
         elif tool == "dnslookuptool":
             dns_results = dnslookup(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/dnslookuptool.html', {'tool': tool, 'domain_name': domain_name, 'dns_results': dns_results})
 
         elif tool == "reversednstool":
             reverse_dns_results = reverse_dns(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/reversednstool.html', {'tool': tool, 'domain_name': domain_name, 'reverse_dns_results': reverse_dns_results})
 
         elif tool == "ipgeotool":
             ipgeotool_results = ipgeotool(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/ipgeotool.html', {'tool': tool, 'domain_name': domain_name, 'ipgeotool_results': ipgeotool_results})
         
         elif tool == "page_extract":
             if not domain_name.startswith(('http://', 'https://')):
                 domain_name = "https://" + domain_name
             page_extract_results, error_message = page_extract(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             context = {
                 'tool': tool,
                 'domain_name': domain_name,
@@ -72,13 +74,13 @@ def index(request):
         
         elif tool == "dork":
             google_dorks = generate_dorks(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, "tools/dork.html", {'google_dorks': google_dorks, 'domain_name': domain_name})
         
 
         elif tool == 'portscanner':
             open_ports = portscanners.scan_port(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             context = {
             'open_ports': open_ports.get('open_ports', {}),
             'tool': tool,
@@ -96,7 +98,7 @@ def index(request):
                 waf_name = None
                 error_message = str(e)
 
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             context = {
             'tool': tool,
             'waf_name': waf_name,
@@ -118,7 +120,7 @@ def index(request):
                     ssl_results = {'error': 'Both HTTPS and HTTP checks failed.'}
             else:
                 ssl_results = ssl_results_https
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/ssl_checker.html', {
                 'tool': tool,
                 'domain_name': domain_name,
@@ -127,7 +129,7 @@ def index(request):
 
         elif tool == "subdomain_enum_tool":
             found_subdomains = enumerate_and_check_subdomains(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/subdomain_enum.html', {
                 'tool': tool,
                 'domain_name': domain_name,
@@ -137,12 +139,12 @@ def index(request):
         
         elif tool == "phoneinfo":
             phone_info_results = gather_phone_info(domain_name)
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/phoneinfo.html', {'tool': tool, 'domain_name': domain_name, 'phone_info_results': phone_info_results})
 
         elif tool == "extract_emails":
             extract_emails_results = "we are working on it"
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/extract_emails.html', {'tool': tool, 'domain_name': domain_name, 'extract_emails_results': extract_emails_results})
 
         elif tool == "ipreputation":
@@ -188,7 +190,7 @@ def index(request):
                         'breach_summary': breach.get('BREACH_SUMMARY', '')
                     })
 
-            save_scan(request.user, domain_name, tool, request)
+            save_scan(request.user, domain_name, tool, request,ip_address)
             return render(request, 'tools/breachdata.html', {"message": message, "tool": tool, 'domain_name': domain_name, 'summary': summary})
 
         else:
@@ -241,8 +243,7 @@ def index(request):
                 return redirect('dashboard') 
             return render(request, 'index.html', {'error_message': 'Please select provided tool on sidebar.'})
 
-def save_scan(user, domain_name, tool_used, request):
-    ip_address = request.META.get('REMOTE_ADDR')
+def save_scan(user, domain_name, tool_used, request, ip_address):
     if user.is_authenticated:
         Scan.objects.create(user=user, domain_name=domain_name, tool_used=tool_used, ip_address=ip_address)
     else:
