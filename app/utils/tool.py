@@ -75,7 +75,6 @@ def page_extract(url):
         return links, None
     
     except RequestException as e:
-        logger.error(f"An error occurred: {str(e)}")
         return [], f"An error occurred: {str(e)}"
 
 

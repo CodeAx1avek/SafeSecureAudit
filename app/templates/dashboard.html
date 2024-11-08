@@ -150,7 +150,7 @@
     <div class="more-scans" style="display:none;">
         {% for scan in more_scans %}
             <div class="scan-report" id="scan-{{ scan.id }}">
-                <div class="timestamp">{{ scan.timestamp|localtime}}</div>
+                <div class="timestamp">{{ scan.timestamp|date:"F j, Y, g:i a"}}</div>
                 <p>Tool Name: <strong>{{ scan.tool_used }}</strong> | Domain: <strong>{{ scan.domain_name }}</strong></p>
                 <form action="{% url 'delete_scan' scan.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
