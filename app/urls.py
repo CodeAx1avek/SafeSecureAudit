@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import index,learning,termsandcondition,Allaboutbugbounty,bughuntingmethodology,huntchecklist,user_login,user_signup,user_logout,dashboard,profile
-from .views import delete_scan
+from .views import delete_scan,privacypolicy
 
 urlpatterns = [
     path("",index,name="index"),
@@ -13,6 +13,7 @@ urlpatterns = [
     path("Allaboutbugbounty",Allaboutbugbounty,name="Allaboutbugbounty"),
     path("bughuntingmethodology",bughuntingmethodology,name="bughuntingmethodology"),
     path("huntchecklist",huntchecklist,name="huntchecklist"),
+    path("privacy-policy",privacypolicy,name="privacy-policy"),
     path("profile",profile,name="profile"),
     path('delete_scan/<int:scan_id>/', delete_scan, name='delete_scan'),
 ]

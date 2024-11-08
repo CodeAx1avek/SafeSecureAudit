@@ -404,3 +404,6 @@ def generate_dorks(domain_name):
         f'site:{domain_name} filetype:bak | filetype:old | filetype:backup',  # Backup files
     ]
     return dorks
+
+def privacypolicy(request):
+    return render(request,'privacy-policy.html')
